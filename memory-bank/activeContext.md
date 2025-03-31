@@ -1,8 +1,11 @@
 ## Current Focus
-- Start der Implementierung von Phase 1:
-  - Nächste Aufgabe: Basis CSV-Import für Zählerstände implementieren.
+- Start der Implementierung von Phase 2:
+  - Aufgabe: Mieterverwaltung implementieren (Basis: Mietverträge erfassen).
 
 ## Recent Completions
+- Abschluss von Phase 1 (Flask-Grundgerüst, DB-Modell Basis, CSV-Import).
+- Basis CSV-Import für Verbrauchsdaten implementiert (`app/import_data.py`).
+- Tests für CSV-Import erstellt und ausgeführt (`test/test_csv_import_basic.py`).
 - Basis-Datenbankmodelle (Apartment, Tenant, CostType, ConsumptionData) in `app/models.py` definiert.
 - Flask-SQLAlchemy und Flask-Migrate konfiguriert.
 - Datenbankmigrationen initialisiert und erste Migration angewendet (manuell).

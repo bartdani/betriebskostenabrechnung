@@ -12,8 +12,8 @@
   - [X] Test für Grundstruktur/Erreichbarkeit erstellen (`test/test_app_basic.py`)
 - [X] Datenbankmodell Basis implementieren (Mieter, Kostenarten, initiale Verbrauchsdaten-Tabelle)
   - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`)
-- [ ] Basis CSV-Import für Zählerstände implementieren
-  - [ ] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
+- [X] Basis CSV-Import für Zählerstände implementieren
+  - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
 
 ## Phase 2: Kernfunktionen (ca. 6 Wochen)
 - [ ] Mieterverwaltung implementieren

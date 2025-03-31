@@ -26,6 +26,10 @@ migrate = Migrate(app, db)
 # Modelle importieren, damit Migrate sie erkennt (nach db Initialisierung)
 from app import models
 
+# Blueprints registrieren
+from app.tenants import bp_tenants as tenants_bp
+app.register_blueprint(tenants_bp, url_prefix='/tenants') # NEU, mit Prefix
+
 @app.route('/')
 @app.route('/index')
 def index():
