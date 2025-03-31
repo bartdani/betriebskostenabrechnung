@@ -1,5 +1,7 @@
 # Web Framework
 Flask
+Flask-SQLAlchemy
+Flask-Migrate
 
 # PDF Generation
 reportlab

@@ -1,8 +1,12 @@
 ## Current Focus
 - Start der Implementierung von Phase 1:
-  - Aufgabe: Flask-Setup mit Grundstruktur erstellen.
+  - Nächste Aufgabe: Datenbankmodell Basis implementieren.
 
 ## Recent Completions
+- Flask-Grundgerüst erstellt (`app/__init__.py`, `run.py`).
+- Ersten Test für Flask-App erstellt und ausgeführt (`test/test_app_basic.py`, `test/conftest.py`).
+- `README.md` aktualisiert.
+- Änderungen zu Git committet und gepusht.
 - Test-Erstellung (pytest) als Teil der Feature-Entwicklung in `tasks.md` integriert und `techContext.md` aktualisiert.
 - Projektplanung angepasst: Authentifizierung in Phase 1 als optional/später markiert (`tasks.md`).
 - Lokales Git-Repository initialisiert und mit GitHub Remote `origin` (https://github.com/bartdani/betriebskostenabrechnung.git) verbunden. Initialer Push erfolgreich.

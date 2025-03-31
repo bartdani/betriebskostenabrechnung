@@ -8,8 +8,8 @@
 - [X] `README.md` erstellen und pushen
 
 ## Phase 1: Grundgerüst (ca. 4 Wochen)
-- [ ] Flask-Setup mit Grundstruktur (Authentifizierung optional/später)
-  - [ ] Test für Grundstruktur/Erreichbarkeit erstellen (`test/test_app_basic.py`)
+- [X] Flask-Setup mit Grundstruktur (Authentifizierung optional/später)
+  - [X] Test für Grundstruktur/Erreichbarkeit erstellen (`test/test_app_basic.py`)
 - [ ] Datenbankmodell Basis implementieren (Mieter, Kostenarten, initiale Verbrauchsdaten-Tabelle)
   - [ ] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`)
 - [ ] Basis CSV-Import für Zählerstände implementieren
