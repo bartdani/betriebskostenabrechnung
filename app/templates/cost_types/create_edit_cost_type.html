@@ -1,0 +1,39 @@
+{% extends "_base.html" %}
+{% import "bootstrap_wtf.html" as wtf %} {# Annahme: Makros in bootstrap_wtf.html #}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ title }}</h1>
+
+    {# Flash Nachrichten könnten auch hier oder im Basis-Template sein #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }} {# CSRF Token und andere versteckte Felder #}
+        
+        <div class="mb-3">
+            {{ wtf.form_field(form.name, class_='form-control') }}
+        </div>
+        <div class="mb-3">
+            {{ wtf.form_field(form.unit, class_='form-control') }}
+        </div>
+        <div class="mb-3">
+            {{ wtf.form_field(form.type, class_='form-select') }}
+        </div>
+
+        <div class="mt-4">
+            {{ wtf.form_field(form.submit, class_='btn btn-primary') }}
+            <a href="{{ url_for('cost_types.index') }}" class="btn btn-secondary ms-2">Abbrechen</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

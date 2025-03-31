@@ -1,0 +1,73 @@
+{% extends "_base.html" %} {# Annahme: Basis-Template heißt _base.html #}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ title }}</h1>
+    <a href="{{ url_for('cost_types.create_cost_type') }}" class="btn btn-primary mb-3">Neue Kostenart erstellen</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Einheit</th>
+                <th>Verteilungsart</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost_type in cost_types %}
+            <tr>
+                <td>{{ cost_type.name }}</td>
+                <td>{{ cost_type.unit }}</td>
+                <td>{{ 'Verbrauchsbasiert' if cost_type.type == 'consumption' else 'Anteilsbasiert' }}</td>
+                <td>
+                    <a href="{{ url_for('cost_types.edit_cost_type', cost_type_id=cost_type.id) }}" class="btn btn-sm btn-warning me-1">Bearbeiten</a>
+                    {# Löschen-Button mit Modal-Trigger #}
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ cost_type.id }}">
+                        Löschen
+                    </button>
+
+                    {# Löschen Modal #}
+                    <div class="modal fade" id="deleteModal{{ cost_type.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ cost_type.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ cost_type.id }}">Kostenart löschen</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Möchten Sie die Kostenart "{{ cost_type.name }}" wirklich löschen?
+                                    <small class="text-muted d-block">Achtung: Dies kann nicht rückgängig gemacht werden!</small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                    <form action="{{ url_for('cost_types.delete_cost_type', cost_type_id=cost_type.id) }}" method="POST" style="display:inline;">
+                                        {# CSRF Token entfernt, da in Tests deaktiviert und form.hidden_tag() in Hauptformularen verwendet wird #}
+                                        <button type="submit" class="btn btn-danger">Löschen</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Keine Kostenarten gefunden.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

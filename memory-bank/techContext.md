@@ -20,7 +20,7 @@
 - **Framework:** pytest
 - **Struktur:** Tests befinden sich im `test`-Verzeichnis.
 - **Konvention:** Testdateien beginnen mit `test_*.py`.
-- **Richtlinie:** Für jedes implementierte Feature/Modul soll mindestens ein Testfall erstellt werden.
+- **Richtlinie:** Für jedes implementierte Feature/Modul soll mindestens ein Testfall erstellt werden und dann auch nur die betroffenen Tests ausgeführt werden.
 
 ## Entwicklungstools
 - **IDE:** Cursor

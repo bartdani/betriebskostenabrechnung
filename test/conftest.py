@@ -22,6 +22,8 @@ def test_db(app_context):
     """Erstellt eine saubere Datenbank für jeden Test."""
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
     flask_app.config['TESTING'] = True
+    flask_app.config['WTF_CSRF_ENABLED'] = False # CSRF für Tests deaktivieren
+    flask_app.config['SERVER_NAME'] = 'localhost' # Hinzugefügt für url_for
     
     # Stelle sicher, dass der Kontext aktiv ist, bevor db-Operationen erfolgen
     with flask_app.app_context():

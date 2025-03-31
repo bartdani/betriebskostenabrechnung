@@ -36,7 +36,10 @@ from app import models
 
 # Blueprints registrieren
 from app.tenants import bp_tenants as tenants_bp
-app.register_blueprint(tenants_bp, url_prefix='/tenants') # NEU, mit Prefix
+app.register_blueprint(tenants_bp, url_prefix='/tenants')
+
+from app.cost_types.routes import cost_types_bp
+app.register_blueprint(cost_types_bp)
 
 @app.route('/')
 @app.route('/index')

@@ -1,14 +1,15 @@
 ## Current Focus
 
-- Start Implementierung: Kostenverteilung basierend auf Personentagen (pro-rata).
+- Start Implementierung: UI für benutzerdefinierte Kostenverteilschlüssel.
 - Teilaufgaben:
-    - [ ] Datenmodell erweitern (`OccupancyPeriod`)
-    - [ ] Berechnungslogik implementieren
-    - [ ] Tests schreiben (`test_cost_alloc_persondays.py`)
+    - [ ] UI Design & Layout (Flask Templates, Bootstrap)
+    - [ ] Backend-Routen für CRUD-Operationen (Flask Blueprint)
+    - [ ] Formularverarbeitung (Flask-WTF)
+    - [ ] Tests schreiben (`test_custom_keys.py`)
 
 ## Recent Completions
 
-- Kostenverteilung (Personentage pro-rata) wurde abgeschlossen und archiviert. Next focus is on [Nächste Aufgabe aus tasks.md].
+- Kostenverteilung (Personentage pro-rata) wurde abgeschlossen und archiviert. Next focus is on UI for custom cost types.
 - Kombinierte Schlüsselverteilung implementieren wurde abgeschlossen und archiviert. Nächster Fokus ist auf der Personentage-Verteilung.
 - Refactoring Verteilungsfunktionen: Alle Verteilungsfunktionen (`calculate_consumption_allocation`, `calculate_share_allocation`, `calculate_combined_allocation`) geben nun konsistent ein Dictionary zurück (leer, wenn keine Verteilung möglich ist). Relevante Tests wurden angepasst und alle 31 Tests laufen erfolgreich.
 - **Anforderung "Personentage (pro-rata)" dokumentiert:**

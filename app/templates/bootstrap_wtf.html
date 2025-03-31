@@ -1,0 +1,27 @@
+{% macro form_field(field, label_visible=true, class_='', placeholder='') %}
+    {# Renders a field with Bootstrap 5 styling #}
+    <div class="form-group mb-3">
+        {% if field.label and label_visible %}
+            {{ field.label(class_='form-label') }}
+        {% endif %}
+
+        {# Rendere das Feld mit den übergebenen Attributen #}
+        {% if placeholder %}
+            {{ field(class_=class_, placeholder=placeholder) }}
+        {% else %}
+            {{ field(class_=class_) }}
+        {% endif %}
+
+        {% if field.errors %}
+            <div class="invalid-feedback d-block"> {# Use d-block to show feedback #}
+                {% for error in field.errors %}
+                    <span>{{ error }}</span><br>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if field.description %}
+            <small class="form-text text-muted">{{ field.description }}</small>
+        {% endif %}
+    </div>
+{% endmacro %} 
