@@ -1,6 +1,24 @@
-# System Patterns
+# System Patterns & Architectural Decisions
 
-*This document describes the recurring architectural and design patterns used throughout the system.*
+## Overview
+This document outlines key architectural patterns, design decisions, and reusable solutions employed in the project.
+
+## Core Patterns
+- **Web Framework:** Flask microframework with Blueprints for modular feature organization (e.g., `cost_types` Blueprint).
+- **Database:** Relational database (SQLite for development/testing) accessed via SQLAlchemy ORM.
+- **Migrations:** Flask-Migrate handles database schema changes.
+- **Forms:** Flask-WTF provides form creation, validation, and CSRF protection (disabled in tests).
+- **Templating:** Jinja2 for server-side HTML rendering, using a base template (`_base.html`) and Bootstrap 5 for styling.
+- **Testing:** pytest framework with fixtures (`conftest.py`) for setting up test clients and databases.
+
+## Specific Implementation Patterns
+- **Delete Confirmation:** Uses Bootstrap Modals directly triggered by buttons in the list view (`data-bs-target="#modalId{{ item.id }}"`). Each item gets its own pre-configured modal, avoiding the need for JavaScript for basic confirmation.
+- **CSV Import:** Function-based approach (`app/import_data.py`) handling file path or stream input, validating headers, iterating rows with `csv.DictReader`, looking up related DB objects, validating/converting data per row, skipping invalid rows with warnings, and performing a single DB commit at the end.
+
+## Architectural Decisions
+- **Cost Type Association:** Costs are associated with `Apartment` entities, not directly with `Tenant` entities initially. `Tenant` association happens via `Contract`.
+- **Consumption Data:** Stored per `Apartment` and `CostType` with a date.
+- **Tenant-Apartment Link:** Currently optional in `Tenant` model (`apartment_id`), primary link established via `Contract` model.
 
 ## Core Architecture
 

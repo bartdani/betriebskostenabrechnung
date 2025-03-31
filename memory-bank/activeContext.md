@@ -1,50 +1,19 @@
-## Current Focus
+# Active Context
 
-- Start Implementierung: UI für benutzerdefinierte Kostenverteilschlüssel.
-- Teilaufgaben:
-    - [ ] UI Design & Layout (Flask Templates, Bootstrap)
-    - [ ] Backend-Routen für CRUD-Operationen (Flask Blueprint)
-    - [ ] Formularverarbeitung (Flask-WTF)
-    - [ ] Tests schreiben (`test_custom_keys.py`)
+## Current Focus
+- Selecting the next task after completing the Tenant CSV Import.
+
+## Recent Changes & Activities
+- Implemented `import_tenant_csv` function in `app/import_data.py`.
+- Created tests in `test/test_csv_import_tenant.py` covering basic scenarios.
+- Successfully ran tests for the new import function.
+- Completed Reflection and Archiving steps for the Tenant CSV Import task.
+
+## Pending Issues/Decisions
+- None directly related to the completed task.
+
+## Next Steps
+- Select the next task from the backlog (e.g., PDF Generation, Tenant Contracts).
 
 ## Recent Completions
-
-- Kostenverteilung (Personentage pro-rata) wurde abgeschlossen und archiviert. Next focus is on UI for custom cost types.
-- Kombinierte Schlüsselverteilung implementieren wurde abgeschlossen und archiviert. Nächster Fokus ist auf der Personentage-Verteilung.
-- Refactoring Verteilungsfunktionen: Alle Verteilungsfunktionen (`calculate_consumption_allocation`, `calculate_share_allocation`, `calculate_combined_allocation`) geben nun konsistent ein Dictionary zurück (leer, wenn keine Verteilung möglich ist). Relevante Tests wurden angepasst und alle 31 Tests laufen erfolgreich.
-- **Anforderung "Personentage (pro-rata)" dokumentiert:**
-    - Anforderung in `projectbrief.md` hinzugefügt.
-- Anforderungen aktualisiert: "Personentage (pro-rata)" zu `projectbrief.md` und `tasks.md` hinzugefügt.
-- `ApartmentShare`-Modell hinzugefügt und Datenbank migriert (manuell).
-- `test`-Ordner aus `.gitignore` entfernt und zu Git hinzugefügt (manuell durch User).
-- SQLAlchemy `LegacyAPIWarning` in `test/test_document_storage.py` behoben (`Model.query.get()` -> `db.session.get()`).
-- Logik für anteilsbasierte Kostenverteilung implementiert (`app/calculations.py`).
-- Tests für anteilsbasierte Verteilung erstellt und ausgeführt.
-- Backend für Dokumentenarchivierung von Verträgen vorbereitet (`Contract.contract_pdf_filename`, `app/storage.py` Funktion, Tests).
-- `Contract`-Modell erstellt und Datenbank migriert (manuell).
-- Basis-Blueprint (`/tenants`) und Route (`/contracts`) für Mieterverwaltung erstellt.
-- Tests für Contract-Modell und Route hinzugefügt und ausgeführt.
-- Änderungen zu Git committet und gepusht.
-- Basis CSV-Import für Verbrauchsdaten implementiert (`app/import_data.py`).
-- Abschluss von Phase 1 (Flask-Grundgerüst, DB-Modell Basis, CSV-Import).
-- Tests für CSV-Import erstellt und ausgeführt (`test/test_csv_import_basic.py`).
-- Basis-Datenbankmodelle (Apartment, Tenant, CostType, ConsumptionData) in `app/models.py` definiert.
-- Flask-SQLAlchemy und Flask-Migrate konfiguriert.
-- Datenbankmigrationen initialisiert und erste Migration angewendet (manuell).
-- Tests für DB-Modelle erstellt und ausgeführt (`test/test_db_models_basic.py`).
-- `conftest.py` für DB-Tests angepasst.
-- Änderungen zu Git committet (implizit) und gepusht.
-- Flask-Grundgerüst erstellt (`app/__init__.py`, `run.py`).
-- Ersten Test für Flask-App erstellt und ausgeführt (`test/test_app_basic.py`, `test/conftest.py`).
-- `README.md` aktualisiert.
-- Test-Erstellung (pytest) als Teil der Feature-Entwicklung in `tasks.md` integriert und `techContext.md` aktualisiert.
-- Projektplanung angepasst: Authentifizierung in Phase 1 als optional/später markiert (`tasks.md`).
-- Lokales Git-Repository initialisiert und mit GitHub Remote `origin` (https://github.com/bartdani/betriebskostenabrechnung.git) verbunden. Initialer Push erfolgreich.
-- Conda-Umgebung `env` mit Python 3.10 wurde im Projektverzeichnis erstellt.
-- `.gitignore` Datei erstellt und angepasst.
-- Erster Commit erstellt (`Initial commit`).
-- `requirements.txt` Datei wurde erstellt (enthält Flask, reportlab, pytest).
-- Die Informationen zur Entwicklungsumgebung in `techContext.md` wurden aktualisiert (OS: Windows, Shell: PowerShell).
-- Die Aufgabenliste (`tasks.md`) wurde erfolgreich aktualisiert, um die Struktur des `projectbrief.md` widerzuspiegeln. Next focus is on starting Phase 1 tasks.
-- Logik für verbrauchsbasierte Kostenverteilung implementiert (`app/calculations.py`).
-- Tests für verbrauchsbasierte Verteilung erstellt und ausgeführt. 
+- Implement CSV Import for Tenant Data has been completed and archived. Next focus TBD. 

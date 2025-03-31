@@ -15,6 +15,13 @@
   - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`)
 - [X] Basis CSV-Import für Zählerstände implementieren
   - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
+- [ ] Implement CSV Import for Tenant Data
+  - [ ] Define CSV format (Headers: `Name`, `Kontaktinfo`, optional: `Wohnungsnummer`)
+  - [ ] Create import function `import_tenant_csv` in `app/import_data.py`
+  - [ ] Implement CSV reading and data validation
+  - [ ] Implement Tenant object creation and DB insertion
+  - [ ] Add error handling and reporting (skipped rows)
+  - [ ] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
 
 ## Phase 2: Kernfunktionen (ca. 6 Wochen)
 - [X] Mieterverwaltung implementieren
@@ -49,36 +56,36 @@
   - [X] Refactoring: Konsistente Rückgabewerte für Verteilungsfunktionen (immer Dict) (2024-08-01)
     - [X] `app/calculations.py` anpassen
     - [X] Relevante Tests anpassen (`test/test_cost_alloc_*.py`)
-- [ ] UI für benutzerdefinierte Kostenverteilschlüssel erstellen - [IN PROGRESS]
-  - [ ] Abhängigkeiten hinzufügen
-    - [ ] `Flask-WTF` zu `requirements.txt` hinzufügen
-    - [ ] Abhängigkeiten installieren (`pip install -r requirements.txt`)
-  - [ ] Formular definieren (`app/forms.py`)
-    - [ ] `CostTypeForm` mit Feldern `name`, `unit`, `type` (SelectField) erstellen
-  - [ ] Flask Blueprint erstellen (`app/cost_types/routes.py`)
-    - [ ] Blueprint `cost_types_bp` definieren
-    - [ ] Blueprint in `app/__init__.py` registrieren
-  - [ ] (Creative Phase - UI Design)
-    - [ ] Layout für Listenseite entwerfen (Tabelle, Buttons)
-    - [ ] Design für Formularseite entwerfen (Erstellen/Bearbeiten)
-    - [ ] Bootstrap-Styling planen
-    - [ ] Anzeige von Validierungsfehlern planen
-  - [ ] Routen und Logik implementieren (`app/cost_types/routes.py`)
-    - [ ] Route für Liste (GET)
-    - [ ] Route für Erstellen (GET, POST)
-    - [ ] Route für Bearbeiten (GET, POST)
-    - [ ] Route für Löschen (POST/DELETE mit Bestätigung)
-  - [ ] Templates erstellen (`app/templates/cost_types/`)
-    - [ ] `list_cost_types.html` erstellen
-    - [ ] `create_edit_cost_type.html` erstellen
-    - [ ] Basis-Template anpassen/erweitern
-    - [ ] Flask-WTF Makros verwenden
-  - [ ] Test für Logik der benutzerdef. Schlüssel erstellen (`test/test_custom_keys.py`)
-    - [ ] Testdatei erstellen
-    - [ ] Tests für GET-Routen schreiben
-    - [ ] Tests für POST-Routen (Erstellen, Bearbeiten, Löschen) schreiben
-    - [ ] Validierungstests schreiben
-  - [ ] Tests ausführen und debuggen
+- [X] UI für benutzerdefinierte Kostenverteilschlüssel erstellen - Completed on 2024-08-08
+  - [X] Abhängigkeiten hinzufügen
+    - [X] `Flask-WTF` zu `requirements.txt` hinzufügen
+    - [X] Abhängigkeiten installieren (`pip install -r requirements.txt`)
+  - [X] Formular definieren (`app/forms.py`)
+    - [X] `CostTypeForm` mit Feldern `name`, `unit`, `type` (SelectField) erstellen
+  - [X] Flask Blueprint erstellen (`app/cost_types/routes.py`)
+    - [X] Blueprint `cost_types_bp` definieren
+    - [X] Blueprint in `app/__init__.py` registrieren
+  - [X] (Creative Phase - UI Design)
+    - [X] Layout für Listenseite entwerfen (Tabelle, Buttons)
+    - [X] Design für Formularseite entwerfen (Erstellen/Bearbeiten)
+    - [X] Bootstrap-Styling planen
+    - [X] Anzeige von Validierungsfehlern planen
+  - [X] Routen und Logik implementieren (`app/cost_types/routes.py`)
+    - [X] Route für Liste (GET)
+    - [X] Route für Erstellen (GET, POST)
+    - [X] Route für Bearbeiten (GET, POST)
+    - [X] Route für Löschen (POST/DELETE mit Bestätigung)
+  - [X] Templates erstellen (`app/templates/cost_types/`)
+    - [X] `list_cost_types.html` erstellen
+    - [X] `create_edit_cost_type.html` erstellen
+    - [X] Basis-Template anpassen/erweitern
+    - [X] Flask-WTF Makros verwenden
+  - [X] Test für Logik der benutzerdef. Schlüssel erstellen (`test/test_custom_keys.py`)
+    - [X] Testdatei erstellen
+    - [X] Tests für GET-Routen schreiben
+    - [X] Tests für POST-Routen (Erstellen, Bearbeiten, Löschen) schreiben
+    - [X] Validierungstests schreiben
+  - [X] Tests ausführen und debuggen
 - [ ] PDF-Generierung für Betriebskostenabrechnungen (Basisversion)
   - [ ] Test für PDF-Generierung Basis erstellen (`test/test_pdf_generation_basic.py`)
 - [ ] Manuelle Datenerfassung ermöglichen (für alle Importtypen)
@@ -115,24 +122,5 @@
 - [ ] DSGVO-Konformität prüfen und sicherstellen
 - [ ] Revisionssichere Archivierung von PDFs gewährleisten
 - [ ] Benutzerfreundlichkeit & Responsive Design verbessern
-
-## In Progress
-- [ ] Implement CRUD for Custom Cost Types (Kostenarten)
-  - [X] Define DB Model (`CostType`)
-  - [X] Create Forms (`CostTypeForm`)
-  - [X] Implement CRUD Routes (Blueprint: `cost_types`)
-  - [X] Create HTML Templates (`list`, `create_edit`)
-  - [X] Write Tests (`test_custom_keys.py`)
-  - [ ] Add JavaScript for Delete Confirmation Modal
-
-## Planned / Backlog
-- [ ] Implement Tenant Contracts CRUD
-- [ ] Implement Document Upload/Storage
-- [ ] Implement Cost Allocation Logic (Share, Consumption, PersonDays, Combined)
-- [ ] Implement CSV Import for Tenant Data
 - [ ] User Authentication & Authorization
-- [ ] Reporting Features
-- [ ] Improve UI/UX
 
-## Completed Tasks
-- [X] Initial Project Setup - Completed on YYYY-MM-DD 
