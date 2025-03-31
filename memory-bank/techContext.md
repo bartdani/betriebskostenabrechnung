@@ -16,8 +16,16 @@
 - **ReportLab:** Zur PDF-Generierung
 - **Bootstrap:** Frontend-Styling
 
+## Testing
+- **Framework:** pytest
+- **Struktur:** Tests befinden sich im `test`-Verzeichnis.
+- **Konvention:** Testdateien beginnen mit `test_*.py`.
+- **Richtlinie:** Für jedes implementierte Feature/Modul soll mindestens ein Testfall erstellt werden.
+
 ## Entwicklungstools
 - **IDE:** Cursor
-- **Versionskontrolle:** Git (optional, aber empfohlen)
+- **Versionskontrolle:** Git
+  - **Repository:** Lokal initialisiert
+  - **Remote:** origin -> https://github.com/bartdani/betriebskostenabrechnung.git
 - **Paketverwaltung:** Conda
   - **Umgebung:** `./env` (Erstellt mit `conda create --prefix ./env python=3.10 -y`) 
