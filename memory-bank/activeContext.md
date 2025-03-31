@@ -1,8 +1,12 @@
 ## Current Focus
 - Implementierung von Phase 2:
-  - Nächste Aufgabe: Betriebskostenabrechnungs-Logik implementieren (Kostenverteilung verbrauchsbasiert).
+  - Nächste Aufgabe: Betriebskostenabrechnungs-Logik implementieren (Kostenverteilung anteilsbasiert).
 
 ## Recent Completions
+- `test`-Ordner aus `.gitignore` entfernt und zu Git hinzugefügt (manuell durch User).
+- SQLAlchemy `LegacyAPIWarning` in `test/test_document_storage.py` behoben (`Model.query.get()` -> `db.session.get()`).
+- Logik für verbrauchsbasierte Kostenverteilung implementiert (`app/calculations.py`).
+- Tests für verbrauchsbasierte Verteilung erstellt und ausgeführt.
 - Backend für Dokumentenarchivierung von Verträgen vorbereitet (`Contract.contract_pdf_filename`, `app/storage.py` Funktion, Tests).
 - `Contract`-Modell erstellt und Datenbank migriert (manuell).
 - Basis-Blueprint (`/tenants`) und Route (`/contracts`) für Mieterverwaltung erstellt.

@@ -6,6 +6,7 @@
 - [X] Conda-Umgebung `env` erstellen
 - [X] Git-Repository initialisieren und mit GitHub verbinden
 - [X] `README.md` erstellen und pushen
+- [X] SQLAlchemy LegacyAPIWarnings beheben
 
 ## Phase 1: Grundgerüst (ca. 4 Wochen)
 - [X] Flask-Setup mit Grundstruktur (Authentifizierung optional/später)
@@ -21,9 +22,9 @@
     - [X] Test für Mietervertragslogik erstellen (`test/test_tenant_contracts.py`)
   - [X] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung)
     - [X] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`)
-- [ ] Betriebskostenabrechnungs-Logik implementieren
-  - [ ] Kostenverteilung (Verbrauchsbasiert)
-    - [ ] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)
+- [X] Betriebskostenabrechnungs-Logik implementieren
+  - [X] Kostenverteilung (Verbrauchsbasiert)
+    - [X] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)
   - [ ] Kostenverteilung (Anteilsbasiert)
     - [ ] Test für anteilsbasierte Verteilung erstellen (`test/test_cost_alloc_share.py`)
   - [ ] Kombination von Schlüsseln ermöglichen
