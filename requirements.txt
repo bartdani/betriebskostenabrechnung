@@ -1,0 +1,8 @@
+# Web Framework
+Flask
+
+# PDF Generation
+reportlab
+
+# Testing
+pytest 
