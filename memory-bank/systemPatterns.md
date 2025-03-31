@@ -14,6 +14,7 @@ This document outlines key architectural patterns, design decisions, and reusabl
 ## Specific Implementation Patterns
 - **Delete Confirmation:** Uses Bootstrap Modals directly triggered by buttons in the list view (`data-bs-target="#modalId{{ item.id }}"`). Each item gets its own pre-configured modal, avoiding the need for JavaScript for basic confirmation.
 - **CSV Import:** Function-based approach (`app/import_data.py`) handling file path or stream input, validating headers, iterating rows with `csv.DictReader`, looking up related DB objects, validating/converting data per row, skipping invalid rows with warnings, and performing a single DB commit at the end.
+- **PDF Generation (Basic):** Dedicated function (e.g., in `app/pdf_generation.py`) that takes key identifiers (contract_id, period) and cost data as input. Fetches detailed data from various models, calls calculation functions for allocations, and uses `reportlab` (Tables, Paragraphs) to structure and generate the PDF output.
 
 ## Architectural Decisions
 - **Cost Type Association:** Costs are associated with `Apartment` entities, not directly with `Tenant` entities initially. `Tenant` association happens via `Contract`.

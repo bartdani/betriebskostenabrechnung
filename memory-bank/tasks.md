@@ -15,13 +15,13 @@
   - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`)
 - [X] Basis CSV-Import für Zählerstände implementieren
   - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
-- [ ] Implement CSV Import for Tenant Data
-  - [ ] Define CSV format (Headers: `Name`, `Kontaktinfo`, optional: `Wohnungsnummer`)
-  - [ ] Create import function `import_tenant_csv` in `app/import_data.py`
-  - [ ] Implement CSV reading and data validation
-  - [ ] Implement Tenant object creation and DB insertion
-  - [ ] Add error handling and reporting (skipped rows)
-  - [ ] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
+- [X] Implement CSV Import for Tenant Data - Completed on 2024-08-08
+  - [X] Define CSV format (Headers: `Name`, `Kontaktinfo`)
+  - [X] Create import function `import_tenant_csv` in `app/import_data.py`
+  - [X] Implement CSV reading and data validation
+  - [X] Implement Tenant object creation and DB insertion
+  - [X] Add error handling and reporting (skipped rows)
+  - [X] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
 
 ## Phase 2: Kernfunktionen (ca. 6 Wochen)
 - [X] Mieterverwaltung implementieren
@@ -86,8 +86,19 @@
     - [X] Tests für POST-Routen (Erstellen, Bearbeiten, Löschen) schreiben
     - [X] Validierungstests schreiben
   - [X] Tests ausführen und debuggen
-- [ ] PDF-Generierung für Betriebskostenabrechnungen (Basisversion)
-  - [ ] Test für PDF-Generierung Basis erstellen (`test/test_pdf_generation_basic.py`)
+- [X] PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08
+  - [X] Create PDF generation function `generate_utility_statement_pdf` (e.g., in `app/pdf_generation.py`)
+  - [X] Define function signature (e.g., needs contract_id, period_start, period_end, cost_items)
+  - [X] Implement data fetching logic (Contract, Tenant, Apartment, CostType details, Allocation results from `calculations.py`)
+  - [X] Implement basic PDF structure using `reportlab` (Header, Address, Cost Table, Summary)
+  - [X] Handle basic formatting (Paragraphs, Tables)
+  - [X] Save PDF to a file or return as byte stream
+  - [X] Test für PDF-Generierung Basis erstellen (`test/test_pdf_generation_basic.py`)
+    - [X] Create test file
+    - [X] Setup basic test data (Tenant, Apt, Contract, Costs)
+    - [X] Call generation function
+    - [X] Assert PDF is created (e.g., check file existence or stream content type/length)
+    - [X] Optional: Basic content check (e.g., presence of tenant name)
 - [ ] Manuelle Datenerfassung ermöglichen (für alle Importtypen)
   - [ ] Test für manuelle Datenerfassung erstellen (`test/test_manual_data_entry.py`)
   - [ ] Datenbankerweiterung für manuelle Einträge (`consumption_data.entry_type`)

@@ -40,7 +40,7 @@
 - **Templating:** Jinja2
 - **Frontend:** Bootstrap 5
 - **Testing:** pytest
-- **PDF Generation:** reportlab (planned)
+- **PDF Generation:** reportlab
 - **CSV Handling:** Python built-in `csv` module
 
 ## Key Libraries & Versions (from requirements.txt)

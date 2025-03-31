@@ -239,4 +239,46 @@ Last Updated: 2024-08-08
 - `activeContext.md`: Updated focus and completion status.
 - `techContext.md`: Noted usage of `csv` module.
 - `systemPatterns.md`: Documented the CSV import pattern.
+- `progress.md`: Added entry linking to this archive section.
+
+## Task: PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) (v1.0)
+Last Updated: 2024-08-08
+
+### Implementation Results
+- Created `app/pdf_generation.py` with function `generate_utility_statement_pdf`.
+- Function signature defined to accept `contract_id`, `period_start`, `period_end`, and `cost_items` list.
+- Implemented data fetching for `Contract`, `Tenant`, `Apartment`.
+- Added loop to process `cost_items`:
+    - Fetches `CostType` details.
+    - Calls appropriate allocation function (`share`, `consumption`, `person_days`) based on `cost_type.type`.
+    - Gathers key information (total cost, allocation key description, tenant's share).
+    - Calculates total cost for the tenant.
+- Implemented basic PDF structure using `reportlab` (`SimpleDocTemplate`, `A4`, `Paragraph`, `Table`, `Spacer`).
+- Included placeholder addresses, date, period, and a table for cost breakdown.
+- Added basic table styling (`TableStyle`) and summary line.
+- Function returns the generated PDF as a byte stream.
+- Implemented the missing `calculate_person_day_allocation` function in `app/calculations.py`.
+
+### Completed Testing
+- Created `test/test_pdf_generation_basic.py`.
+- Implemented helper function `create_test_data` to set up DB models.
+- Created a basic test `test_generate_pdf_basic` that:
+    - Sets up test data.
+    - Defines sample `cost_items`.
+    - Calls `generate_utility_statement_pdf`.
+    - Asserts that a non-empty byte stream is returned.
+    - Asserts that the stream starts with the PDF magic bytes (`%PDF`).
+- The basic test passed successfully.
+
+### Lessons Learned
+- Need to verify existence of all dependency functions (`calculate_person_day_allocation`) before integration.
+- Using Enums for type fields (`CostType.type`) improves robustness.
+- `reportlab` requires specific setup (e.g., `pagesizes.A4`) and detailed styling for complex layouts.
+- Testing generated binary files like PDFs requires specific approaches; checking the header/signature is a basic validation.
+
+### Documentation Updates
+- `tasks.md`: Task marked as complete with subtasks.
+- `activeContext.md`: Updated focus and completion status.
+- `techContext.md`: Confirmed `reportlab` usage.
+- `systemPatterns.md`: Documented the basic PDF generation pattern.
 - `progress.md`: Added entry linking to this archive section. 

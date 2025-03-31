@@ -10,6 +10,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Testing infrastructure with pytest configured.
 - CSV import for Consumption Data implemented.
 - CSV import for Tenant Data implemented.
+- Basic PDF generation for utility statements implemented.
 
 ## Completed Tasks
 - Kostenverteilung (Personentage pro-rata) - Completed on 2024-08-02, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-kostenverteilung-personentage-pro-rata-v10)
@@ -21,6 +22,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Implement CSV Import for Tenant Data - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-implement-csv-import-for-tenant-data-v10)
 - Implement CRUD for Custom Cost Types (Kostenarten) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-implement-crud-for-custom-cost-types-kostenarten-v10)
 - Initial Project Setup - Completed on YYYY-MM-DD, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-initial-project-setup-v10)
+- PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-pdf-generierung-fuer-betriebs-und-heizkostenabrechnungen-basisversion-v10)
 
 ## REFLECTION
 
@@ -43,6 +45,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Die Berechnung von Zeitintervallen und Überlappungen erfordert sorgfältige Logik, insbesondere die Berücksichtigung von inklusivem Start- und Enddatum ((end - start).days + 1).
 - Testing Flash messages after redirects in Flask test client is unreliable (See Cost Types archive entry).
 - Reusing import logic structure is efficient (See Tenant CSV Import archive entry).
+- Verify dependencies before integration; Enums improve robustness (See PDF Gen archive entry).
 
 ### Improvements for Next Time
 - Beim Erstellen neuer Testdateien sofort die `conftest.py` überprüfen und die korrekten Fixtures übernehmen.
@@ -51,6 +54,6 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Die Logik zur Behandlung von Überlappungen bei `OccupancyPeriod` könnte in Zukunft durch einen Datenbank-Constraint (z.B. `EXCLUDE USING gist`) robuster gestaltet werden, falls SQLite dies unterstützt oder auf PostgreSQL gewechselt wird.
 
 ## Next Steps
-- Implement PDF Generation (Base).
+- Implement Manual Data Entry UI.
 - Implement Tenant Contracts CRUD.
 - Implement Document Upload/Storage. 
