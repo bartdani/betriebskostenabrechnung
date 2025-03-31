@@ -33,6 +33,7 @@ Gesamtwasser	m³	Verbrauch
 Heizfläche	m²	Anteil
 Heizkostenverteiler	Einheiten	Verbrauch
 Wohnfläche	m²	Anteil
+Personentage	Tage*Pers	Anteil (pro-rata)
 ... (alle gelisteten)		
 Benutzerdefinierte Schlüssel:
 
@@ -44,13 +45,17 @@ B. Abrechnungslogik
 
 Verbrauchsbasierte Kosten: Direkte Umlage nach gemessenem Verbrauch (z. B. Strom in kWh).
 Anteilsbasierte Kosten: Verteilung nach prozentualem Anteil (z. B. Wohnfläche in m²).
++ Personentage (Anteil pro-rata): Verteilung nach Anzahl der Bewohner multipliziert mit den Tagen ihrer Anwesenheit im Abrechnungszeitraum. Erfordert Erfassung von Bewohnerzahländerungen.
 Kombination von Schlüsseln:
 Beispiel: Heizkosten = 50 % Verbrauch (Wärmemengenzähler) + 50 % Anteil (Wohnfläche).
 
-+ Anteilsberechnung bei Mieterwechseln:
++ Anteilsberechnung bei Mieterwechseln UND Bewohnerzahländerungen:
   - Automatische Erkennung von Mietzeiträumen pro Wohnung
++ - Automatische Erkennung von Zeiträumen mit konstanter Bewohnerzahl (für Personentage)
   - Pro-rata-temporis-Berechnung für Verbrauchs- und Anteilskosten
++ - Pro-rata-temporis-Berechnung für Personentage-Kosten
   - Berücksichtigung von Einzugs- und Auszugsdaten aus Mietverträgen
++ - Berücksichtigung von Meldedaten/Änderungen der Bewohnerzahl
 
 C. Features
 

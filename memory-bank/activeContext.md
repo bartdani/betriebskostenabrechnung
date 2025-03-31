@@ -1,12 +1,15 @@
 ## Current Focus
 - Implementierung von Phase 2:
-  - Nächste Aufgabe: Betriebskostenabrechnungs-Logik implementieren (Kostenverteilung anteilsbasiert).
+  - Nächste Aufgabe: Betriebskostenabrechnungs-Logik implementieren (Kombination von Schlüsseln ermöglichen).
+  - (Anforderung 'Personentage pro-rata' wurde hinzugefügt und wird später behandelt).
 
 ## Recent Completions
+- Anforderungen aktualisiert: "Personentage (pro-rata)" zu `projectbrief.md` und `tasks.md` hinzugefügt.
+- `ApartmentShare`-Modell hinzugefügt und Datenbank migriert (manuell).
 - `test`-Ordner aus `.gitignore` entfernt und zu Git hinzugefügt (manuell durch User).
 - SQLAlchemy `LegacyAPIWarning` in `test/test_document_storage.py` behoben (`Model.query.get()` -> `db.session.get()`).
-- Logik für verbrauchsbasierte Kostenverteilung implementiert (`app/calculations.py`).
-- Tests für verbrauchsbasierte Verteilung erstellt und ausgeführt.
+- Logik für anteilsbasierte Kostenverteilung implementiert (`app/calculations.py`).
+- Tests für anteilsbasierte Verteilung erstellt und ausgeführt.
 - Backend für Dokumentenarchivierung von Verträgen vorbereitet (`Contract.contract_pdf_filename`, `app/storage.py` Funktion, Tests).
 - `Contract`-Modell erstellt und Datenbank migriert (manuell).
 - Basis-Blueprint (`/tenants`) und Route (`/contracts`) für Mieterverwaltung erstellt.
@@ -32,4 +35,6 @@
 - Erster Commit erstellt (`Initial commit`).
 - `requirements.txt` Datei wurde erstellt (enthält Flask, reportlab, pytest).
 - Die Informationen zur Entwicklungsumgebung in `techContext.md` wurden aktualisiert (OS: Windows, Shell: PowerShell).
-- Die Aufgabenliste (`tasks.md`) wurde erfolgreich aktualisiert, um die Struktur des `projectbrief.md` widerzuspiegeln. Next focus is on starting Phase 1 tasks. 
+- Die Aufgabenliste (`tasks.md`) wurde erfolgreich aktualisiert, um die Struktur des `projectbrief.md` widerzuspiegeln. Next focus is on starting Phase 1 tasks.
+- Logik für verbrauchsbasierte Kostenverteilung implementiert (`app/calculations.py`).
+- Tests für verbrauchsbasierte Verteilung erstellt und ausgeführt. 

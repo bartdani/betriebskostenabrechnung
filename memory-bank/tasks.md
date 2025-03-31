@@ -25,8 +25,12 @@
 - [X] Betriebskostenabrechnungs-Logik implementieren
   - [X] Kostenverteilung (Verbrauchsbasiert)
     - [X] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)
-  - [ ] Kostenverteilung (Anteilsbasiert)
-    - [ ] Test für anteilsbasierte Verteilung erstellen (`test/test_cost_alloc_share.py`)
+  - [X] Kostenverteilung (Anteilsbasiert)
+    - [X] Test für anteilsbasierte Verteilung erstellen (`test/test_cost_alloc_share.py`)
+  - [ ] Kostenverteilung (Personentage pro-rata)
+    - [ ] Datenmodell für Bewohnerzahl-Zeiträume erstellen/erweitern (z.B. `OccupancyPeriod`)
+    - [ ] Logik für Personentage-Berechnung implementieren
+    - [ ] Test für Personentage-Verteilung erstellen (`test/test_cost_alloc_persondays.py`)
   - [ ] Kombination von Schlüsseln ermöglichen
     - [ ] Test für kombinierte Schlüssel erstellen (`test/test_cost_alloc_combined.py`)
   - [ ] Pro-rata-temporis-Berechnung bei Mieterwechseln
