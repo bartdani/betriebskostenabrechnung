@@ -19,8 +19,8 @@
 - [X] Mieterverwaltung implementieren
   - [X] Mietverträge erfassen (inkl. Indexklauseln, Kostenverteilschlüssel-Zuordnung)
     - [X] Test für Mietervertragslogik erstellen (`test/test_tenant_contracts.py`)
-  - [ ] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung)
-    - [ ] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`)
+  - [X] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung)
+    - [X] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`)
 - [ ] Betriebskostenabrechnungs-Logik implementieren
   - [ ] Kostenverteilung (Verbrauchsbasiert)
     - [ ] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)

@@ -1,8 +1,9 @@
 ## Current Focus
 - Implementierung von Phase 2:
-  - Aufgabe: Dokumentenarchivierung für Verträge integrieren (Backend-Vorbereitung: DB-Schema, Upload-Logik, Tests).
+  - Nächste Aufgabe: Betriebskostenabrechnungs-Logik implementieren (Kostenverteilung verbrauchsbasiert).
 
 ## Recent Completions
+- Backend für Dokumentenarchivierung von Verträgen vorbereitet (`Contract.contract_pdf_filename`, `app/storage.py` Funktion, Tests).
 - `Contract`-Modell erstellt und Datenbank migriert (manuell).
 - Basis-Blueprint (`/tenants`) und Route (`/contracts`) für Mieterverwaltung erstellt.
 - Tests für Contract-Modell und Route hinzugefügt und ausgeführt.
