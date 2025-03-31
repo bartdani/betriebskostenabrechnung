@@ -61,6 +61,9 @@ class Contract(db.Model):
     index_clause_base_value = db.Column(db.Float, nullable=True) # z.B. VPI-Wert
     index_clause_base_date = db.Column(db.Date, nullable=True) # Datum des Basiswerts
 
+    # NEU: Dateiname des gespeicherten Vertrags-PDFs
+    contract_pdf_filename = db.Column(db.String(255), nullable=True)
+
     # Später: Referenz auf Kostenverteilschlüssel-Profil
     # cost_allocation_profile_id = db.Column(db.Integer, db.ForeignKey('cost_allocation_profile.id'))
 

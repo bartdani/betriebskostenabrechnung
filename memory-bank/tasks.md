@@ -16,9 +16,9 @@
   - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
 
 ## Phase 2: Kernfunktionen (ca. 6 Wochen)
-- [ ] Mieterverwaltung implementieren
-  - [ ] Mietverträge erfassen (inkl. Indexklauseln, Kostenverteilschlüssel-Zuordnung)
-    - [ ] Test für Mietervertragslogik erstellen (`test/test_tenant_contracts.py`)
+- [X] Mieterverwaltung implementieren
+  - [X] Mietverträge erfassen (inkl. Indexklauseln, Kostenverteilschlüssel-Zuordnung)
+    - [X] Test für Mietervertragslogik erstellen (`test/test_tenant_contracts.py`)
   - [ ] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung)
     - [ ] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`)
 - [ ] Betriebskostenabrechnungs-Logik implementieren

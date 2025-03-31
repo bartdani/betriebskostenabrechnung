@@ -19,6 +19,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
     'sqlite:///../instance/app.db' # Pfad relativ zum app-Ordner
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Upload Ordner konfigurieren
+UPLOAD_FOLDER_CONTRACTS = os.path.join(app.instance_path, 'uploads', 'contracts')
+app.config['UPLOAD_FOLDER_CONTRACTS'] = UPLOAD_FOLDER_CONTRACTS
+
+# Sicherstellen, dass der Upload-Ordner existiert
+if not os.path.exists(UPLOAD_FOLDER_CONTRACTS):
+    os.makedirs(UPLOAD_FOLDER_CONTRACTS)
+
 # Datenbank und Migrations-Engine initialisieren
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

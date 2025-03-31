@@ -1,10 +1,14 @@
 ## Current Focus
-- Start der Implementierung von Phase 2:
-  - Aufgabe: Mieterverwaltung implementieren (Basis: Mietverträge erfassen).
+- Implementierung von Phase 2:
+  - Aufgabe: Dokumentenarchivierung für Verträge integrieren (Backend-Vorbereitung: DB-Schema, Upload-Logik, Tests).
 
 ## Recent Completions
-- Abschluss von Phase 1 (Flask-Grundgerüst, DB-Modell Basis, CSV-Import).
+- `Contract`-Modell erstellt und Datenbank migriert (manuell).
+- Basis-Blueprint (`/tenants`) und Route (`/contracts`) für Mieterverwaltung erstellt.
+- Tests für Contract-Modell und Route hinzugefügt und ausgeführt.
+- Änderungen zu Git committet und gepusht.
 - Basis CSV-Import für Verbrauchsdaten implementiert (`app/import_data.py`).
+- Abschluss von Phase 1 (Flask-Grundgerüst, DB-Modell Basis, CSV-Import).
 - Tests für CSV-Import erstellt und ausgeführt (`test/test_csv_import_basic.py`).
 - Basis-Datenbankmodelle (Apartment, Tenant, CostType, ConsumptionData) in `app/models.py` definiert.
 - Flask-SQLAlchemy und Flask-Migrate konfiguriert.
