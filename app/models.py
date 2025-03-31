@@ -11,6 +11,7 @@ class Apartment(db.Model):
     contracts = db.relationship('Contract', backref='apartment', lazy='dynamic')
     consumption_data = db.relationship('ConsumptionData', backref='apartment', lazy='dynamic')
     shares = db.relationship('ApartmentShare', backref='apartment', lazy='dynamic', cascade="all, delete-orphan")
+    occupancy_periods = db.relationship('OccupancyPeriod', backref='apartment', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Apartment {self.number}>'
@@ -115,4 +116,23 @@ class ApartmentShare(db.Model):
 #         cost_type = db.session.get(CostType, value)
 #         if cost_type and cost_type.type != 'share':
 #             raise ValueError(f"CostType ID {value} must be of type 'share' to be used in ApartmentShare.")
-#     return value 
+#     return value
+
+# NEUES MODELL: OccupancyPeriod
+class OccupancyPeriod(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False, index=True)
+    start_date = db.Column(db.Date, nullable=False, index=True)
+    end_date = db.Column(db.Date, nullable=True, index=True) # NULL bedeutet bis auf weiteres
+    number_of_occupants = db.Column(db.Integer, nullable=False)
+
+    __table_args__ = (
+        CheckConstraint('end_date IS NULL OR end_date > start_date', name='check_occupancy_period_dates'),
+        CheckConstraint('number_of_occupants > 0', name='check_positive_occupants'),
+        # Optional: Constraint, um Überlappungen pro Wohnung zu verhindern (komplexer, evtl. später)
+    )
+
+    def __repr__(self):
+        apt_number = self.apartment.number if self.apartment else 'N/A'
+        end_str = str(self.end_date) if self.end_date else 'ongoing'
+        return f'<OccupancyPeriod Apt:{apt_number} Occupants:{self.number_of_occupants} Start:{self.start_date} End:{end_str}>' 

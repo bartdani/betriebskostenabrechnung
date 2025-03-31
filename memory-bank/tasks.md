@@ -27,16 +27,29 @@
     - [X] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)
   - [X] Kostenverteilung (Anteilsbasiert)
     - [X] Test für anteilsbasierte Verteilung erstellen (`test/test_cost_alloc_share.py`)
-  - [ ] Kostenverteilung (Personentage pro-rata)
-    - [ ] Datenmodell für Bewohnerzahl-Zeiträume erstellen/erweitern (z.B. `OccupancyPeriod`)
-    - [ ] Logik für Personentage-Berechnung implementieren
-    - [ ] Test für Personentage-Verteilung erstellen (`test/test_cost_alloc_persondays.py`)
-  - [ ] Kombination von Schlüsseln ermöglichen
-    - [ ] Test für kombinierte Schlüssel erstellen (`test/test_cost_alloc_combined.py`)
-  - [ ] Pro-rata-temporis-Berechnung bei Mieterwechseln
-    - [ ] Test für Pro-rata-Berechnung erstellen (`test/test_cost_alloc_prorata.py`)
-    - [ ] Datenbankerweiterung für Mieterperioden (`tenant_periods`)
-    - [ ] UI für Mieterzeitraum-Editor
+  - [X] Kostenverteilung (Personentage pro-rata) - Completed on 2024-08-02
+    - [X] Datenmodell für Bewohnerzahl-Zeiträume erstellen/erweitern (z.B. `OccupancyPeriod`)
+      - [X] Define `OccupancyPeriod` model in `app/models.py` (`apartment_id`, `start_date`, `end_date`, `number_of_occupants`)
+      - [X] Generate DB migration script for `OccupancyPeriod`
+      - [X] Apply DB migration
+    - [X] Logik für Personentage-Berechnung implementieren
+      - [X] Implement helper function to get relevant occupancy periods for a given apartment and billing period in `app/calculations.py`
+      - [X] Implement `calculate_person_days` function in `app/calculations.py`
+      - [X] Implement `calculate_person_day_allocation` function in `app/calculations.py`
+    - [X] Test für Personentage-Verteilung erstellen (`test/test_cost_alloc_persondays.py`)
+      - [X] Create test file `test/test_cost_alloc_persondays.py`
+      - [X] Write test cases for `OccupancyPeriod` model
+      - [X] Write test cases for `calculate_person_days` helper function
+      - [X] Write test cases for `calculate_person_day_allocation`
+      - [X] Ensure all tests pass
+  - [X] Kombination von Schlüsseln ermöglichen (2024-08-01)
+    - [X] Funktion `calculate_combined_allocation` in `app/calculations.py` implementieren
+    - [X] Test `test/test_cost_alloc_combined.py` erstellen
+    - [X] Reflektion und Archivierung
+  - [X] Refactoring: Konsistente Rückgabewerte für Verteilungsfunktionen (immer Dict) (2024-08-01)
+    - [X] `app/calculations.py` anpassen
+    - [X] Relevante Tests anpassen (`test/test_cost_alloc_*.py`)
+- [ ] Kostenverteilung (Personentage pro-rata)
 - [ ] UI für benutzerdefinierte Kostenverteilschlüssel erstellen
   - [ ] Test für Logik der benutzerdef. Schlüssel erstellen (`test/test_custom_keys.py`)
 - [ ] PDF-Generierung für Betriebskostenabrechnungen (Basisversion)

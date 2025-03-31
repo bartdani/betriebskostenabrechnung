@@ -95,20 +95,25 @@ def test_share_allocation_zero_total(setup_db_for_share_allocation):
     assert allocation[data['a1_id']] == pytest.approx(0.00)
     assert allocation[data['a2_id']] == pytest.approx(0.00)
 
-def test_share_allocation_wrong_cost_type(setup_db_for_share_allocation):
-    """Testet, ob None zurückgegeben wird, wenn der CostType nicht 'share' ist."""
+def test_share_allocation_invalid_cost_type(setup_db_for_share_allocation):
+    """Testet die Verteilung mit einer ungültigen CostType ID."""
     data = setup_db_for_share_allocation
-    total_cost = 100.00
-    
-    allocation = calculate_share_allocation(data['ct_c_id'], total_cost)
-    
-    assert allocation is None
+    allocation = calculate_share_allocation(9999, 100.0)
+    assert allocation == {}
+
+def test_share_allocation_wrong_cost_type(setup_db_for_share_allocation):
+    """Testet die Verteilung mit einem CostType vom Typ 'consumption'."""
+    data = setup_db_for_share_allocation
+    # Finde den consumption CostType aus der Fixture
+    consum_ct_id = data['ct_c_id'] 
+    allocation = calculate_share_allocation(consum_ct_id, 100.0)
+    assert allocation == {}
 
 def test_share_allocation_cost_type_not_found(setup_db_for_share_allocation):
-    """Testet, ob None zurückgegeben wird, wenn die CostType ID nicht existiert."""
+    """Testet, ob ein leeres Dict zurückgegeben wird, wenn die CostType ID nicht existiert."""
     data = setup_db_for_share_allocation
     total_cost = 100.00
-    
+
     allocation = calculate_share_allocation(9999, total_cost)
     
-    assert allocation is None 
+    assert allocation == {} 

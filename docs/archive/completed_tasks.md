@@ -1,3 +1,78 @@
+# Completed Tasks
+
+## Task: Kostenverteilung (Personentage pro-rata) v1.0
+Last Updated: 2024-08-02
+
+### Implementation Results
+- Neues SQLAlchemy-Modell `OccupancyPeriod` in `app/models.py` hinzugefügt (Felder: `apartment_id`, `start_date`, `end_date`, `number_of_occupants`).
+- Datenbankmigration mittels `flask db migrate` und `flask db upgrade` durchgeführt.
+- Hilfsfunktion `_get_relevant_occupancy_periods(apartment_id, period_start, period_end)` in `app/calculations.py` implementiert, um überlappende Belegungsperioden zu finden.
+- Funktion `calculate_person_days(apartment_id, period_start, period_end)` in `app/calculations.py` implementiert, die die Summe der Personentage pro Wohnung im Abrechnungszeitraum berechnet.
+- Hauptfunktion `calculate_person_day_allocation(cost_type_id, total_cost, period_start, period_end)` in `app/calculations.py` implementiert, die Gesamtkosten basierend auf den Personentagen aller Wohnungen verteilt.
+
+### Completed Testing
+- Neue Testdatei `test/test_cost_alloc_persondays.py` erstellt.
+- Unit-Tests für das `OccupancyPeriod`-Modell hinzugefügt (Erstellung, Validierung ungültiger Daten).
+- Unit-Tests für `calculate_person_days` hinzugefügt (verschiedene Überlappungsszenarien, mehrere Perioden, keine Perioden, laufende Perioden).
+- Unit-Tests für `calculate_person_day_allocation` hinzugefügt (einfache Verteilung, Fall mit 0 Tagen für eine Wohnung, Fall mit 0 Gesamttagen).
+- Alle Tests (insgesamt 46) mittels `pytest` erfolgreich ausgeführt nach Behebung initialer Fehler (falsche Fixture-Namen, fehlende Testdaten).
+
+### Lessons Learned
+- Korrekte Verwendung von pytest Fixtures (`client`, `test_db`) ist essentiell.
+- Tests benötigen eigene, isolierte Daten (hier: `Apartment`-Objekte mussten in Tests erstellt werden).
+- Datumsberechnungen, speziell für Intervalle (inklusive Endtag), erfordern Sorgfalt.
+- Überprüfung der Konsolenausgabe (z.B. bei Migrationen) ist wichtig.
+
+### Documentation Updates
+- `app/models.py`: Neues Modell `OccupancyPeriod` hinzugefügt.
+- `app/calculations.py`: Neue Funktionen `_get_relevant_occupancy_periods`, `calculate_person_days`, `calculate_person_day_allocation` hinzugefügt.
+- `test/test_cost_alloc_persondays.py`: Neue Testdatei hinzugefügt.
+- `tasks.md`: Status der Aufgabe und Teilaufgaben aktualisiert.
+- `activeContext.md`: Fortschritt und abgeschlossene Schritte dokumentiert.
+- `progress.md`: Reflexion hinzugefügt (wird im nächsten Schritt mit Link versehen).
+- `docs/archive/completed_tasks.md`: Dieser Eintrag wurde hinzugefügt.
+
+---
+
+## Task: Kombinierte Schlüsselverteilung implementieren (v1.0)
+Last Updated: 2024-08-01
+
+### Implementation Results
+- Die Funktion `calculate_combined_allocation` wurde zu `app/calculations.py` hinzugefügt.
+- Diese Funktion nimmt eine Liste von Verteilungsregeln entgegen, wobei jede Regel einen `cost_type_id` (Verbrauch oder Anteil), einen prozentualen Anteil an den Gesamtkosten (`percentage`) und den entsprechenden Kostenanteil (`total_cost_part`) angibt.
+- Für Verbrauchsregeln wird auch `period_start` und `period_end` benötigt.
+- Die Funktion berechnet die anteiligen Kosten für jede Regel mithilfe der bereits existierenden Funktionen `calculate_consumption_allocation` und `calculate_share_allocation`.
+- Die Ergebnisse für jedes Apartment werden über alle Regeln hinweg aggregiert.
+- Eine Warnung wird ausgegeben, wenn die Summe der Prozentsätze in den Regeln nicht 100% ergibt.
+- Die Funktion gibt ein Dictionary zurück, das die Gesamtzuweisung pro Apartment-ID enthält.
+- *Refactoring*: Die Funktion (und die anderen Verteilungsfunktionen) wurde angepasst, um im Fehlerfall oder bei leeren/ungültigen Eingaben ein leeres Dictionary `{}` statt `None` zurückzugeben.
+
+### Completed Testing
+- Eine neue Testdatei `test/test_cost_alloc_combined.py` wurde erstellt.
+- Es wurden Tests für verschiedene Szenarien implementiert:
+    - 50/50-Verteilung zwischen Verbrauch und Anteil.
+    - Nur Verbrauchsregel.
+    - Ungültige Prozentsumme (Prüfung auf Warnung und normale Ausführung).
+    - Ungültige Regel (fehlende Schlüssel).
+    - Leere Regelliste (erwartet nun `{}`).
+- *Refactoring*: Die Tests in `test_cost_alloc_combined.py`, `test_cost_alloc_consumption.py` und `test_cost_alloc_share.py`, die zuvor `None` erwarteten, wurden angepasst, um ein leeres Dictionary `{}` zu erwarten.
+- Alle 31 `pytest`-Tests wurden erfolgreich ausgeführt.
+
+### Lessons Learned
+- Die Wiederverwendung bestehender, getesteter Funktionen vereinfacht die Entwicklung komplexerer Logik.
+- `defaultdict(float)` ist nützlich für das Aggregieren von Werten über mehrere Schritte.
+- Konsistente Rückgabewerte (immer Dict statt `None`) vereinfachen die nachfolgende Verarbeitung und Fehlerbehandlung.
+- Testabdeckung für verschiedene Fehlerfälle und Randbedingungen ist entscheidend.
+- Anhaltende Terminalprobleme erfordern Workarounds und sorgfältige Überprüfung der Ergebnisse.
+
+### Documentation Updates
+- `app/calculations.py` (Funktion hinzugefügt und refactored)
+- `test/test_cost_alloc_combined.py` (erstellt und refactored)
+- `test/test_cost_alloc_consumption.py` (refactored)
+- `test/test_cost_alloc_share.py` (refactored)
+- `tasks.md` (Aufgabenstatus aktualisiert)
+- `activeContext.md` (Fortschritt dokumentiert)
+
 ## Task: Aufgabenliste aktualisieren (Basis: projectbrief.md) v10
 Last Updated: 2024-07-29
 

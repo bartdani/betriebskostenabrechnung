@@ -94,7 +94,7 @@ def test_consumption_allocation_wrong_cost_type(setup_db_for_allocation):
     
     allocation = calculate_consumption_allocation(data['ct_s_id'], total_cost, period_start, period_end)
     
-    assert allocation is None
+    assert allocation == {}
 
 def test_consumption_allocation_cost_type_not_found(setup_db_for_allocation):
     """Testet, ob None zurückgegeben wird, wenn die CostType ID nicht existiert."""
@@ -105,4 +105,4 @@ def test_consumption_allocation_cost_type_not_found(setup_db_for_allocation):
     
     allocation = calculate_consumption_allocation(9999, total_cost, period_start, period_end)
     
-    assert allocation is None 
+    assert allocation == {} 
