@@ -6,6 +6,13 @@
 - [X] Conda-Umgebung `env` erstellen
 - [X] Git-Repository initialisieren und mit GitHub verbinden
 - [X] `README.md` erstellen und pushen
+- [X] README.md aktualisieren (Projektstatus, Setup, Nutzung)
+  - [X] 1. Aktuellen Stand prüfen (erledigt).
+  - [X] 2. Abschnitt "Kernfunktionen" aktualisieren.
+  - [X] 3. Abschnitt "Setup" um `flask db upgrade` erweitern.
+  - [X] 4. Neuen Abschnitt "Nutzung/Ausführung" hinzufügen.
+  - [X] 5. Optional: Abschnitt "Projektstatus" hinzufügen.
+  - [X] 6. Änderungen in `README.md` implementieren.
 - [X] SQLAlchemy LegacyAPIWarnings beheben
 - [X] Basis UI-Layout und Navigation implementieren - Completed on 2024-08-08
   - [X] Bootstrap Navbar in `_base.html` erstellen/anpassen
