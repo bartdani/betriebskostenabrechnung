@@ -68,4 +68,18 @@
 - `SERVER_NAME = 'localhost.test'` (Added to resolve `url_for` issues)
 
 ## Known Issues & Workarounds
-- **Flash Message Testing:** Standard Flask test client (`app.test_client()`) does not reliably show flashed messages in the response HTML after redirects (`follow_redirects=True` or manual). Messages are confirmed to be in the session (`_flashes`) but not rendered. Assertions checking for flash messages in HTML are currently commented out in relevant tests (`test_custom_keys.py`). 
+- **Flash Message Testing:** Standard Flask test client (`app.test_client()`) does not reliably show flashed messages in the response HTML after redirects (`follow_redirects=True` or manual). Messages are confirmed to be in the session (`_flashes`) but not rendered. Assertions checking for flash messages in HTML are currently commented out in relevant tests (`test_custom_keys.py`).
+
+## Flask & SQLAlchemy
+
+### Flash Messages
+- Flash-Messages werden in der Base-Template (`_base.html`) angezeigt
+- Kategorien: success, warning, danger
+- HTML-Escaping beachten bei Tests (`&quot;` statt `"`)
+- Rendering erfolgt in einem eigenen Container außerhalb des Hauptcontainers
+
+### SQLAlchemy 2.0
+- Upgrade auf SQLAlchemy 2.0 API-Style
+- Verwendung von `db.session.get()` statt `query.get()`
+- Type Hints für bessere Code-Qualität
+- Kombination mit Flask-Abort für 404-Handling 

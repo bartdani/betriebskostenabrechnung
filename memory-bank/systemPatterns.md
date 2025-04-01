@@ -49,3 +49,24 @@ This document outlines key architectural patterns, design decisions, and reusabl
 - Rückgabe von 0.00 für alle Wohnungen wenn keine Personentage vorhanden
 - Validierung der Kostenart direkt im WTForms-Formular
 - Typ-sichere Implementierung durch Type Hints 
+
+## Testing Patterns
+
+### Flash Message Testing
+- Flash-Messages werden im HTML-Response überprüft, nicht in der Session
+- Erwartete Flash-Messages müssen HTML-escaped sein (z.B. `&quot;` statt `"`)
+- Beispiel für Flash-Message Test:
+```python
+def test_create_success(client):
+    response = client.post('/route', data={'field': 'value'})
+    assert b'Success &quot;message&quot;' in response.data
+```
+
+### SQLAlchemy Best Practices
+- Verwende `db.session.get(Model, id)` statt `Model.query.get(id)` (SQLAlchemy 2.0)
+- Kombiniere mit `abort(404)` für nicht gefundene Einträge: `db.session.get(Model, id) or abort(404)`
+
+### Form Testing
+- Validierungsfehler werden im HTML-Response überprüft
+- Nutze das `_macros.html` Template für konsistentes Form-Rendering
+- Teste sowohl erfolgreiche als auch fehlgeschlagene Validierungen 
