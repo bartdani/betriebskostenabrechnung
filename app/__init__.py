@@ -44,6 +44,10 @@ app.register_blueprint(cost_types_bp)
 from app.manual_entry.routes import manual_entry_bp
 app.register_blueprint(manual_entry_bp)
 
+# NEU: Apartment Blueprint registrieren
+from app.apartments import apartments_bp
+app.register_blueprint(apartments_bp)
+
 @app.route('/')
 @app.route('/index')
 def index():

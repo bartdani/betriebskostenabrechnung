@@ -37,5 +37,18 @@ def test_db(app_context):
 @pytest.fixture(scope='function')
 def client(app_context):
     """Erstellt einen Test-Client für HTTP-Anfragen."""
-    with flask_app.test_client() as client:
-        yield client 
+    # Session-Konfiguration
+    flask_app.config['SECRET_KEY'] = 'test-secret-key'
+    flask_app.config['TESTING'] = True
+    flask_app.config['WTF_CSRF_ENABLED'] = False
+    flask_app.config['SERVER_NAME'] = 'localhost'
+    
+    # Client mit aktivierten Sessions erstellen
+    test_client = flask_app.test_client()
+    
+    # Session-Kontext für den gesamten Test aktivieren
+    with test_client.session_transaction() as sess:
+        sess.clear()
+        sess.update({})
+    
+    return test_client 

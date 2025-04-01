@@ -1,0 +1,36 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Wohnungsübersicht</h1>
+        <a href="{{ url_for('apartments.create_apartment') }}" class="btn btn-primary">Neue Wohnung anlegen</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nummer</th>
+                <th>Adresse</th>
+                <th>Größe (m²)</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for apartment in apartments %}
+            <tr>
+                <td>{{ apartment.number }}</td>
+                <td>{{ apartment.address }}</td>
+                <td>{{ "%.2f"|format(apartment.size_sqm) }}</td>
+                <td>
+                    <a href="{{ url_for('apartments.edit_apartment', apartment_id=apartment.id) }}" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                    {# Hier könnte später ein Löschen-Button mit Modal hinzukommen #}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Keine Wohnungen gefunden.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -37,7 +37,7 @@
                             Stammdaten
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownStammdaten">
-                            <li><a class="dropdown-item" href="#">Wohnungen</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('apartments.list_apartments') }}">Wohnungen</a></li>
                             <li><a class="dropdown-item" href="#">Mieter</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('cost_types.index') }}">Kostenarten</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -63,21 +63,23 @@
     </nav>
 
     {# --- Hauptinhalt --- #}
-    <main class="container">
-        {# Flash Nachrichten Anzeige #}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+    <main>
+        <div class="container">
+            {# Flash Nachrichten Anzeige #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message | safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
 
-        {# Hier wird der Inhalt der abgeleiteten Templates eingefügt #}
-        {% block content %}{% endblock %}
+            {# Hier wird der Inhalt der abgeleiteten Templates eingefügt #}
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
     <!-- Optional: Bootstrap Bundle mit Popper -->

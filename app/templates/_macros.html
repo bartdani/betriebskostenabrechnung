@@ -1,0 +1,46 @@
+{# app/templates/_macros.html #}
+
+{# Einfaches Makro zum Rendern eines WTForms-Feldes mit Bootstrap-Styling und Fehlern #}
+{% macro render_field(field, label_visible=True) %}
+  <div class="form-group mb-3">
+    {% if label_visible %}
+      {{ field.label(class='form-label') }}
+    {% endif %}
+
+    {# Bereite das Attribut-Wörterbuch vor, beginnend mit impliziten kwargs #}
+    {% set final_attrs = kwargs.copy() if kwargs else {} %}
+
+    {# Hole bestehende Klassen oder Standard auf leeren String #}
+    {% set existing_class = final_attrs.get('class', '') %}
+
+    {# Füge 'form-control' Klasse hinzu #}
+    {% set css_classes = existing_class + ' form-control' %}
+
+    {# Füge 'is-invalid' Klasse hinzu, wenn Fehler vorhanden sind #}
+    {% if field.errors %}
+        {% set css_classes = css_classes + ' is-invalid' %}
+    {% endif %}
+
+    {# Aktualisiere das Klassenattribut im finalen Wörterbuch #}
+    {# Verwende 'do', um das Wörterbuch zu modifizieren (benötigt ggf. Jinja-Erweiterung, aber probieren wir es) #}
+    {# {% do final_attrs.update({'class': css_classes.strip()}) %} <-- Entfernt #}
+
+    {# Entferne 'class' aus final_attrs, falls vorhanden, da wir es explizit setzen #}
+    {% set _ = final_attrs.pop('class', None) %}
+
+    {# Rendere das Feld mit den finalen Attributen UND der explizit gesetzten Klasse #}
+    {{ field(class=css_classes.strip(), **final_attrs) }}
+
+    {% if field.errors %}
+      <div class="invalid-feedback">
+        {% for error in field.errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if field.description %}
+      <small class="form-text text-muted">{{ field.description }}</small>
+    {% endif %}
+  </div>
+{% endmacro %} 

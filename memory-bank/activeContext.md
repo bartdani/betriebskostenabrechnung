@@ -1,19 +1,20 @@
 # Active Context
 
 ## Current Focus
-Aktualisierung der README.md-Datei mit aktuellem Projektstatus, Setup-Anweisungen und Nutzungsbeispielen.
+Implementierung der Basis-CRUD-UI für Wohnungen (`Apartment`: List, Create, Edit).
 
 ## Recent Changes & Activities
-- Start der Arbeit an der README-Aktualisierung.
+- Start der Arbeit an der CRUD-UI für Wohnungen.
 
 ## Pending Issues/Decisions
-- Welche spezifischen Nutzungsbeispiele sollen hinzugefügt werden?
+- Genaue Feldvalidierungen für das Wohnungsformular definieren.
+- Design der Listen- und Formularansichten.
 
 ## Next Steps
-- Auswahl der nächsten Aufgabe aus dem Backlog (z.B. Basis-CRUD-UI für Wohnungen).
+- Planung der detaillierten Schritte für Blueprint, Forms, Routes, Templates und Tests.
 
 ## Recent Completions
 - README.md aktualisieren wurde abgeschlossen. Nächster Fokus liegt auf Basis-CRUD-UI für Wohnungen.
 
 ## Current Implementation Status
-- README.md aktualisiert. 
+- Initialisierung für CRUD-UI Wohnungen abgeschlossen. 
