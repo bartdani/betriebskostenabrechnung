@@ -6,12 +6,13 @@ from sqlalchemy.orm import validates
 class Apartment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(50), index=True, unique=True, nullable=False)
-    # Weitere Felder wie Größe, Adresse etc. können hier hinzugefügt werden
-    tenants = db.relationship('Tenant', backref='apartment', lazy='dynamic')
+    address = db.Column(db.String(200), nullable=False) # NEU: Adresse der Wohnung
+    size_sqm = db.Column(db.Float, nullable=False) # NEU: Größe in Quadratmetern
     contracts = db.relationship('Contract', backref='apartment', lazy='dynamic')
     consumption_data = db.relationship('ConsumptionData', backref='apartment', lazy='dynamic')
     shares = db.relationship('ApartmentShare', backref='apartment', lazy='dynamic', cascade="all, delete-orphan")
     occupancy_periods = db.relationship('OccupancyPeriod', backref='apartment', lazy='dynamic', cascade="all, delete-orphan")
+    meters = db.relationship('Meter', backref='apartment', lazy='dynamic', cascade="all, delete-orphan") # NEU: Beziehung zu Zählern
 
     def __repr__(self):
         return f'<Apartment {self.number}>'
@@ -20,8 +21,6 @@ class Tenant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     contact_info = db.Column(db.String(200)) # Z.B. E-Mail, Telefon
-    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'))
-    # Mietvertragsdaten könnten hier oder in einer separaten Tabelle stehen
     contracts = db.relationship('Contract', backref='tenant', lazy='dynamic')
 
     def __repr__(self):
@@ -42,9 +41,9 @@ class ConsumptionData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
     cost_type_id = db.Column(db.Integer, db.ForeignKey('cost_type.id'), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date = db.Column(db.DateTime, nullable=False)
     value = db.Column(db.Float, nullable=False)
-    # Optional: Feld für Zählerstände (Start/End) statt nur Verbrauchswert
+    entry_type = db.Column(db.String(20), nullable=False, default='csv_import', server_default='csv_import') # csv_import, manual
 
     def __repr__(self):
         return f'<ConsumptionData Apt:{self.apartment_id} Type:{self.cost_type_id} Date:{self.date} Val:{self.value}>'
@@ -67,6 +66,9 @@ class Contract(db.Model):
 
     # NEU: Dateiname des gespeicherten Vertrags-PDFs
     contract_pdf_filename = db.Column(db.String(255), nullable=True)
+
+    # NEU: Beziehung zu direkt zugeordneten Rechnungen
+    direct_allocation_invoices = db.relationship('Invoice', backref='direct_allocation_contract', lazy='dynamic', foreign_keys='Invoice.direct_allocation_contract_id')
 
     # Später: Referenz auf Kostenverteilschlüssel-Profil
     # cost_allocation_profile_id = db.Column(db.Integer, db.ForeignKey('cost_allocation_profile.id'))
@@ -135,4 +137,45 @@ class OccupancyPeriod(db.Model):
     def __repr__(self):
         apt_number = self.apartment.number if self.apartment else 'N/A'
         end_str = str(self.end_date) if self.end_date else 'ongoing'
-        return f'<OccupancyPeriod Apt:{apt_number} Occupants:{self.number_of_occupants} Start:{self.start_date} End:{end_str}>' 
+        return f'<OccupancyPeriod Apt:{apt_number} Occupants:{self.number_of_occupants} Start:{self.start_date} End:{end_str}>'
+
+# NEUES MODELL: Meter
+class Meter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False, index=True)
+    meter_type = db.Column(db.String(50), nullable=False) # z.B. 'Strom', 'Wasser', 'Heizung', 'Warmwasser'
+    serial_number = db.Column(db.String(100), nullable=False, unique=True)
+    unit = db.Column(db.String(20), nullable=False) # z.B. 'kWh', 'm³'
+
+    # Beziehung zu Apartment wird über backref='meters' in Apartment definiert
+
+    def __repr__(self):
+        apt_number = self.apartment.number if self.apartment else 'N/A'
+        return f'<Meter {self.serial_number} ({self.meter_type}) Apt:{apt_number}>'
+
+# NEUES MODELL: Invoice
+class Invoice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    invoice_number = db.Column(db.String(100), nullable=True, index=True) # Rechnungsnummer
+    date = db.Column(db.Date, nullable=False, index=True) # Rechnungsdatum
+    amount = db.Column(db.Float, nullable=False) # Rechnungsbetrag
+    cost_type_id = db.Column(db.Integer, db.ForeignKey('cost_type.id'), nullable=False, index=True) # FK zur Kostenart
+    period_start = db.Column(db.Date, nullable=False) # Leistungszeitraum Start
+    period_end = db.Column(db.Date, nullable=False) # Leistungszeitraum Ende
+
+    # Für direkte Zuordnung (sonst NULL)
+    direct_allocation_contract_id = db.Column(db.Integer, db.ForeignKey('contract.id'), nullable=True, index=True)
+
+    # Beziehung zu CostType
+    cost_type = db.relationship('CostType', backref='invoices')
+    # Beziehung zu Contract (für direkte Zuordnung) ist über backref='direct_allocation_invoices' in Contract definiert
+
+    # Sicherstellen, dass Enddatum nach Startdatum liegt
+    __table_args__ = (
+        CheckConstraint('period_end >= period_start', name='check_invoice_period_dates'),
+    )
+
+    def __repr__(self):
+        allocation_type = f"Contract:{self.direct_allocation_contract_id}" if self.direct_allocation_contract_id else "Distributed"
+        ct_name = self.cost_type.name if self.cost_type else 'N/A'
+        return f'<Invoice {self.id} Date:{self.date} Amount:{self.amount} CostType:{ct_name} Allocation:{allocation_type}>' 

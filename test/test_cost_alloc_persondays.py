@@ -184,7 +184,8 @@ def test_calculate_person_day_allocation_simple(client, test_db):
     """Testet eine einfache Verteilung auf zwei Wohnungen."""
     apt1 = Apartment(number='Alloc Apt 1')
     apt2 = Apartment(number='Alloc Apt 2')
-    db.session.add_all([apt1, apt2])
+    ct = CostType(name='Müllgebühren', unit='EUR', type='share')
+    db.session.add_all([apt1, apt2, ct])
     db.session.commit()
 
     db.session.add(OccupancyPeriod(apartment_id=apt1.id, start_date=date(2023, 1, 1), end_date=date(2023, 1, 10), number_of_occupants=2))
@@ -195,7 +196,7 @@ def test_calculate_person_day_allocation_simple(client, test_db):
     billing_end = date(2023, 12, 31)
     total_cost = 100.0
 
-    allocation = calculate_person_day_allocation(999, total_cost, billing_start, billing_end)
+    allocation = calculate_person_day_allocation(ct.id, total_cost, billing_start, billing_end)
 
     assert len(allocation) == 2
     assert allocation[apt1.id] == 40.00
@@ -205,7 +206,8 @@ def test_calculate_person_day_allocation_one_apartment_zero_days(client, test_db
     """Testet Verteilung, wenn eine Wohnung keine Personentage hat."""
     apt1 = Apartment(number='Alloc Zero 1')
     apt2 = Apartment(number='Alloc Zero 2')
-    db.session.add_all([apt1, apt2])
+    ct = CostType(name='Müllgebühren 2', unit='EUR', type='share')
+    db.session.add_all([apt1, apt2, ct])
     db.session.commit()
 
     db.session.add(OccupancyPeriod(apartment_id=apt1.id, start_date=date(2023, 1, 1), end_date=date(2023, 1, 10), number_of_occupants=2))
@@ -215,7 +217,7 @@ def test_calculate_person_day_allocation_one_apartment_zero_days(client, test_db
     billing_end = date(2023, 12, 31)
     total_cost = 100.0
 
-    allocation = calculate_person_day_allocation(999, total_cost, billing_start, billing_end)
+    allocation = calculate_person_day_allocation(ct.id, total_cost, billing_start, billing_end)
 
     assert len(allocation) == 2
     assert allocation[apt1.id] == 100.00
@@ -225,16 +227,15 @@ def test_calculate_person_day_allocation_total_zero_days(client, test_db):
     """Testet Verteilung, wenn insgesamt keine Personentage anfallen."""
     apt1 = Apartment(number='Alloc Total Zero 1')
     apt2 = Apartment(number='Alloc Total Zero 2')
-    db.session.add_all([apt1, apt2])
-    db.session.commit()
-
+    ct = CostType(name='Müllgebühren 3', unit='EUR', type='share')
+    db.session.add_all([apt1, apt2, ct])
     db.session.commit()
 
     billing_start = date(2023, 1, 1)
     billing_end = date(2023, 12, 31)
     total_cost = 100.0
 
-    allocation = calculate_person_day_allocation(999, total_cost, billing_start, billing_end)
+    allocation = calculate_person_day_allocation(ct.id, total_cost, billing_start, billing_end)
 
     assert len(allocation) == 2
     assert allocation[apt1.id] == 0.00

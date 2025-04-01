@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+{% import 'bootstrap_wtf.html' as wtf %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>{{ title }}</h1>
+        
+        {# Flash-Nachrichten anzeigen #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('manual_entry.consumption_entry') }}" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    {{ wtf.form_field(form.apartment_id) }}
+                    {{ wtf.form_field(form.cost_type_id) }}
+                    {{ wtf.form_field(form.date) }}
+                    {{ wtf.form_field(form.value) }}
+                    
+                    {{ wtf.form_field(form.submit, class_='btn btn-primary mt-3') }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

@@ -32,6 +32,6 @@ Webbasierte Anwendung zur Verwaltung von Mietwohnungen in Österreich (bis zu 15
 
 3.  **(Optional) Anwendung starten:**
     ```bash
-    # Befehl zum Starten der Flask-Anwendung (z.B. flask run) - wird später definiert
-    python run.py
+    # Befehl zum Starten der Flask-Anwendung
+    flask run
     ``` 

@@ -1,32 +1,20 @@
 # Active Context
 
 ## Current Focus
-Implementierung der manuellen Datenerfassung für Zählerstände und andere relevante Daten.
+Erweiterung des Datenbankmodells für Kern-Stammdaten (`Apartment`, `Tenant`, `Contract`, `Meter`, `Invoice`) und Generierung der Migrationen.
 
 ## Recent Changes & Activities
-- Implemented basic PDF generation function `generate_utility_statement_pdf` in `app/pdf_generation.py`.
-- Included data fetching, calling allocation functions, and basic `reportlab` structuring (table, paragraphs).
-- Implemented the missing `calculate_person_day_allocation` function in `app/calculations.py`.
-- Created and passed a basic test in `test/test_pdf_generation_basic.py` verifying PDF stream creation.
-- Completed Reflection and Archiving steps for the PDF generation task.
+- Start der Arbeit an der Erweiterung des Datenbankmodells.
 
 ## Pending Issues/Decisions
-- PDF layout and content details need refinement based on specific requirements.
-- Testing of PDF content is minimal.
+- Definition der genauen Attribute und Beziehungen für die neuen/angepassten Modelle.
+- Spezifikation des Zuordnungstyps für `Invoice` (Schlüssel-ID oder Mieter/Vertrags-ID).
 
 ## Next Steps
-- Select the next task from the backlog (e.g., Manual Data Entry, Tenant Contracts).
+- Auswahl der nächsten Aufgabe aus dem Backlog (z.B. Basis-CRUD-UI für Wohnungen).
 
 ## Recent Completions
-- Überarbeitung der Personentage-Berechnung wurde abgeschlossen und archiviert. Nächster Fokus liegt auf der Implementierung der User Authentication.
+- Datenbankmodell für Kern-Stammdaten erweitern wurde abgeschlossen und archiviert. Nächster Fokus liegt auf Basis-CRUD-UI für Wohnungen.
 
 ## Current Implementation Status
-- Personentage-Berechnung wurde überarbeitet und getestet
-- Validierung wurde in WTForms integriert
-- Redundanter Code wurde entfernt
-- Alle Tests laufen erfolgreich
-
-## Recent Completions
-- UI/DB-Fehlerbehebung (Migrationsskripte) abgeschlossen und gepusht.
-- UI für benutzerdefinierte Kostenverteilschlüssel implementiert.
-- PDF-Generierung für Betriebskostenabrechnungen (Basis) implementiert. 
+- Datenbankmodelle erweitert und migriert. Tests erfolgreich. 

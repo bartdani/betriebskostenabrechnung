@@ -12,11 +12,35 @@
   - [X] Index-Route (`/`) erstellen/anpassen, um Basis-Layout zu rendern
   - [X] Navigationslinks für Hauptbereiche (Dashboard, Stammdaten, etc.) hinzufügen
 
-## Phase 1: Grundgerüst (ca. 4 Wochen)
+## Phase 1: Grundgerüst & Basis-CRUD (ca. 4-5 Wochen)
 - [X] Flask-Setup mit Grundstruktur (Authentifizierung optional/später)
   - [X] Test für Grundstruktur/Erreichbarkeit erstellen (`test/test_app_basic.py`)
-- [X] Datenbankmodell Basis implementieren (Mieter, Kostenarten, initiale Verbrauchsdaten-Tabelle)
-  - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`)
+- [X] Datenbankmodell für Kern-Stammdaten erweitern
+  - [X] Modelle für `Apartment`, `Tenant`, `Contract`, `Meter`, `Invoice` definieren/anpassen (Invoice mit Zuordnungstyp: Schlüssel-ID oder Mieter/Vertrags-ID)
+  - [X]   1. Analyse: Bestehende Modelle in `app/models.py` analysieren.
+  - [X]   2. Kreativphase (Modell-Design): Attribute/Beziehungen definieren (v.a. Invoice Zuordnung).
+  - [X]   3. Implementierung `Apartment`-Modell: Attribute/Beziehungen hinzufügen/anpassen.
+  - [X]   4. Implementierung `Tenant`-Modell: Attribute/Beziehungen hinzufügen/anpassen.
+  - [X]   5. Implementierung `Contract`-Modell: Attribute/Beziehungen hinzufügen/anpassen (inkl. FK zu Tenant, Apartment).
+  - [X]   6. Implementierung `Meter`-Modell: Attribute/Beziehungen hinzufügen/anpassen (inkl. FK zu Apartment).
+  - [X]   7. Implementierung `Invoice`-Modell: Attribute/Beziehungen hinzufügen/anpassen (inkl. FK zu CostType, Zuordnung logic: FK zu Contract ODER FK zu AllocationKey).
+  - [X]   8. Code schreiben/anpassen: Modelle in `app/models.py` implementieren.
+  - [X]   9. Migration generieren: `flask db migrate -m "Expand core data models"`.
+  - [X]   10. Migration anwenden: `flask db upgrade`.
+  - [X]   11. Tests anpassen/erweitern: `test/test_db_models_basic.py`.
+  - [X]   12. Tests ausführen: Sicherstellen, dass alle Modelltests erfolgreich sind.
+  - [X] Migrationen generieren und anwenden // *Verschoben in detaillierte Schritte*
+  - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`) // Ggf. erweitern // *Wird in Schritt 11 angepasst*
+- [ ] Basis-CRUD-UI für Wohnungen implementieren
+  - [ ] Blueprint, Forms, Routes, Templates für Apartments (List, Create, Edit View)
+  - [ ] Test für Apartment CRUD erstellen (`test/test_crud_apartments.py`)
+- [ ] Basis-CRUD-UI für Mieter implementieren
+  - [ ] Blueprint, Forms, Routes, Templates für Tenants (List, Create, Edit View)
+  - [ ] Test für Tenant CRUD erstellen (`test/test_crud_tenants.py`)
+- [ ] Basis-CRUD-UI für Zähler implementieren
+  - [ ] Blueprint, Forms, Routes, Templates für Meters (List, Create, Edit View)
+  - [ ] Zuordnung Zähler zu Wohnung ermöglichen
+  - [ ] Test für Meter CRUD erstellen (`test/test_crud_meters.py`)
 - [X] Basis CSV-Import für Zählerstände implementieren
   - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
 - [X] Implement CSV Import for Tenant Data - Completed on 2024-08-08
@@ -27,140 +51,98 @@
   - [X] Add error handling and reporting (skipped rows)
   - [X] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
 
-## Phase 2: Kernfunktionen (ca. 6 Wochen)
-- [X] Mieterverwaltung implementieren
-  - [X] Mietverträge erfassen (inkl. Indexklauseln, Kostenverteilschlüssel-Zuordnung)
-    - [X] Test für Mietervertragslogik erstellen (`test/test_tenant_contracts.py`)
-  - [X] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung)
-    - [X] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`)
-- [X] Betriebskostenabrechnungs-Logik implementieren
+## Phase 2: Kernfunktionen Abrechnung & Erweiterte CRUD (ca. 7-8 Wochen)
+- [X] Betriebskostenabrechnungs-Logik implementieren (Basis)
   - [X] Kostenverteilung (Verbrauchsbasiert)
     - [X] Test für verbrauchsbasierte Verteilung erstellen (`test/test_cost_alloc_consumption.py`)
   - [X] Kostenverteilung (Anteilsbasiert)
     - [X] Test für anteilsbasierte Verteilung erstellen (`test/test_cost_alloc_share.py`)
   - [X] Kostenverteilung (Personentage pro-rata) - Completed on 2024-08-02
     - [X] Datenmodell für Bewohnerzahl-Zeiträume erstellen/erweitern (z.B. `OccupancyPeriod`)
-      - [X] Define `OccupancyPeriod` model in `app/models.py` (`apartment_id`, `start_date`, `end_date`, `number_of_occupants`)
-      - [X] Generate DB migration script for `OccupancyPeriod`
-      - [X] Apply DB migration
     - [X] Logik für Personentage-Berechnung implementieren
-      - [X] Implement helper function to get relevant occupancy periods for a given apartment and billing period in `app/calculations.py`
-      - [X] Implement `calculate_person_days` function in `app/calculations.py`
-      - [X] Implement `calculate_person_day_allocation` function in `app/calculations.py`
     - [X] Test für Personentage-Verteilung erstellen (`test/test_cost_alloc_persondays.py`)
-      - [X] Create test file `test/test_cost_alloc_persondays.py`
-      - [X] Write test cases for `OccupancyPeriod` model
-      - [X] Write test cases for `calculate_person_days` helper function
-      - [X] Write test cases for `calculate_person_day_allocation`
-      - [X] Ensure all tests pass
   - [X] Kombination von Schlüsseln ermöglichen (2024-08-01)
     - [X] Funktion `calculate_combined_allocation` in `app/calculations.py` implementieren
     - [X] Test `test/test_cost_alloc_combined.py` erstellen
-    - [X] Reflektion und Archivierung
   - [X] Refactoring: Konsistente Rückgabewerte für Verteilungsfunktionen (immer Dict) (2024-08-01)
-    - [X] `app/calculations.py` anpassen
-    - [X] Relevante Tests anpassen (`test/test_cost_alloc_*.py`)
+- [ ] Spezifische Heizkostenabrechnungs-Logik implementieren
+  - [ ] Datenmodell anpassen (falls nötig für Brennstoffkosten/Aufteilung)
+  - [ ] Funktion zur Erfassung/Zuordnung von Brennstoffkosten entwickeln
+  - [ ] Logik zur Aufteilung Brennstoffkosten (Wärme/Warmwasser, ggf. über Zeiträume) implementieren
+  - [ ] Verteilungslogik für Wärme- und Warmwasserkosten integrieren
+  - [ ] Test für spezifische Heizkostenlogik erstellen (`test/test_cost_alloc_heating.py`)
+- [ ] Logik für direkte Kostenzuordnung implementieren
+  - [ ] Anpassung der Abrechnungsfunktion zur Berücksichtigung direkt zugeordneter Kosten
+  - [ ] Test für direkte Kostenzuordnung erstellen (`test/test_cost_alloc_direct.py`)
 - [X] UI für benutzerdefinierte Kostenverteilschlüssel erstellen - Completed on 2024-08-08
-  - [X] Abhängigkeiten hinzufügen
-    - [X] `Flask-WTF` zu `requirements.txt` hinzufügen
-    - [X] Abhängigkeiten installieren (`pip install -r requirements.txt`)
-  - [X] Formular definieren (`app/forms.py`)
-    - [X] `CostTypeForm` mit Feldern `name`, `unit`, `type` (SelectField) erstellen
-  - [X] Flask Blueprint erstellen (`app/cost_types/routes.py`)
-    - [X] Blueprint `cost_types_bp` definieren
-    - [X] Blueprint in `app/__init__.py` registrieren
-  - [X] (Creative Phase - UI Design)
-    - [X] Layout für Listenseite entwerfen (Tabelle, Buttons)
-    - [X] Design für Formularseite entwerfen (Erstellen/Bearbeiten)
-    - [X] Bootstrap-Styling planen
-    - [X] Anzeige von Validierungsfehlern planen
-  - [X] Routen und Logik implementieren (`app/cost_types/routes.py`)
-    - [X] Route für Liste (GET)
-    - [X] Route für Erstellen (GET, POST)
-    - [X] Route für Bearbeiten (GET, POST)
-    - [X] Route für Löschen (POST/DELETE mit Bestätigung)
-  - [X] Templates erstellen (`app/templates/cost_types/`)
-    - [X] `list_cost_types.html` erstellen
-    - [X] `create_edit_cost_type.html` erstellen
-    - [X] Basis-Template anpassen/erweitern
-    - [X] Flask-WTF Makros verwenden
-  - [X] Test für Logik der benutzerdef. Schlüssel erstellen (`test/test_custom_keys.py`)
-    - [X] Testdatei erstellen
-    - [X] Tests für GET-Routen schreiben
-    - [X] Tests für POST-Routen (Erstellen, Bearbeiten, Löschen) schreiben
-    - [X] Validierungstests schreiben
-  - [X] Tests ausführen und debuggen
-- [X] PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08
-  - [X] Create PDF generation function `generate_utility_statement_pdf` (e.g., in `app/pdf_generation.py`)
-  - [X] Define function signature (e.g., needs contract_id, period_start, period_end, cost_items)
-  - [X] Implement data fetching logic (Contract, Tenant, Apartment, CostType details, Allocation results from `calculations.py`)
-  - [X] Implement basic PDF structure using `reportlab` (Header, Address, Cost Table, Summary)
-  - [X] Handle basic formatting (Paragraphs, Tables)
-  - [X] Save PDF to a file or return as byte stream
+  - [X] Tests für Logik der benutzerdef. Schlüssel (`test/test_custom_keys.py`)
+- [ ] UI für Verwaltung von Bewohnerzahl-Zeiträumen implementieren
+  - [ ] Integration in Mieter-Bearbeitungsview
+  - [ ] Formular/Logik zum Hinzufügen, Bearbeiten, Löschen von `OccupancyPeriod`-Einträgen
+  - [ ] Test für OccupancyPeriod UI erstellen (`test/test_ui_occupancy.py`)
+- [ ] UI für Erfassung von Kostenbelegen/Rechnungen implementieren
+  - [ ] Blueprint, Forms, Routes, Templates für Invoices (List, Create, Edit View)
+  - [ ] Formular-Logik zur Auswahl: Verteilungsschlüssel ODER direkte Zuordnung zu Mieter/Vertrag
+  - [ ] Test für Invoice CRUD (inkl. Zuordnungsauswahl) erstellen (`test/test_crud_invoices.py`)
+- [ ] Erweiterte CRUD-UI für Verträge implementieren
+  - [ ] Blueprint, Forms, Routes, Templates für Contracts (List, Create, Edit View)
+  - [ ] Verknüpfung Mieter/Wohnung, Erfassung Indexklausel etc.
+  - [ ] Test für Contract CRUD erstellen (`test/test_crud_contracts.py`)
+- [X] PDF-Generierung für Betriebs/Neben- und Heizkostenabrechnungen - Completed on 2024-08-08
   - [X] Test für PDF-Generierung Basis erstellen (`test/test_pdf_generation_basic.py`)
-    - [X] Create test file
-    - [X] Setup basic test data (Tenant, Apt, Contract, Costs)
-    - [X] Call generation function
-    - [X] Assert PDF is created (e.g., check file existence or stream content type/length)
-    - [X] Optional: Basic content check (e.g., presence of tenant name)
-- [ ] Manuelle Datenerfassung ermöglichen (für alle Importtypen)
-  - [ ] Datenbankerweiterung: Spalte `entry_type` zu `consumption_data` hinzufügen
-    - [ ] Spalte in `app/models.py` definieren
-    - [ ] Migration generieren (`flask db migrate -m \"add entry_type to consumption_data\"`)
-    - [ ] Migration anwenden (`flask db upgrade`)
-  - [ ] Formular erstellen: `ManualConsumptionForm` in `app/forms.py` definieren
-    - [ ] Felder: `apartment_id` (SelectField), `cost_type_id` (SelectField), `date` (DateField), `value` (FloatField)
-    - [ ] SelectFields dynamisch befüllen (Apartments, CostTypes)
-  - [ ] Blueprint/Routen erstellen: `manual_entry_bp` in `app/manual_entry/routes.py`
-    - [ ] Blueprint definieren und registrieren
-    - [ ] Route `/manual_entry/consumption` (GET/POST) implementieren
-    - [ ] Validierungs- und Speicherlogik hinzufügen (`entry_type='manual'`)
-    - [ ] Flash-Nachrichten implementieren
-  - [ ] Template erstellen: `consumption_entry.html` in `app/templates/manual_entry/`
-    - [ ] Formular mit `bootstrap_wtf` rendern
-    - [ ] Validierungsfehler und Flash-Nachrichten anzeigen
-  - [ ] Navigation anpassen: Link in `_base.html` hinzufügen
-  - [ ] Test für manuelle Datenerfassung erstellen (`test/test_manual_data_entry.py`)
-    - [ ] Testdatei erstellen
-    - [ ] Tests für GET und POST (valide/invalide Daten) schreiben
-    - [ ] Test für korrekte DB-Speicherung (`entry_type`) schreiben
-  - [ ] UI-Maske für manuelle Zählerstandserfassung // Alte Unteraufgabe (ersetzt durch obige)
+  - [ ] Betriebskostenabrechnung PDF-Generierung erweitern (Anteilige Kosten, direkte Kosten)
+  - [ ] Heizkostenabrechnung PDF-Generierung erweitern (spezifische Heizkostenlogik)
+- [ ] Manuelle Datenerfassung für Zählerstände/Verbräuche implementieren
+  - [ ] UI-Maske für Zählerstände (pro Zähler)
+  - [ ] UI-Maske für allgemeine Verbrauchsdaten (pro Wohnung/Kostenart)
+  - [ ] Datenbank-Speicherung mit `entry_type='manual'` (Versionierung optional/später prüfen)
+  - [ ] Test für manuelle Verbrauchsdatenerfassung (`test/test_manual_consumption_entry.py`)
 - [ ] Warnsystem für Abrechnungsprüfung implementieren
   - [ ] Test für Warnsystem-Logik erstellen (`test/test_validation_warnings.py`)
-  - [ ] Logik für Plausibilitätschecks (fehlende Stände, Sprünge, Vorauszahlungen)
+  - [ ] Logik für Plausibilitätschecks (fehlende Stände, Sprünge, Vorauszahlungen, fehlende Kosten)
   - [ ] Warnungsdashboard/Anzeige im Abrechnungsmodul
 
-## Phase 3: Index-Mieterhöhungen (ca. 2 Wochen)
-- [ ] VPI-Datenimport ermöglichen (manuell/CSV)
+## Phase 3: Index & Abschluss CRUD (ca. 3-4 Wochen)
+- [ ] VPI-Datenimport ermöglichen (manuell/CSV/API)
+  - [ ] Implementierung CSV-Import
+  - [ ] Implementierung API-Import (Statistik Austria)
   - [ ] Test für VPI-Datenimport erstellen (`test/test_vpi_import.py`)
 - [ ] Automatische Berechnung der Indexanpassung implementieren
   - [ ] Test für Indexanpassungsberechnung erstellen (`test/test_index_calculation.py`)
 - [ ] Generierung von Mieterhöhungsschreiben (PDF)
   - [ ] Test für PDF-Generierung (Erhöhung) erstellen (`test/test_pdf_generation_increase.py`)
+- [ ] Fertigstellung CRUD-Operationen
+  - [ ] Löschen-Funktionen für alle Stammdaten implementieren (mit Bestätigung/Checks)
+  - [ ] Detailansichten für alle Stammdaten implementieren
+  - [ ] Tests für Löschen/Detailansichten erweitern
+- [ ] Dokumentenmanagement implementieren (Vertragsarchivierung)
+  - [X] Dokumentenarchivierung für Verträge integrieren (PDF-Upload/Speicherung) - *Verschoben von Phase 2*
+    - [X] Test für Dokumentenarchivierung erstellen (`test/test_document_storage.py`) - *Verschoben von Phase 2*
+  - [ ] Archivierung für Mieterhöhungsschreiben hinzufügen
 
-## Phase 4: Test & Dokumentation (ca. 3 Wochen)
+## Phase 4: Test, Doku & Feinschliff (ca. 4 Wochen)
 - [ ] Umfassende Integrations- und End-to-End-Tests schreiben (Ergänzung zu Unit-Tests)
-  - [ ] Testfall: Kompletter Abrechnungslauf mit Mieterwechsel
+  - [ ] Testfall: Kompletter Abrechnungslauf mit Mieterwechsel & Heizkosten & direkten Kosten
+  - [ ] Testfall: CRUD-Operationen über den gesamten Lebenszyklus von Stammdaten
   - [ ] Testfall: Manuelle vs. importierte Daten Konsistenzcheck (Integration)
   - [ ] Testfall: Warnungsgenerierung bei fehlenden Daten (Integration)
-- [ ] Benutzerhandbuch erstellen (Schwerpunkt: Schlüsselverwaltung, Abrechnungsprozess)
-
-## Weitere Features & Nicht-Funktionale Anforderungen
-- [ ] Dokumentenmanagement erweitern (Langzeitarchivierung, Suchfilter)
-  - [ ] Test für erweiterte Doku-Features erstellen (`test/test_document_mgmt_advanced.py`)
+- [ ] Benutzerhandbuch erstellen (Schwerpunkt: Stammdatenverwaltung, Schlüssel, Kostenerfassung (direkt/verteilt), Abrechnungsprozess, Heizkosten)
 - [ ] Dashboard & Berichte implementieren (Visualisierung Kostenverteilung, CSV/Excel-Export)
   - [ ] Test für Dashboard/Berichtslogik erstellen (`test/test_dashboard_reports.py`)
-- [ ] Performance-Optimierung sicherstellen (< 5 Sek. für 15 WE)
+- [ ] Dokumentenmanagement erweitern (Suche/Filter)
+  - [ ] Test für erweiterte Doku-Features erstellen (`test/test_document_mgmt_advanced.py`)
+- [ ] Performance-Optimierung sicherstellen (< 5 Sek. für 15 WE, UI < 1 Sek)
   - [ ] Performance-Tests implementieren (`test/test_performance.py`)
 - [ ] DSGVO-Konformität prüfen und sicherstellen
 - [ ] Revisionssichere Archivierung von PDFs gewährleisten
 - [ ] Benutzerfreundlichkeit & Responsive Design verbessern
 - [ ] User Authentication & Authorization
 
-## Completed Tasks
-- [X] Überarbeitung der Personentage-Berechnung - Abgeschlossen am 2024-04-01
-  - Entfernung redundanter Code (person_days.py)
-  - Korrektur der Personentage-Berechnung
-  - Verbesserte Validierung in WTForms
-  - Alle Tests erfolgreich (67 Tests)
-
+## Phase 5: Datensicherung (ca. 1-2 Wochen)
+- [ ] Spezifikation Datensicherung definieren (Was, Wie oft, Ziel: Google Drive)
+- [ ] Implementierung Google Drive API Integration
+  - [ ] Authentifizierung (OAuth 2.0)
+  - [ ] Backup-Funktion (DB-Dump, relevante Dateien)
+  - [ ] Optional: Restore-Funktion
+- [ ] UI für Backup-Konfiguration/Ausführung
+- [ ] Test für Datensicherung erstellen (`test/test_backup.py`)

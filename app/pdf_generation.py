@@ -7,6 +7,7 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
+from sqlalchemy import func
 
 from app import db
 from app.models import Contract, Tenant, Apartment, CostType, ApartmentShare, ConsumptionData, OccupancyPeriod

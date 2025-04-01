@@ -13,6 +13,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Basic PDF generation for utility statements implemented.
 
 ## Completed Tasks
+- Datenbankmodell für Kern-Stammdaten erweitern - Completed on 2024-04-01, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-datenbankmodell-fuer-kern-stammdaten-erweitern-v10)
 - Kostenverteilung (Personentage pro-rata) - Completed on 2024-08-02, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-kostenverteilung-personentage-pro-rata-v10)
 - Kombinierte Schlüsselverteilung implementieren - Completed on 2024-08-01, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-kombinierte-schlusselverteilung-implementieren-v10)
 - Flask-Setup mit Grundstruktur - Completed on 2024-07-31, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-flask-setup-mit-grundstruktur-v10)
@@ -47,6 +48,8 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Testing Flash messages after redirects in Flask test client is unreliable (See Cost Types archive entry).
 - Reusing import logic structure is efficient (See Tenant CSV Import archive entry).
 - Verify dependencies before integration; Enums improve robustness (See PDF Gen archive entry).
+- Beim Entfernen/Ändern von FKs müssen abhängige `db.relationship`-Definitionen überprüft und ggf. angepasst/entfernt werden, um SQLAlchemy-Mapper-Fehler (`NoForeignKeysError`, `InvalidRequestError`) zu vermeiden. (Siehe DB Model Expansion)
+- Flexible Zuordnungen (z.B. A oder B) können oft gut durch nullable Fremdschlüssel + Konvention im Code modelliert werden. (Siehe DB Model Expansion - Invoice)
 
 ### Improvements for Next Time
 - Beim Erstellen neuer Testdateien sofort die `conftest.py` überprüfen und die korrekten Fixtures übernehmen.

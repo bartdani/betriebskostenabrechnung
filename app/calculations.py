@@ -2,6 +2,8 @@ from sqlalchemy import func, or_
 from app import db
 from app.models import ConsumptionData, Apartment, CostType, ApartmentShare, OccupancyPeriod
 from collections import defaultdict
+from typing import Dict
+from datetime import date
 
 def calculate_consumption_allocation(cost_type_id, total_cost, period_start, period_end):
     """
@@ -256,21 +258,22 @@ def calculate_person_days(apartment_id, period_start, period_end):
 
     return total_person_days
 
-def calculate_person_day_allocation(cost_type_id, total_cost, period_start, period_end):
+def calculate_person_day_allocation(cost_type_id: int, total_cost: float, 
+                                  billing_start: date, billing_end: date) -> Dict[int, float]:
     """
     Berechnet die Kostenverteilung für einen bestimmten Kosten-Typ basierend auf Personentagen.
 
     Args:
-        cost_type_id: Die ID des zu verteilenden CostType (muss Typ 'person_days' sein).
+        cost_type_id: Die ID des zu verteilenden CostType (muss Typ 'share' sein).
         total_cost: Der Gesamtbetrag, der verteilt werden soll.
-        period_start: Startdatum des Abrechnungszeitraums.
-        period_end: Enddatum des Abrechnungszeitraums.
+        billing_start: Startdatum des Abrechnungszeitraums.
+        billing_end: Enddatum des Abrechnungszeitraums.
 
     Returns:
         dict: Ein Dictionary {apartment_id: allocated_cost} oder None bei Fehlern.
     """
 
-    # Sicherstellen, dass der CostType existiert und vom Typ 'person_days' ist (oder wie auch immer der Typ heißt)
+    # Sicherstellen, dass der CostType existiert und vom Typ 'share' ist (oder wie auch immer der Typ heißt)
     cost_type = db.session.get(CostType, cost_type_id)
     # Annahme: Es gibt einen Typ 'person_days' oder eine ähnliche Kennzeichnung
     if not cost_type: # or cost_type.type != 'person_days':
@@ -280,29 +283,28 @@ def calculate_person_day_allocation(cost_type_id, total_cost, period_start, peri
     # 1. Alle relevanten Wohnungen finden (die im Zeitraum belegt waren)
     #    Wir holen alle Occupancy Periods, die den Zeitraum überschneiden
     all_relevant_periods_query = db.session.query(OccupancyPeriod).filter(
-        OccupancyPeriod.start_date <= period_end,
+        OccupancyPeriod.start_date <= billing_end,
         or_(
             OccupancyPeriod.end_date == None,
-            OccupancyPeriod.end_date >= period_start
+            OccupancyPeriod.end_date >= billing_start
         )
     )
     all_relevant_periods = all_relevant_periods_query.all()
 
-    if not all_relevant_periods:
-        print(f"Warning: No occupancy periods found for period {period_start} to {period_end}. No allocation possible.")
+    # Alle Wohnungen holen, die existieren
+    all_apartments = {apt.id: apt for apt in Apartment.query.all()}
+    if not all_apartments:
         return {}
 
     # 2. Personentage pro Wohnung berechnen und Gesamt-Personentage ermitteln
     person_days_per_apartment = defaultdict(int)
-    all_involved_apartment_ids = set()
     total_person_days_all_apts = 0
 
     for period in all_relevant_periods:
         apt_id = period.apartment_id
-        all_involved_apartment_ids.add(apt_id)
         # Berechne Überlappungstage für DIESE Periode
-        overlap_start = max(period.start_date, period_start)
-        overlap_end = min(period.end_date, period_end) if period.end_date else period_end
+        overlap_start = max(period.start_date, billing_start)
+        overlap_end = min(period.end_date, billing_end) if period.end_date else billing_end
         person_days_for_period = 0
         if overlap_end >= overlap_start:
             duration_days = (overlap_end - overlap_start).days + 1
@@ -313,23 +315,20 @@ def calculate_person_day_allocation(cost_type_id, total_cost, period_start, peri
 
     allocation = {}
 
-    # 3. Anteile berechnen, wenn Gesamt-Personentage > 0
+    # 3. Anteile berechnen
     if total_person_days_all_apts > 0:
-        for apt_id, apt_person_days in person_days_per_apartment.items():
+        # Wenn es Personentage gibt, nach diesen verteilen
+        for apt_id in all_apartments:
+            apt_person_days = person_days_per_apartment[apt_id]
             if apt_person_days > 0:
                 allocated_cost = (apt_person_days / total_person_days_all_apts) * total_cost
                 allocation[apt_id] = round(allocated_cost, 2)
             else:
                 allocation[apt_id] = 0.00
     else:
-        print(f"Warning: Total person-days for period is 0. No allocation possible for CostType {cost_type_id}.")
-        # Allen beteiligten Wohnungen 0 zuweisen
-        for apt_id in all_involved_apartment_ids:
-             allocation[apt_id] = 0.00
-
-    # Sicherstellen, dass alle beteiligten Apartments im Ergebnis sind
-    for apt_id in all_involved_apartment_ids:
-        if apt_id not in allocation:
-             allocation[apt_id] = 0.00
+        # Wenn keine Personentage vorhanden sind, allen Wohnungen 0.00 zuweisen
+        print(f"Warning: No occupancy periods found for period {billing_start} to {billing_end}. No allocation possible.")
+        for apt_id in all_apartments:
+            allocation[apt_id] = 0.00
 
     return allocation 

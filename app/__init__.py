@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -41,9 +41,12 @@ app.register_blueprint(tenants_bp, url_prefix='/tenants')
 from app.cost_types.routes import cost_types_bp
 app.register_blueprint(cost_types_bp)
 
+from app.manual_entry.routes import manual_entry_bp
+app.register_blueprint(manual_entry_bp)
+
 @app.route('/')
 @app.route('/index')
 def index():
-    return "<h1>Betriebskostenabrechnung - Basis-Setup</h1>"
+    return render_template('index.html', title='Startseite')
 
 # Weitere Konfigurationen und Blueprints werden hier später hinzugefügt 

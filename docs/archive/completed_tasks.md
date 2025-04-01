@@ -281,4 +281,34 @@ Last Updated: 2024-08-08
 - `activeContext.md`: Updated focus and completion status.
 - `techContext.md`: Confirmed `reportlab` usage.
 - `systemPatterns.md`: Documented the basic PDF generation pattern.
-- `progress.md`: Added entry linking to this archive section. 
+- `progress.md`: Added entry linking to this archive section.
+
+## Task: Datenbankmodell für Kern-Stammdaten erweitern (v1.0)
+Last Updated: 2024-04-01
+
+### Implementation Results
+- Das `Apartment`-Modell wurde um `address` und `size_sqm` erweitert.
+- Der redundante `apartment_id`-Fremdschlüssel wurde aus dem `Tenant`-Modell entfernt.
+- Das `Contract`-Modell wurde um eine Beziehung (`direct_allocation_invoices`) zu `Invoice` erweitert.
+- Das neue Modell `Meter` (mit `apartment_id`, `meter_type`, `serial_number`, `unit`) wurde erstellt.
+- Das neue Modell `Invoice` (mit `invoice_number`, `date`, `amount`, `cost_type_id`, `period_start`, `period_end`, `direct_allocation_contract_id` nullable FK) wurde erstellt.
+- Die Datenbankmigration wurde generiert (`5bab8952e54e`) und erfolgreich angewendet.
+- Die direkte Beziehung `Apartment.tenants` wurde entfernt, um Mapper-Konfigurationsfehler zu beheben; der Zugriff auf Mieter erfolgt nun über `Apartment.contracts[].tenant`.
+
+### Completed Testing
+- Bestehende Tests in `test/test_db_models_basic.py` wurden angepasst (Apartment-Felder, Tenant-Beziehung).
+- Neue Tests für `Contract`, `Meter` und `Invoice` (sowohl direkte Zuordnung als auch Verteilungsszenario) wurden hinzugefügt.
+- Alle Tests in `test/test_db_models_basic.py` wurden erfolgreich ausgeführt (`pytest test/test_db_models_basic.py`).
+
+### Lessons Learned
+- Beim Entfernen/Ändern von FKs müssen abhängige `db.relationship`-Definitionen überprüft und ggf. angepasst/entfernt werden, um SQLAlchemy-Mapper-Fehler (`NoForeignKeysError`, `InvalidRequestError`) zu vermeiden.
+- Flexible Zuordnungen (z.B. A oder B) können oft gut durch nullable Fremdschlüssel + Konvention im Code modelliert werden (hier: `Invoice.direct_allocation_contract_id`).
+- Frühzeitiges Testen nach Modelländerungen hilft, Konfigurationsfehler schnell zu identifizieren.
+
+### Documentation Updates
+- `app/models.py`: Modelle implementiert/angepasst.
+- `migrations/versions/5bab8952e54e_expand_core_data_models.py`: Migrationsskript generiert.
+- `test/test_db_models_basic.py`: Tests angepasst und erweitert.
+- `memory-bank/tasks.md`: Task und Teilschritte als [X] markiert.
+- `memory-bank/progress.md`: Lessons Learned hinzugefügt.
+- `memory-bank/activeContext.md`: Aktualisiert während des Prozesses. 
