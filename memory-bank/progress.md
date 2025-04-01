@@ -23,6 +23,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Implement CRUD for Custom Cost Types (Kostenarten) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-implement-crud-for-custom-cost-types-kostenarten-v10)
 - Initial Project Setup - Completed on YYYY-MM-DD, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-initial-project-setup-v10)
 - PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-pdf-generierung-fuer-betriebs-und-heizkostenabrechnungen-basisversion-v10)
+- Überarbeitung der Personentage-Berechnung - Abgeschlossen am 2024-04-01, siehe [archive entry](mdc:../docs/archive/completed_tasks.md#task-uberarbeitung-der-personentage-berechnung-v10)
 
 ## REFLECTION
 
@@ -56,4 +57,10 @@ This document tracks the overall progress, completed tasks, and reflections on t
 ## Next Steps
 - Implement Manual Data Entry UI.
 - Implement Tenant Contracts CRUD.
-- Implement Document Upload/Storage. 
+- Implement Document Upload/Storage.
+
+## What Works
+- Personentage-Berechnung funktioniert korrekt
+- Validierung bei manueller Dateneingabe ist robust
+- Redundanter Code wurde entfernt
+- Test-Suite deckt alle wichtigen Funktionen ab 

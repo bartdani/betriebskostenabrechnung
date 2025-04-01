@@ -1,7 +1,7 @@
 # Active Context
 
 ## Current Focus
-- Selecting the next task after completing the basic PDF generation.
+Implementierung der manuellen Datenerfassung für Zählerstände und andere relevante Daten.
 
 ## Recent Changes & Activities
 - Implemented basic PDF generation function `generate_utility_statement_pdf` in `app/pdf_generation.py`.
@@ -18,4 +18,15 @@
 - Select the next task from the backlog (e.g., Manual Data Entry, Tenant Contracts).
 
 ## Recent Completions
-- PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) has been completed and archived. Next focus TBD. 
+- Überarbeitung der Personentage-Berechnung wurde abgeschlossen und archiviert. Nächster Fokus liegt auf der Implementierung der User Authentication.
+
+## Current Implementation Status
+- Personentage-Berechnung wurde überarbeitet und getestet
+- Validierung wurde in WTForms integriert
+- Redundanter Code wurde entfernt
+- Alle Tests laufen erfolgreich
+
+## Recent Completions
+- UI/DB-Fehlerbehebung (Migrationsskripte) abgeschlossen und gepusht.
+- UI für benutzerdefinierte Kostenverteilschlüssel implementiert.
+- PDF-Generierung für Betriebskostenabrechnungen (Basis) implementiert. 

@@ -7,6 +7,10 @@
 - [X] Git-Repository initialisieren und mit GitHub verbinden
 - [X] `README.md` erstellen und pushen
 - [X] SQLAlchemy LegacyAPIWarnings beheben
+- [X] Basis UI-Layout und Navigation implementieren - Completed on 2024-08-08
+  - [X] Bootstrap Navbar in `_base.html` erstellen/anpassen
+  - [X] Index-Route (`/`) erstellen/anpassen, um Basis-Layout zu rendern
+  - [X] Navigationslinks für Hauptbereiche (Dashboard, Stammdaten, etc.) hinzufügen
 
 ## Phase 1: Grundgerüst (ca. 4 Wochen)
 - [X] Flask-Setup mit Grundstruktur (Authentifizierung optional/später)
@@ -100,9 +104,27 @@
     - [X] Assert PDF is created (e.g., check file existence or stream content type/length)
     - [X] Optional: Basic content check (e.g., presence of tenant name)
 - [ ] Manuelle Datenerfassung ermöglichen (für alle Importtypen)
+  - [ ] Datenbankerweiterung: Spalte `entry_type` zu `consumption_data` hinzufügen
+    - [ ] Spalte in `app/models.py` definieren
+    - [ ] Migration generieren (`flask db migrate -m \"add entry_type to consumption_data\"`)
+    - [ ] Migration anwenden (`flask db upgrade`)
+  - [ ] Formular erstellen: `ManualConsumptionForm` in `app/forms.py` definieren
+    - [ ] Felder: `apartment_id` (SelectField), `cost_type_id` (SelectField), `date` (DateField), `value` (FloatField)
+    - [ ] SelectFields dynamisch befüllen (Apartments, CostTypes)
+  - [ ] Blueprint/Routen erstellen: `manual_entry_bp` in `app/manual_entry/routes.py`
+    - [ ] Blueprint definieren und registrieren
+    - [ ] Route `/manual_entry/consumption` (GET/POST) implementieren
+    - [ ] Validierungs- und Speicherlogik hinzufügen (`entry_type='manual'`)
+    - [ ] Flash-Nachrichten implementieren
+  - [ ] Template erstellen: `consumption_entry.html` in `app/templates/manual_entry/`
+    - [ ] Formular mit `bootstrap_wtf` rendern
+    - [ ] Validierungsfehler und Flash-Nachrichten anzeigen
+  - [ ] Navigation anpassen: Link in `_base.html` hinzufügen
   - [ ] Test für manuelle Datenerfassung erstellen (`test/test_manual_data_entry.py`)
-  - [ ] Datenbankerweiterung für manuelle Einträge (`consumption_data.entry_type`)
-  - [ ] UI-Maske für manuelle Zählerstandserfassung
+    - [ ] Testdatei erstellen
+    - [ ] Tests für GET und POST (valide/invalide Daten) schreiben
+    - [ ] Test für korrekte DB-Speicherung (`entry_type`) schreiben
+  - [ ] UI-Maske für manuelle Zählerstandserfassung // Alte Unteraufgabe (ersetzt durch obige)
 - [ ] Warnsystem für Abrechnungsprüfung implementieren
   - [ ] Test für Warnsystem-Logik erstellen (`test/test_validation_warnings.py`)
   - [ ] Logik für Plausibilitätschecks (fehlende Stände, Sprünge, Vorauszahlungen)
@@ -134,4 +156,11 @@
 - [ ] Revisionssichere Archivierung von PDFs gewährleisten
 - [ ] Benutzerfreundlichkeit & Responsive Design verbessern
 - [ ] User Authentication & Authorization
+
+## Completed Tasks
+- [X] Überarbeitung der Personentage-Berechnung - Abgeschlossen am 2024-04-01
+  - Entfernung redundanter Code (person_days.py)
+  - Korrektur der Personentage-Berechnung
+  - Verbesserte Validierung in WTForms
+  - Alle Tests erfolgreich (67 Tests)
 

@@ -39,4 +39,13 @@ This document outlines key architectural patterns, design decisions, and reusabl
 
 ## Backend Patterns
 
-[Describe common patterns used in the backend logic] 
+[Describe common patterns used in the backend logic]
+
+## Berechnungsmuster
+
+### Personentage-Berechnung
+- Implementierung in `calculations.py`
+- Berücksichtigung aller Wohnungen bei der Kostenverteilung
+- Rückgabe von 0.00 für alle Wohnungen wenn keine Personentage vorhanden
+- Validierung der Kostenart direkt im WTForms-Formular
+- Typ-sichere Implementierung durch Type Hints 
