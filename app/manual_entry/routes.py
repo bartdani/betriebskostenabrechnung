@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app import db
 from app.models import Apartment, CostType, ConsumptionData
-from app.forms import ManualConsumptionForm
+from app.cost_types.forms import ManualConsumptionForm
 from datetime import datetime
 
 manual_entry_bp = Blueprint('manual_entry', 

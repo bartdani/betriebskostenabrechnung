@@ -42,3 +42,17 @@ def edit_tenant(id):
             db.session.rollback()
             flash(f'Fehler beim Aktualisieren des Mieters: {e}', 'danger')
     return render_template('tenants/form.html', form=form, title='Mieter bearbeiten')
+
+@bp_tenants.route('/<int:id>/delete', methods=['POST'])
+def delete_tenant(id):
+    tenant = db.session.get(Tenant, id) or abort(404)
+    try:
+        db.session.delete(tenant)
+        db.session.commit()
+        flash(f'Mieter "{tenant.name}" wurde erfolgreich gelöscht.', 'success')
+        return redirect(url_for('tenants.list_tenants'))
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Fehler beim Löschen des Mieters: {e}', 'danger')   
+
+

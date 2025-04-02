@@ -7,7 +7,7 @@ from app.calculations import calculate_person_days, calculate_person_day_allocat
 
 def test_create_occupancy_period(client, test_db):
     """Testet die erfolgreiche Erstellung einer OccupancyPeriod."""
-    apt = Apartment(number='Test Apt 1')
+    apt = Apartment(number='Test Apt 1', address='Test St 1', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     assert apt is not None
@@ -29,7 +29,7 @@ def test_create_occupancy_period(client, test_db):
 
 def test_occupancy_period_ongoing(client, test_db):
     """Testet eine Periode ohne Enddatum."""
-    apt = Apartment(number='Test Apt Ongoing')
+    apt = Apartment(number='Test Apt Ongoing', address='Test St Ongoing', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     period = OccupancyPeriod(
@@ -43,7 +43,7 @@ def test_occupancy_period_ongoing(client, test_db):
 
 def test_occupancy_period_invalid_dates(client, test_db):
     """Testet, ob ein Enddatum vor dem Startdatum einen Fehler auslöst."""
-    apt = Apartment(number='Test Apt Invalid Dates')
+    apt = Apartment(number='Test Apt Invalid Dates', address='Test St Invalid Dates', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     with pytest.raises(IntegrityError): # Wegen CheckConstraint
@@ -59,7 +59,7 @@ def test_occupancy_period_invalid_dates(client, test_db):
 
 def test_occupancy_period_zero_occupants(client, test_db):
     """Testet, ob 0 Bewohner einen Fehler auslösen."""
-    apt = Apartment(number='Test Apt Zero Occupants')
+    apt = Apartment(number='Test Apt Zero Occupants', address='Test St Zero Occupants', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     with pytest.raises(IntegrityError): # Wegen CheckConstraint
@@ -76,7 +76,7 @@ def test_occupancy_period_zero_occupants(client, test_db):
 
 def test_calculate_person_days_single_period_full_overlap(client, test_db):
     """Testet einen Belegungszeitraum, der den Abrechnungszeitraum komplett umfasst."""
-    apt = Apartment(number='Test Apt Full Overlap')
+    apt = Apartment(number='Test Apt Full Overlap', address='Test St Full Overlap', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2023, 1, 1), end_date=date(2023, 12, 31), number_of_occupants=2))
@@ -89,7 +89,7 @@ def test_calculate_person_days_single_period_full_overlap(client, test_db):
 
 def test_calculate_person_days_single_period_partial_overlap_start(client, test_db):
     """Testet Überlappung am Anfang des Abrechnungszeitraums."""
-    apt = Apartment(number='Test Apt Partial Start')
+    apt = Apartment(number='Test Apt Partial Start', address='Test St Partial Start', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2022, 12, 1), end_date=date(2023, 1, 10), number_of_occupants=1))
@@ -102,7 +102,7 @@ def test_calculate_person_days_single_period_partial_overlap_start(client, test_
 
 def test_calculate_person_days_single_period_partial_overlap_end(client, test_db):
     """Testet Überlappung am Ende des Abrechnungszeitraums."""
-    apt = Apartment(number='Test Apt Partial End')
+    apt = Apartment(number='Test Apt Partial End', address='Test St Partial End', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2023, 12, 20), end_date=date(2024, 1, 5), number_of_occupants=3))
@@ -115,7 +115,7 @@ def test_calculate_person_days_single_period_partial_overlap_end(client, test_db
 
 def test_calculate_person_days_single_period_within(client, test_db):
     """Testet einen Belegungszeitraum komplett innerhalb des Abrechnungszeitraums."""
-    apt = Apartment(number='Test Apt Within')
+    apt = Apartment(number='Test Apt Within', address='Test St Within', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2023, 2, 1), end_date=date(2023, 2, 10), number_of_occupants=4))
@@ -128,7 +128,7 @@ def test_calculate_person_days_single_period_within(client, test_db):
 
 def test_calculate_person_days_multiple_periods(client, test_db):
     """Testet mehrere Belegungszeiträume."""
-    apt = Apartment(number='Test Apt Multi')
+    apt = Apartment(number='Test Apt Multi', address='Test St Multi', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add_all([
@@ -144,7 +144,7 @@ def test_calculate_person_days_multiple_periods(client, test_db):
 
 def test_calculate_person_days_ongoing_period(client, test_db):
     """Testet eine laufende Belegungsperiode."""
-    apt = Apartment(number='Test Apt Ongoing Calc')
+    apt = Apartment(number='Test Apt Ongoing Calc', address='Test St Ongoing Calc', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2023, 12, 1), number_of_occupants=1))
@@ -157,7 +157,7 @@ def test_calculate_person_days_ongoing_period(client, test_db):
 
 def test_calculate_person_days_no_overlap(client, test_db):
     """Testet einen Belegungszeitraum außerhalb des Abrechnungszeitraums."""
-    apt = Apartment(number='Test Apt No Overlap')
+    apt = Apartment(number='Test Apt No Overlap', address='Test St No Overlap', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     db.session.add(OccupancyPeriod(apartment_id=apt.id, start_date=date(2022, 1, 1), end_date=date(2022, 12, 31), number_of_occupants=2))
@@ -170,7 +170,7 @@ def test_calculate_person_days_no_overlap(client, test_db):
 
 def test_calculate_person_days_no_periods(client, test_db):
     """Testet den Fall ohne Belegungszeiträume für die Wohnung."""
-    apt = Apartment(number='Test Apt No Periods')
+    apt = Apartment(number='Test Apt No Periods', address='Test St No Periods', size_sqm=100.0)
     db.session.add(apt)
     db.session.commit()
     billing_start = date(2023, 1, 1)
@@ -182,8 +182,8 @@ def test_calculate_person_days_no_periods(client, test_db):
 
 def test_calculate_person_day_allocation_simple(client, test_db):
     """Testet eine einfache Verteilung auf zwei Wohnungen."""
-    apt1 = Apartment(number='Alloc Apt 1')
-    apt2 = Apartment(number='Alloc Apt 2')
+    apt1 = Apartment(number='Alloc Apt 1', address='Alloc St 1', size_sqm=100.0)
+    apt2 = Apartment(number='Alloc Apt 2', address='Alloc St 2', size_sqm=150.0)
     ct = CostType(name='Müllgebühren', unit='EUR', type='share')
     db.session.add_all([apt1, apt2, ct])
     db.session.commit()
@@ -204,8 +204,8 @@ def test_calculate_person_day_allocation_simple(client, test_db):
 
 def test_calculate_person_day_allocation_one_apartment_zero_days(client, test_db):
     """Testet Verteilung, wenn eine Wohnung keine Personentage hat."""
-    apt1 = Apartment(number='Alloc Zero 1')
-    apt2 = Apartment(number='Alloc Zero 2')
+    apt1 = Apartment(number='Alloc Zero 1', address='Alloc St Zero 1', size_sqm=100.0)
+    apt2 = Apartment(number='Alloc Zero 2', address='Alloc St Zero 2', size_sqm=150.0)
     ct = CostType(name='Müllgebühren 2', unit='EUR', type='share')
     db.session.add_all([apt1, apt2, ct])
     db.session.commit()
@@ -225,8 +225,8 @@ def test_calculate_person_day_allocation_one_apartment_zero_days(client, test_db
 
 def test_calculate_person_day_allocation_total_zero_days(client, test_db):
     """Testet Verteilung, wenn insgesamt keine Personentage anfallen."""
-    apt1 = Apartment(number='Alloc Total Zero 1')
-    apt2 = Apartment(number='Alloc Total Zero 2')
+    apt1 = Apartment(number='Alloc Total Zero 1', address='Alloc St Total Zero 1', size_sqm=100.0)
+    apt2 = Apartment(number='Alloc Total Zero 2', address='Alloc St Total Zero 2', size_sqm=150.0)
     ct = CostType(name='Müllgebühren 3', unit='EUR', type='share')
     db.session.add_all([apt1, apt2, ct])
     db.session.commit()

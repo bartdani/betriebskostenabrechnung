@@ -15,7 +15,7 @@ def test_get_cost_types_list(client, test_db):
     ])
     db.session.commit()
 
-    response = client.get(url_for('cost_types.index'))
+    response = client.get('/cost-types/')
     assert response.status_code == 200
     # Prüfen auf sichtbare Strings im HTML
     response_text = response.data.decode('utf-8')
@@ -26,7 +26,7 @@ def test_get_cost_types_list(client, test_db):
 
 def test_get_create_cost_type_form(client, test_db):
     """Testet den Zugriff auf das Formular zum Erstellen."""
-    response = client.get(url_for('cost_types.create_cost_type'))
+    response = client.get('/cost-types/new')
     assert response.status_code == 200
     response_text = response.data.decode('utf-8')
     assert 'Neue Kostenart erstellen' in response_text
@@ -39,7 +39,7 @@ def test_get_edit_cost_type_form(client, test_db):
     db.session.add(ct)
     db.session.commit()
 
-    response = client.get(url_for('cost_types.edit_cost_type', cost_type_id=ct.id))
+    response = client.get(f'/cost-types/{ct.id}/edit')
     assert response.status_code == 200
     response_text = response.data.decode('utf-8')
     assert 'Kostenart bearbeiten: Zu Bearbeiten' in response_text
@@ -47,9 +47,9 @@ def test_get_edit_cost_type_form(client, test_db):
 
 def test_get_edit_cost_type_form_not_found(client, test_db):
     """Testet den Zugriff auf das Bearbeiten-Formular für eine nicht existierende ID."""
-    response = client.get(url_for('cost_types.edit_cost_type', cost_type_id=999))
-    assert response.status_code == 302 # Redirect zur Index-Seite
-    assert url_for('cost_types.index') in response.location
+    response = client.get(f'/cost-types/{999}/edit')
+    assert response.status_code == 302  # Redirect zur Index-Seite
+    assert response.location == '/cost-types/'  # Prüfe den relativen Pfad direkt
 
 # --- POST Requests --- #
 
@@ -57,7 +57,7 @@ def test_post_create_cost_type_success(client, test_db):
     """Testet das erfolgreiche Erstellen mit follow_redirects=True."""
     expected_message_text = 'Kostenart "Neue Testart" erfolgreich erstellt.'
 
-    response = client.post(url_for('cost_types.create_cost_type'), data={
+    response = client.post('/cost-types/new', data={
         'name': 'Neue Testart',
         'unit': 'Stk.',
         'type': 'share'
@@ -79,7 +79,7 @@ def test_post_create_cost_type_duplicate_name(client, test_db):
     db.session.add(CostType(name='Existiert Schon', unit='m', type='share'))
     db.session.commit()
     
-    response = client.post(url_for('cost_types.create_cost_type'), data={
+    response = client.post('/cost-types/new', data={
         'name': 'Existiert Schon', # Gleicher Name (Groß/Kleinschreibung wird ignoriert)
         'unit': 'Stk.',
         'type': 'share'
@@ -93,7 +93,7 @@ def test_post_create_cost_type_duplicate_name(client, test_db):
 
 def test_post_create_cost_type_validation_error(client, test_db):
     """Testet das Erstellen mit fehlenden Daten (Validierungsfehler)."""
-    response = client.post(url_for('cost_types.create_cost_type'), data={
+    response = client.post('/cost-types/new', data={
         'name': '', # Name fehlt -> DataRequired Fehler
         'unit': 'Stk.',
         'type': 'share'
@@ -110,7 +110,7 @@ def test_post_edit_cost_type_success(client, test_db):
     db.session.add(ct)
     db.session.commit()
     
-    response = client.post(url_for('cost_types.edit_cost_type', cost_type_id=ct.id), data={
+    response = client.post(f'/cost-types/{ct.id}/edit', data={
         'name': 'Neu',
         'unit': 'neu',
         'type': 'share'
@@ -131,7 +131,7 @@ def test_post_edit_cost_type_duplicate_name(client, test_db):
     db.session.add_all([ct1, ct2])
     db.session.commit()
     
-    response = client.post(url_for('cost_types.edit_cost_type', cost_type_id=ct1.id), data={
+    response = client.post(f'/cost-types/{ct1.id}/edit', data={
         'name': 'Existiert Schon', # Name von ct2
         'unit': 'm',
         'type': 'share'
@@ -150,7 +150,7 @@ def test_post_delete_cost_type_success(client, test_db):
     db.session.commit()
     cost_type_id = ct.id
     
-    response = client.post(url_for('cost_types.delete_cost_type', cost_type_id=cost_type_id), follow_redirects=True)
+    response = client.post(f'/cost-types/{cost_type_id}/delete', follow_redirects=True)
     
     assert response.status_code == 200 # Nach Redirect
     # assert 'Kostenart "Zu Löschen" erfolgreich gelöscht.' in response.data.decode('utf-8') # AUSKOMMENTIERT
@@ -160,7 +160,7 @@ def test_post_delete_cost_type_success(client, test_db):
 
 def test_post_delete_cost_type_not_found(client, test_db):
     """Testet das Löschen einer nicht existierenden Kostenart."""
-    response = client.post(url_for('cost_types.delete_cost_type', cost_type_id=999), follow_redirects=True)
+    response = client.post(f'/cost-types/{999}/delete', follow_redirects=True)
     
     assert response.status_code == 200 # Nach Redirect zur Index-Seite
     assert 'Kostenart nicht gefunden.' in response.data.decode('utf-8') 

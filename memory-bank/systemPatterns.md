@@ -53,14 +53,56 @@ This document outlines key architectural patterns, design decisions, and reusabl
 ## Testing Patterns
 
 ### Flash Message Testing
-- Flash-Messages werden im HTML-Response überprüft, nicht in der Session
-- Erwartete Flash-Messages müssen HTML-escaped sein (z.B. `&quot;` statt `"`)
-- Beispiel für Flash-Message Test:
-```python
-def test_create_success(client):
-    response = client.post('/route', data={'field': 'value'})
-    assert b'Success &quot;message&quot;' in response.data
-```
+Bei Tests von Flash-Nachrichten folgende Best Practices beachten:
+
+1. **Vermeidung exakter Nachrichtenvergleiche**
+   - NICHT: `assert 'Wohnung "TestWohnung" erfolgreich angelegt.' in response_text`
+   - BESSER: 
+     ```python
+     response_text = response.data.decode('utf-8')
+     assert 'TestWohnung' in response_text  # Prüfe Objektname
+     assert 'alert-success' in response_text  # Prüfe Nachrichtentyp
+     assert 'erfolgreich' in response_text  # Prüfe Schlüsselwort
+     ```
+
+2. **Gründe für diese Praxis**
+   - HTML-Escaping macht exakte Vergleiche problematisch (`"` wird zu `&quot;`)
+   - Kleine Textänderungen würden Tests brechen
+   - Mehrsprachigkeit wird einfacher unterstützbar
+
+3. **Empfohlene Schlüsselwörter**
+   - Erfolg: 'erfolgreich', 'success'
+   - Warnung: 'existiert bereits', 'warning'
+   - Fehler: 'Fehler', 'danger'
+   - Bootstrap-Klassen: 'alert-success', 'alert-warning', 'alert-danger'
+
+4. **Template-Struktur**
+   ```html
+   <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+       {{ message }}
+       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+   </div>
+   ```
+
+5. **Flash-Kategorien**
+   - success: Erfolgreiche Aktionen
+   - warning: Warnungen (z.B. Duplikate)
+   - danger: Fehler
+   - info: Informationen
+
+6. **Beispiel-Implementation**
+   ```python
+   def test_create_apartment_success(client):
+       response = client.post('/apartments/new', 
+                            data={'number': '42', 'address': 'Test'}, 
+                            follow_redirects=True)
+       response_text = response.data.decode('utf-8')
+       
+       # Prüfe Erfolg durch mehrere Teil-Assertions
+       assert '42' in response_text  # Wohnungsnummer wurde erstellt
+       assert 'alert-success' in response_text  # Erfolgs-Nachricht
+       assert 'erfolgreich' in response_text  # Positives Feedback
+   ```
 
 ### SQLAlchemy Best Practices
 - Verwende `db.session.get(Model, id)` statt `Model.query.get(id)` (SQLAlchemy 2.0)

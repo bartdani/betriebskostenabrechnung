@@ -1,13 +1,15 @@
+from flask import current_app
 import os
 import uuid
 from werkzeug.utils import secure_filename
-from flask import current_app
+from pathlib import Path
 
+# Erlaubte Dateitypen definieren
 ALLOWED_EXTENSIONS = {'pdf'}
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    """Überprüft, ob die Dateiendung erlaubt ist."""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def save_contract_pdf(file_storage, contract_id):
     """
@@ -34,16 +36,14 @@ def save_contract_pdf(file_storage, contract_id):
         original_extension = file_storage.filename.rsplit('.', 1)[1].lower()
         # Generiere einen eindeutigen Namen
         unique_filename = f"contract_{contract_id}_{uuid.uuid4().hex}.{original_extension}"
-        # Bereinige den Dateinamen nicht mit secure_filename, da wir UUID verwenden
-        # secure_name = secure_filename(unique_filename) # Nicht nötig bei UUID
         
-        save_path = os.path.join(upload_folder, unique_filename)
+        # Verwende pathlib für bessere Plattformunabhängigkeit
+        upload_path = Path(upload_folder)
+        upload_path.mkdir(parents=True, exist_ok=True)
         
-        # Sicherstellen, dass der Ordner existiert (sollte durch __init__ schon sein, aber sicher ist sicher)
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-            
-        file_storage.save(save_path)
+        save_path = upload_path / unique_filename
+        file_storage.save(str(save_path))
+        
         print(f"Successfully saved contract PDF: {unique_filename}")
         return unique_filename
         
@@ -52,5 +52,4 @@ def save_contract_pdf(file_storage, contract_id):
         return None
     except Exception as e:
         print(f"Error saving file: {e}")
-        # Ggf. Logging hinzufügen
         return None 

@@ -1,22 +1,21 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from app import db
 from app.models import CostType
-from app.forms import CostTypeForm # Formular importieren
+from app.cost_types import cost_types_bp
+from app.cost_types.forms import CostTypeForm # Formular importieren
 from sqlalchemy import func
 
-cost_types_bp = Blueprint('cost_types', __name__, template_folder='../templates/cost_types')
-
 # Route zum Anzeigen aller Kostenarten
-@cost_types_bp.route('/custom-cost-types')
+@cost_types_bp.route('/')
 def index():
     """Zeigt eine Liste aller benutzerdefinierten Kostenarten."""
     # TODO: Später filtern, um nur "benutzerdefinierte" anzuzeigen?
     # Vorerst alle anzeigen.
     cost_types = CostType.query.order_by(CostType.name).all()
-    return render_template('list_cost_types.html', title='Kostenarten verwalten', cost_types=cost_types)
+    return render_template('cost_types/list.html', title='Kostenarten verwalten', cost_types=cost_types)
 
 # Route zum Erstellen einer neuen Kostenart
-@cost_types_bp.route('/custom-cost-types/new', methods=['GET', 'POST'])
+@cost_types_bp.route('/new', methods=['GET', 'POST'])
 def create_cost_type():
     """Erstellt eine neue benutzerdefinierte Kostenart."""
     form = CostTypeForm()
@@ -25,7 +24,7 @@ def create_cost_type():
         existing_cost_type = CostType.query.filter(func.lower(CostType.name) == func.lower(form.name.data)).first()
         if existing_cost_type:
             flash(f'Eine Kostenart mit dem Namen "{form.name.data}" existiert bereits.', 'warning')
-            return render_template('create_edit_cost_type.html', title='Neue Kostenart erstellen', form=form)
+            return render_template('cost_types/form.html', title='Neue Kostenart erstellen', form=form)
         
         new_cost_type = CostType(
             name=form.name.data,
@@ -42,10 +41,10 @@ def create_cost_type():
             flash(f'Fehler beim Erstellen der Kostenart: {e}', 'danger')
             
     # GET Request oder Validierungsfehler
-    return render_template('create_edit_cost_type.html', title='Neue Kostenart erstellen', form=form)
+    return render_template('cost_types/form.html', title='Neue Kostenart erstellen', form=form)
 
 # Route zum Bearbeiten einer Kostenart
-@cost_types_bp.route('/custom-cost-types/<int:cost_type_id>/edit', methods=['GET', 'POST'])
+@cost_types_bp.route('/<int:cost_type_id>/edit', methods=['GET', 'POST'])
 def edit_cost_type(cost_type_id):
     """Bearbeitet eine vorhandene Kostenart."""
     cost_type = db.session.get(CostType, cost_type_id)
@@ -64,7 +63,7 @@ def edit_cost_type(cost_type_id):
         ).first()
         if existing_cost_type:
             flash(f'Eine andere Kostenart mit dem Namen "{form.name.data}" existiert bereits.', 'warning')
-            return render_template('create_edit_cost_type.html', title=f'Kostenart bearbeiten: {cost_type.name}', form=form, cost_type_id=cost_type_id)
+            return render_template('cost_types/form.html', title=f'Kostenart bearbeiten: {cost_type.name}', form=form)
         
         # Daten aktualisieren
         cost_type.name = form.name.data
@@ -79,10 +78,10 @@ def edit_cost_type(cost_type_id):
             flash(f'Fehler beim Aktualisieren der Kostenart: {e}', 'danger')
 
     # GET Request oder Validierungsfehler
-    return render_template('create_edit_cost_type.html', title=f'Kostenart bearbeiten: {cost_type.name}', form=form, cost_type_id=cost_type_id)
+    return render_template('cost_types/form.html', title=f'Kostenart bearbeiten: {cost_type.name}', form=form)
 
 # Route zum Löschen einer Kostenart
-@cost_types_bp.route('/custom-cost-types/<int:cost_type_id>/delete', methods=['POST'])
+@cost_types_bp.route('/<int:cost_type_id>/delete', methods=['POST'])
 def delete_cost_type(cost_type_id):
     """Löscht eine Kostenart."""
     cost_type = db.session.get(CostType, cost_type_id)

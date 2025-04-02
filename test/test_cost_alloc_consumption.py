@@ -8,9 +8,9 @@ from app.calculations import calculate_consumption_allocation
 @pytest.fixture
 def setup_db_for_allocation(test_db):
     """Erstellt notwendige Stammdaten für Verteilungs-Tests."""
-    a1 = Apartment(number='Alloc Apt 1')
-    a2 = Apartment(number='Alloc Apt 2')
-    a3 = Apartment(number='Alloc Apt 3') # Hat keinen Verbrauch im Testzeitraum
+    a1 = Apartment(number='Alloc Apt 1', address='Alloc St 1', size_sqm=100.0)
+    a2 = Apartment(number='Alloc Apt 2', address='Alloc St 2', size_sqm=150.0)
+    a3 = Apartment(number='Alloc Apt 3', address='Alloc St 3', size_sqm=200.0) # Hat keinen Verbrauch im Testzeitraum
     ct_c = CostType(name='VerbrauchKosten', unit='units', type='consumption')
     ct_s = CostType(name='AnteilKosten', unit='m2', type='share') # Für Negativtest
     

@@ -39,13 +39,12 @@ def test_db(app_context):
 @pytest.fixture(scope='function')
 def client(app_context):
     """Erstellt einen Test-Client für HTTP-Anfragen."""
-    test_client = app_context.test_client()
+    app_context.config['SERVER_NAME'] = 'localhost'
+    app_context.config['PREFERRED_URL_SCHEME'] = 'http'
     
-    with test_client.session_transaction() as sess:
-        sess.clear()
-        sess.update({})
-    
-    return test_client
+    with app_context.test_client() as test_client:
+        with app_context.app_context():
+            yield test_client
 
 @pytest.fixture
 def runner(app_context):

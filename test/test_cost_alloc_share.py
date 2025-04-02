@@ -7,9 +7,9 @@ from app.calculations import calculate_share_allocation
 @pytest.fixture
 def setup_db_for_share_allocation(test_db):
     """Erstellt notwendige Stammdaten für Anteil-Verteilungs-Tests."""
-    a1 = Apartment(number='Share Apt 1')
-    a2 = Apartment(number='Share Apt 2')
-    a3 = Apartment(number='Share Apt 3') # Hat keinen Anteilswert für ct_s1
+    a1 = Apartment(number='Share Apt 1', address='Share St 1', size_sqm=100.0)
+    a2 = Apartment(number='Share Apt 2', address='Share St 2', size_sqm=150.0)
+    a3 = Apartment(number='Share Apt 3', address='Share St 3', size_sqm=200.0) # Hat keinen Anteilswert für ct_s1
     ct_s1 = CostType(name='Wohnfläche', unit='m²', type='share')
     ct_s2 = CostType(name='Personen', unit='P', type='share')
     ct_c = CostType(name='Heizung ShareTest', unit='kWh', type='consumption') # Für Negativtest

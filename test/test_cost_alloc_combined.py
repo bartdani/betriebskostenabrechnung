@@ -9,9 +9,9 @@ from app.calculations import calculate_combined_allocation
 def setup_db_for_combined(test_db):
     """Erstellt notwendige Stammdaten für kombinierte Verteilungs-Tests."""
     # Apartments
-    a1 = Apartment(number='Comb Apt 1')
-    a2 = Apartment(number='Comb Apt 2')
-    a3 = Apartment(number='Comb Apt 3') # Nur Anteil, kein Verbrauch
+    a1 = Apartment(number='Comb Apt 1', address='Comb St 1', size_sqm=100.0)
+    a2 = Apartment(number='Comb Apt 2', address='Comb St 2', size_sqm=150.0)
+    a3 = Apartment(number='Comb Apt 3', address='Comb St 3', size_sqm=200.0) # Nur Anteil, kein Verbrauch
 
     # CostTypes
     ct_consum = CostType(name='Heizung Kombi', unit='kWh', type='consumption')

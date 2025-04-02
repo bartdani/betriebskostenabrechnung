@@ -8,8 +8,8 @@ from app.import_data import import_consumption_csv
 @pytest.fixture
 def setup_db_for_import(test_db):
     """Erstellt notwendige Stammdaten für Import-Tests."""
-    a1 = Apartment(number='Top 1')
-    a2 = Apartment(number='Top 2')
+    a1 = Apartment(number='Top 1', address='Top St 1', size_sqm=100.0)
+    a2 = Apartment(number='Top 2', address='Top St 2', size_sqm=150.0)
     ct_heiz = CostType(name='Heizung', unit='kWh', type='consumption')
     ct_wasser = CostType(name='Wasser', unit='m³', type='consumption')
     test_db.session.add_all([a1, a2, ct_heiz, ct_wasser])

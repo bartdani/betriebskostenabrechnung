@@ -9,35 +9,51 @@ from app.pdf_generation import generate_utility_statement_pdf
 # Helper function to create dummy data
 def create_test_data():
     # Create Apartment
-    apt1 = Apartment(number='WE01')
+    apt1 = Apartment(number='WE01', address='Teststraße 1', size_sqm=50.0)
     db.session.add(apt1)
     db.session.flush() # Get ID for foreign keys
 
-    # Create Tenant
-    t1 = Tenant(name='Test Tenant', contact_info='Test Street 1\n12345 Test City', apartment_id=apt1.id)
+    # Create Tenant (ohne apartment_id)
+    t1 = Tenant(
+        name='Test Tenant',
+        contact_info='Test Street 1\n12345 Test City'
+    )
     db.session.add(t1)
     db.session.flush()
 
-    # Create Contract
-    c1 = Contract(tenant_id=t1.id, apartment_id=apt1.id,
-                  start_date=date(2023, 1, 1), end_date=date(2023, 12, 31),
-                  rent_amount=500.0)
+    # Create Contract (Verknüpft Tenant und Apartment)
+    c1 = Contract(
+        tenant_id=t1.id,
+        apartment_id=apt1.id,
+        start_date=date(2023, 1, 1),
+        end_date=date(2023, 12, 31),
+        rent_amount=500.0
+    )
     db.session.add(c1)
     db.session.flush()
 
     # Create CostTypes
     ct_share = CostType(name='Grundsteuer', unit='m²', type='share')
     ct_consum = CostType(name='Wasser', unit='m³', type='consumption')
-    ct_person = CostType(name='Müll', unit='Pers.', type='person_days') # Annahme: type 'person_days'
+    ct_person = CostType(name='Müll', unit='Pers.', type='person_days')
     db.session.add_all([ct_share, ct_consum, ct_person])
     db.session.flush()
 
     # Create ApartmentShare
-    share1 = ApartmentShare(apartment_id=apt1.id, cost_type_id=ct_share.id, value=75.0)
+    share1 = ApartmentShare(
+        apartment_id=apt1.id,
+        cost_type_id=ct_share.id,
+        value=75.0
+    )
     db.session.add(share1)
 
     # Create OccupancyPeriod
-    occ1 = OccupancyPeriod(apartment_id=apt1.id, start_date=date(2023,1,1), end_date=date(2023, 12, 31), number_of_occupants=2)
+    occ1 = OccupancyPeriod(
+        apartment_id=apt1.id,
+        start_date=date(2023,1,1),
+        end_date=date(2023, 12, 31),
+        number_of_occupants=2
+    )
     db.session.add(occ1)
     
     # Dummy Consumption Data (nicht unbedingt nötig für PDF-Test, da Allocation separat getestet)
