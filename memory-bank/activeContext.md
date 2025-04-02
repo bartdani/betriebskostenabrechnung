@@ -32,6 +32,6 @@ Implementierung der Basis-CRUD-UI für Wohnungen (`Apartment`: List, Create, Edi
 - Verbesserte 404-Fehlerbehandlung mit `abort(404)`
 
 ### Form Testing (2024-04-01)
-- Implementierung von `_macros.html` für konsistentes Form-Rendering
+- Implementierung von `macros.html` für konsistentes Form-Rendering
 - Validierungsfehler im HTML-Response testen
 - Vollständige Test-Coverage für erfolgreiche und fehlgeschlagene Validierungen 

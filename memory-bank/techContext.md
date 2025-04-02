@@ -73,7 +73,7 @@
 ## Flask & SQLAlchemy
 
 ### Flash Messages
-- Flash-Messages werden in der Base-Template (`_base.html`) angezeigt
+- Flash-Messages werden in der Base-Template (`base.html`) angezeigt
 - Kategorien: success, warning, danger
 - HTML-Escaping beachten bei Tests (`&quot;` statt `"`)
 - Rendering erfolgt in einem eigenen Container außerhalb des Hauptcontainers

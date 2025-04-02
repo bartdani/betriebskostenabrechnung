@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>{{ title or 'Mieterübersicht' }}</h1>
+    <a href="{{ url_for('tenants.create_tenant') }}" class="btn btn-primary">Neuer Mieter</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Kontakt</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tenant in tenants %}
+            <tr>
+                <td>{{ tenant.name }}</td>
+                <td>{{ tenant.contact_info }}</td>
+                <td>
+                    <a href="{{ url_for('tenants.edit_tenant', id=tenant.id) }}" class="btn btn-sm btn-secondary">Bearbeiten</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Keine Mieter vorhanden</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

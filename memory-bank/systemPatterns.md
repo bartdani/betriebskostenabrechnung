@@ -8,7 +8,7 @@ This document outlines key architectural patterns, design decisions, and reusabl
 - **Database:** Relational database (SQLite for development/testing) accessed via SQLAlchemy ORM.
 - **Migrations:** Flask-Migrate handles database schema changes.
 - **Forms:** Flask-WTF provides form creation, validation, and CSRF protection (disabled in tests).
-- **Templating:** Jinja2 for server-side HTML rendering, using a base template (`_base.html`) and Bootstrap 5 for styling.
+- **Templating:** Jinja2 for server-side HTML rendering, using a base template (`base.html`) and Bootstrap 5 for styling.
 - **Testing:** pytest framework with fixtures (`conftest.py`) for setting up test clients and databases.
 
 ## Specific Implementation Patterns
@@ -68,5 +68,5 @@ def test_create_success(client):
 
 ### Form Testing
 - Validierungsfehler werden im HTML-Response überprüft
-- Nutze das `_macros.html` Template für konsistentes Form-Rendering
+- Nutze das `macros.html` Template für konsistentes Form-Rendering
 - Teste sowohl erfolgreiche als auch fehlgeschlagene Validierungen 

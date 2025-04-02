@@ -176,7 +176,7 @@ Last Updated: 2024-08-08
 - Created `CostTypeForm` using Flask-WTF, including validation for unique names (case-insensitive).
 - Implemented Flask Blueprint `cost_types` with routes for listing, creating, editing, and deleting cost types.
 - Routes handle form processing, validation, database operations (add, commit, delete), and redirects.
-- Created Jinja2/HTML templates (`list_cost_types.html`, `create_edit_cost_type.html`, `_base.html`, `bootstrap_wtf.html`) using Bootstrap 5 for styling.
+- Created Jinja2/HTML templates (`list_cost_types.html`, `create_edit_cost_type.html`, `base.html`, `bootstrap_wtf.html`) using Bootstrap 5 for styling.
 - Implemented delete confirmation modals directly in the list template using unique IDs per item (avoids extra JS).
 - Added `SERVER_NAME` to test configuration (`conftest.py`) to fix `url_for` issues.
 - Added basic `bootstrap_wtf.html` macro for form rendering.
@@ -311,4 +311,39 @@ Last Updated: 2024-04-01
 - `test/test_db_models_basic.py`: Tests angepasst und erweitert.
 - `memory-bank/tasks.md`: Task und Teilschritte als [X] markiert.
 - `memory-bank/progress.md`: Lessons Learned hinzugefügt.
-- `memory-bank/activeContext.md`: Aktualisiert während des Prozesses. 
+- `memory-bank/activeContext.md`: Aktualisiert während des Prozesses.
+
+## Task: Basis-CRUD-UI für Mieter implementieren v1.0
+Last Updated: 2024-03-31
+
+### Implementation Results
+- Blueprint für Mieter-Verwaltung erstellt und registriert
+- TenantForm mit Validierung für Name und Kontaktinfo implementiert
+- CRUD-Routen für Mieter implementiert (Liste, Erstellen, Bearbeiten)
+- Templates für Mieter-Verwaltung erstellt (list.html, form.html)
+- Flash-Messages für Benutzer-Feedback implementiert
+- Vollständige Test-Suite für alle CRUD-Operationen erstellt
+
+### Completed Testing
+- Test-Suite mit 9 Tests implementiert und erfolgreich ausgeführt:
+  * Leere Mieterliste anzeigen
+  * Mieterliste mit Daten anzeigen
+  * Formular für neue Mieter anzeigen
+  * Erfolgreiche Mieter-Erstellung
+  * Validierungsfehler bei Mieter-Erstellung
+  * Formular für Mieter-Bearbeitung anzeigen
+  * Erfolgreiche Mieter-Bearbeitung
+  * Validierungsfehler bei Mieter-Bearbeitung
+  * 404-Fehler bei nicht existierendem Mieter
+- Alle Tests laufen in 0.48 Sekunden durch
+
+### Lessons Learned
+- Flash-Messages müssen im base.html Template korrekt eingebunden sein
+- Validierung sollte sowohl client- als auch serverseitig erfolgen
+- Test-Fixtures (conftest.py) sind wichtig für saubere Tests
+- Einheitliche Namenskonvention für Routen und Templates wichtig
+
+### Documentation Updates
+- tasks.md: Mieter-CRUD-UI als abgeschlossen markiert
+- progress.md: Abschluss der Implementierung dokumentiert
+- Vollständige Test-Dokumentation in test/test_crud_tenants.py 

@@ -25,6 +25,7 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - Initial Project Setup - Completed on YYYY-MM-DD, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-initial-project-setup-v10)
 - PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-pdf-generierung-fuer-betriebs-und-heizkostenabrechnungen-basisversion-v10)
 - Überarbeitung der Personentage-Berechnung - Abgeschlossen am 2024-04-01, siehe [archive entry](mdc:../docs/archive/completed_tasks.md#task-uberarbeitung-der-personentage-berechnung-v10)
+- Basis-CRUD-UI für Mieter implementieren - Completed on 2024-03-31, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-basis-crud-ui-fuer-mieter-implementieren-v10)
 
 ## REFLECTION
 

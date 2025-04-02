@@ -15,7 +15,7 @@
   - [X] 6. Änderungen in `README.md` implementieren.
 - [X] SQLAlchemy LegacyAPIWarnings beheben
 - [X] Basis UI-Layout und Navigation implementieren - Completed on 2024-08-08
-  - [X] Bootstrap Navbar in `_base.html` erstellen/anpassen
+  - [X] Bootstrap Navbar in `base.html` erstellen/anpassen
   - [X] Index-Route (`/`) erstellen/anpassen, um Basis-Layout zu rendern
   - [X] Navigationslinks für Hauptbereiche (Dashboard, Stammdaten, etc.) hinzufügen
 
@@ -38,27 +38,27 @@
   - [X]   12. Tests ausführen: Sicherstellen, dass alle Modelltests erfolgreich sind.
   - [X] Migrationen generieren und anwenden // *Verschoben in detaillierte Schritte*
   - [X] Test für DB-Modell Basis erstellen (`test/test_db_models_basic.py`) // Ggf. erweitern // *Wird in Schritt 11 angepasst*
-- [~] Basis-CRUD-UI für Wohnungen implementieren
-  - [ ] Blueprint, Forms, Routes, Templates für Apartments (List, Create, Edit View)
-  - [ ]   1. Blueprint erstellen (`app/apartments/`, `__init__.py`, `routes.py`).
-  - [ ]   2. Blueprint registrieren (`app/__init__.py`).
-  - [ ]   3. Formular erstellen (`app/apartments/forms.py`, `ApartmentForm`).
-  - [ ]   4. Templates erstellen (`app/templates/apartments/`, `list.html`, `form.html`).
-  - [ ]   5. Template `list.html` implementieren (Tabelle, Links).
-  - [ ]   6. Template `form.html` implementieren (Formular-Rendering, Fehler).
-  - [ ]   7. Route `/apartments/` implementieren (GET, List View).
-  - [ ]   8. Route `/apartments/new` implementieren (GET/POST, Create).
-  - [ ]   9. Route `/apartments/<id>/edit` implementieren (GET/POST, Edit).
-  - [ ]   10. Navigation hinzufügen (`_base.html`).
-  - [ ]   11. Testdatei erstellen (`test/test_crud_apartments.py`).
-  - [ ]   12. Tests für GET implementieren (List, New, Edit, 404).
-  - [ ]   13. Tests für POST (Erfolg) implementieren (New, Edit).
-  - [ ]   14. Tests für POST (Validierung) implementieren (New, Edit).
-  - [ ]   15. Tests ausführen (`pytest`).
-  - [ ] Test für Apartment CRUD erstellen (`test/test_crud_apartments.py`) // *Wird in Schritten 11-15 implementiert*
-- [ ] Basis-CRUD-UI für Mieter implementieren
-  - [ ] Blueprint, Forms, Routes, Templates für Tenants (List, Create, Edit View)
-  - [ ] Test für Tenant CRUD erstellen (`test/test_crud_tenants.py`)
+- [X] Basis-CRUD-UI für Wohnungen implementieren
+  - [X] Blueprint, Forms, Routes, Templates für Apartments (List, Create, Edit View)
+  - [X]   1. Blueprint erstellen (`app/apartments/`, `__init__.py`, `routes.py`).
+  - [X]   2. Blueprint registrieren (`app/__init__.py`).
+  - [X]   3. Formular erstellen (`app/apartments/forms.py`, `ApartmentForm`).
+  - [X]   4. Templates erstellen (`app/templates/apartments/`, `list.html`, `form.html`).
+  - [X]   5. Template `list.html` implementieren (Tabelle, Links).
+  - [X]   6. Template `form.html` implementieren (Formular-Rendering, Fehler).
+  - [X]   7. Route `/apartments/` implementieren (GET, List View).
+  - [X]   8. Route `/apartments/new` implementieren (GET/POST, Create).
+  - [X]   9. Route `/apartments/<id>/edit` implementieren (GET/POST, Edit).
+  - [X]   10. Navigation hinzufügen (`base.html`).
+  - [X]   11. Testdatei erstellen (`test/test_crud_apartments.py`).
+  - [X]   12. Tests für GET implementieren (List, New, Edit, 404).
+  - [X]   13. Tests für POST (Erfolg) implementieren (New, Edit).
+  - [X]   14. Tests für POST (Validierung) implementieren (New, Edit).
+  - [X]   15. Tests ausführen (`pytest`).
+  - [X] Test für Apartment CRUD erstellen (`test/test_crud_apartments.py`) // *Wird in Schritten 11-15 implementiert*
+- [X] Basis-CRUD-UI für Mieter implementieren
+  - [X] Blueprint, Forms, Routes, Templates für Tenants (List, Create, Edit View)
+  - [X] Test für Tenant CRUD erstellen (`test/test_crud_tenants.py`)
 - [ ] Basis-CRUD-UI für Zähler implementieren
   - [ ] Blueprint, Forms, Routes, Templates für Meters (List, Create, Edit View)
   - [ ] Zuordnung Zähler zu Wohnung ermöglichen
@@ -72,6 +72,12 @@
   - [X] Implement Tenant object creation and DB insertion
   - [X] Add error handling and reporting (skipped rows)
   - [X] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
+- [ ] UI für alle bisherigen implementierten Features überprüfen und ggf. anpassen
+  - [ ] Überprüfen, ob die Navigation korrekt ist und konsistent ist
+  - [ ] Überprüfen, ob alle CRUD-Operationen funktionieren
+  - [ ] Überprüfen, ob alle CSV-Importe funktionieren
+  - [ ] Überprüfen, ob alle PDF-Generierungen funktionieren
+  - [ ] Überprüfen, ob alle Tests funktionieren
 
 ## Phase 2: Kernfunktionen Abrechnung & Erweiterte CRUD (ca. 7-8 Wochen)
 - [X] Betriebskostenabrechnungs-Logik implementieren (Basis)
