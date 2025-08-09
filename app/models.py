@@ -3,11 +3,24 @@ from datetime import datetime
 from sqlalchemy import CheckConstraint, event
 from sqlalchemy.orm import validates
 
+class Building(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200), nullable=True)
+    notes = db.Column(db.String(500), nullable=True)
+
+    apartments = db.relationship('Apartment', backref='building', lazy='dynamic')
+
+    def __repr__(self):
+        return f'<Building {self.name}>'
+
+
 class Apartment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(50), index=True, unique=True, nullable=False)
     address = db.Column(db.String(200), nullable=False) # NEU: Adresse der Wohnung
     size_sqm = db.Column(db.Float, nullable=False) # NEU: Größe in Quadratmetern
+    building_id = db.Column(db.Integer, db.ForeignKey('building.id'), nullable=True)
     contracts = db.relationship('Contract', backref='apartment', lazy='dynamic')
     consumption_data = db.relationship('ConsumptionData', backref='apartment', lazy='dynamic')
     shares = db.relationship('ApartmentShare', backref='apartment', lazy='dynamic', cascade="all, delete-orphan")
@@ -165,9 +178,12 @@ class Invoice(db.Model):
 
     # Für direkte Zuordnung (sonst NULL)
     direct_allocation_contract_id = db.Column(db.Integer, db.ForeignKey('contract.id'), nullable=True, index=True)
+    # Gebäude-Kontext für saubere Aggregation (optional, initial nullable für Abwärtskompatibilität)
+    building_id = db.Column(db.Integer, db.ForeignKey('building.id'), nullable=True, index=True)
 
     # Beziehung zu CostType
     cost_type = db.relationship('CostType', backref='invoices')
+    building = db.relationship('Building', backref='invoices')
     # Beziehung zu Contract (für direkte Zuordnung) ist über backref='direct_allocation_invoices' in Contract definiert
 
     # Sicherstellen, dass Enddatum nach Startdatum liegt

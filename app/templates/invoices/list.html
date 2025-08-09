@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Rechnungsübersicht</h1>
+  <a href="{{ url_for('invoices.create_invoice') }}" class="btn btn-primary">Neue Rechnung</a>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Nr.</th>
+      <th>Datum</th>
+      <th>Betrag</th>
+      <th>Kostenart</th>
+      <th>Zeitraum</th>
+      <th>Direkt</th>
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inv in invoices %}
+    <tr>
+      <td>{{ inv.invoice_number or '-' }}</td>
+      <td>{{ inv.date }}</td>
+      <td>{{ '%.2f'|format(inv.amount) }}</td>
+      <td>{{ inv.cost_type.name if inv.cost_type else '-' }}</td>
+      <td>{{ inv.period_start }} – {{ inv.period_end }}</td>
+      <td>{{ inv.direct_allocation_contract_id or '-' }}</td>
+      <td><a href="{{ url_for('invoices.edit_invoice', invoice_id=inv.id) }}" class="btn btn-sm btn-outline-secondary">Bearbeiten</a></td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7">Keine Rechnungen vorhanden</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

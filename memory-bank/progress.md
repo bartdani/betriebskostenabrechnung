@@ -26,6 +26,13 @@ This document tracks the overall progress, completed tasks, and reflections on t
 - PDF-Generierung für Betriebs- und Heizkostenabrechnungen (Basisversion) - Completed on 2024-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-pdf-generierung-fuer-betriebs-und-heizkostenabrechnungen-basisversion-v10)
 - Überarbeitung der Personentage-Berechnung - Abgeschlossen am 2024-04-01, siehe [archive entry](mdc:../docs/archive/completed_tasks.md#task-uberarbeitung-der-personentage-berechnung-v10)
 - Basis-CRUD-UI für Mieter implementieren - Completed on 2024-03-31, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-basis-crud-ui-fuer-mieter-implementieren-v10)
+ - UI für Verwaltung von Bewohnerzahl-Zeiträumen (OccupancyPeriod) - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-ui-fuer-verwaltung-von-bewohnerzahl-zeitraeumen-occupancyperiod-v10)
+- UI für Erfassung von Kostenbelegen/Rechnungen (Invoices) - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-ui-fuer-erfassung-von-kostenbelegenrechnungen-invoices-v10)
+ - Erweiterte CRUD-UI für Verträge (Contracts) - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-erweiterte-crud-ui-fuer-vertraege-contracts-v10)
+ - Logik für direkte Kostenzuordnung - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-logik-fuer-direkte-kostenzuordnung-v10)
+ - Heiz-/Warmwasser-Logik (verbrauchsbasiert) - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-heiz-warmwasser-logik-verbrauchsbasiert-v10)
+  - PDF-Generierung (Heizpaket-Split) - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-pdf-generierung-heizpaket-split-v10)
+  - Warnsystem für Abrechnungsprüfung - Completed on 2025-08-08, see [archive entry](mdc:../docs/archive/completed_tasks.md#task-warnsystem-fuer-abrechnungspruefung-v10)
 
 ## REFLECTION
 

@@ -74,7 +74,8 @@ def test_generate_pdf_basic(test_db, client):
     cost_items = [
         {'cost_type_id': ct_s_id, 'total_cost': 250.50},
         {'cost_type_id': ct_c_id, 'total_cost': 180.75},
-        {'cost_type_id': ct_p_id, 'total_cost': 95.00}
+        {'cost_type_id': ct_p_id, 'total_cost': 95.00},
+        {'type': 'direct'}  # direkte Kosten werden automatisch aus Rechnungen aggregiert
     ]
 
     pdf_bytes = generate_utility_statement_pdf(c_id, period_start, period_end, cost_items)

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>{{ title }}</h1>
+
+  <form method="POST" action="{{ url_for('billing.index') }}" class="row g-3 mt-3">
+    <div class="col-md-4">
+      <label for="contract_id" class="form-label">Vertrag</label>
+      <select id="contract_id" name="contract_id" class="form-select" required>
+        {% for c in contracts %}
+          <option value="{{ c.id }}">#{{ c.id }} - {{ c.tenant.name if c.tenant else 'N/A' }} (Wohnung {{ c.apartment.number if c.apartment else 'N/A' }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="period_start" class="form-label">Zeitraum Start</label>
+      <input id="period_start" name="period_start" type="date" class="form-control" required />
+    </div>
+    <div class="col-md-3">
+      <label for="period_end" class="form-label">Zeitraum Ende</label>
+      <input id="period_end" name="period_end" type="date" class="form-control" required />
+    </div>
+    <div class="col-md-4">
+      <label for="preset" class="form-label">Preset</label>
+      <select id="preset" name="preset" class="form-select">
+        <option value="standard">Standard-BK (Anteile m², Wasser-Verbrauch, Personentage, Direktkosten)</option>
+        <option value="heating_30_70">Heizpaket 30/70 (Heizung/Warmwasser, verbrauchsbasiert) + Direktkosten</option>
+        <option value="direct_only">Nur Direktkosten</option>
+      </select>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button type="submit" name="action" value="preview" class="btn btn-outline-secondary w-100">Vorschau</button>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button type="submit" name="action" value="pdf" class="btn btn-primary w-100">PDF erzeugen</button>
+    </div>
+  </form>
+
+  <p class="text-muted mt-3">Hinweis: Unterjährige Abrechnungen sind möglich (z. B. bei Mieterwechsel). Wähle dazu einen passenden Zeitraum.</p>
+
+  {% if preview_rows %}
+  <div class="card mt-4">
+    <div class="card-header">Vorschau</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th class="text-end">Gesamtkosten</th>
+              <th>Verteilschlüssel</th>
+              <th class="text-end">Ihr Anteil</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in preview_rows %}
+            <tr>
+              <td>{{ row.name }}</td>
+              <td class="text-end">{{ row.total_cost_fmt }}</td>
+              <td>{{ row.key_desc }}</td>
+              <td class="text-end">{{ row.tenant_share_fmt }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Summe</th>
+              <th></th>
+              <th></th>
+              <th class="text-end">{{ preview_total_fmt }}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+

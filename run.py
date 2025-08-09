@@ -1,5 +1,5 @@
-from app import app
+from app import create_app
+app = create_app()
 
 if __name__ == '__main__':
-    # Debug=True sollte im Produktivbetrieb entfernt/deaktiviert werden
     app.run(debug=True) 

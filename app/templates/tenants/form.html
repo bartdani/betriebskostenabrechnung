@@ -4,15 +4,25 @@
 {% block content %}
 <h1>{{ title }}</h1>
 
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('tenants.list_tenants') }}">Mieter</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+  </ol>
+    </nav>
+
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
 
-    {{ render_field(form.name, class='form-control') }}
-    {{ render_field(form.contact_info, class='form-control') }}
+    <fieldset class="border rounded p-3 mb-3">
+      <legend class="float-none w-auto px-2">Grunddaten</legend>
+      {{ render_field(form.name, class='form-control') }}
+      {{ render_field(form.contact_info, class='form-control') }}
+    </fieldset>
 
     <div class="mt-3">
         <button type="submit" class="btn btn-primary">Speichern</button>
-        <a href="{{ url_for('tenants.list_tenants') }}" class="btn btn-secondary">Abbrechen</a>
+        <a href="{{ url_for('tenants.list_tenants') }}" class="btn btn-outline-secondary">Abbrechen</a>
     </div>
 </form>
 {% endblock %}

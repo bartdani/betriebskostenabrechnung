@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Warnungen ({{ period_start }} - {{ period_end }})</h1>
+
+<h3 class="mt-4">Fehlende Verbrauchsdaten</h3>
+<table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>Wohnung (ID)</th>
+      <th>Kostenart (ID)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for w in warnings.get('missing_consumption', []) %}
+    <tr>
+      <td>{{ w.apartment_id }}</td>
+      <td>{{ w.cost_type_id }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="2">Keine Einträge</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3 class="mt-4">Ungültige Verbrauchswerte</h3>
+<table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>Wohnung (ID)</th>
+      <th>Kostenart (ID)</th>
+      <th>Datum</th>
+      <th>Wert</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for w in warnings.get('invalid_consumption_values', []) %}
+    <tr>
+      <td>{{ w.apartment_id }}</td>
+      <td>{{ w.cost_type_id }}</td>
+      <td>{{ w.date }}</td>
+      <td>{{ w.value }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Keine Einträge</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3 class="mt-4">Ausreißer (Spikes)</h3>
+<table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>Wohnung (ID)</th>
+      <th>Kostenart (ID)</th>
+      <th>Datum</th>
+      <th>Wert</th>
+      <th>Schwelle</th>
+      <th>Median</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for w in warnings.get('consumption_spikes', []) %}
+    <tr>
+      <td>{{ w.apartment_id }}</td>
+      <td>{{ w.cost_type_id }}</td>
+      <td>{{ w.date }}</td>
+      <td>{{ w.value }}</td>
+      <td>{{ '%.2f'|format(w.threshold) }}</td>
+      <td>{{ '%.2f'|format(w.median) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">Keine Einträge</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

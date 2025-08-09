@@ -1,20 +1,31 @@
 # Active Context
 
 ## Current Focus
-Implementierung der Basis-CRUD-UI für Wohnungen (`Apartment`: List, Create, Edit).
+Phase 2: PDF-Details verfeinern (Formatierung, Summen, Kopf-/Fußzeile). Warnsystem abgeschlossen.
 
 ## Recent Changes & Activities
-- Start der Arbeit an der CRUD-UI für Wohnungen.
+- Zähler-CRUD (Blueprint, Forms, Routes, Templates) implementiert und Tests ergänzt (`test/test_crud_meters.py`).
+- Navigation um Link zu Zählern erweitert.
 
 ## Pending Issues/Decisions
 - Genaue Feldvalidierungen für das Wohnungsformular definieren.
 - Design der Listen- und Formularansichten.
 
 ## Next Steps
-- Planung der detaillierten Schritte für Blueprint, Forms, Routes, Templates und Tests.
+- Priorisierung Phase 2:
+  - UI für Erfassung von Kostenbelegen/Rechnungen (Invoices)
+  - Erweiterte CRUD-UI für Verträge (Contracts)
+  - Manuelle Datenerfassung für Zählerstände/Verbräuche
 
 ## Recent Completions
-- README.md aktualisieren wurde abgeschlossen. Nächster Fokus liegt auf Basis-CRUD-UI für Wohnungen.
+- Basis-CRUD-UI für Zähler abgeschlossen (2025-08-08).
+- UI für Verwaltung von Bewohnerzahl-Zeiträumen abgeschlossen (2025-08-08).
+- UI für Erfassung von Kostenbelegen/Rechnungen abgeschlossen (2025-08-08).
+- Erweiterte CRUD-UI für Verträge abgeschlossen (2025-08-08).
+- Logik für direkte Kostenzuordnung implementiert (2025-08-08).
+- Heiz-/Warmwasser-Logik (verbrauchsbasiert, Split) implementiert (2025-08-08).
+- PDF-Generierung um Heizpaket (Split) erweitert (2025-08-08).
+- Warnsystem für Abrechnungsprüfung (Plausibilitätschecks) implementiert (2025-08-08).
 
 ## Current Implementation Status
 - Initialisierung für CRUD-UI Wohnungen abgeschlossen.

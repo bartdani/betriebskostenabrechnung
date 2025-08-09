@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Belegungszeiträume</h1>
+    <a href="{{ url_for('apartments.create_occupancy', apartment_id=apartment.id) }}" class="btn btn-primary">Neuen Zeitraum anlegen</a>
+  </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Start</th>
+      <th>Ende</th>
+      <th>Bewohner</th>
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in periods %}
+    <tr>
+      <td>{{ p.start_date }}</td>
+      <td>{{ p.end_date or '-' }}</td>
+      <td>{{ p.number_of_occupants }}</td>
+      <td>
+        <a href="{{ url_for('apartments.edit_occupancy', apartment_id=apartment.id, period_id=p.id) }}" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="4">Keine Belegungszeiträume vorhanden</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

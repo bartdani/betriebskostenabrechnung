@@ -1,6 +1,6 @@
 from sqlalchemy import func, or_
 from app import db
-from app.models import ConsumptionData, Apartment, CostType, ApartmentShare, OccupancyPeriod
+from app.models import ConsumptionData, Apartment, CostType, ApartmentShare, OccupancyPeriod, Invoice, Contract
 from collections import defaultdict
 from typing import Dict
 from datetime import date
@@ -332,3 +332,70 @@ def calculate_person_day_allocation(cost_type_id: int, total_cost: float,
             allocation[apt_id] = 0.00
 
     return allocation 
+
+
+def calculate_direct_allocation(period_start: date, period_end: date) -> Dict[int, float]:
+    """
+    Summiert alle direkt zugeordneten Rechnungsbeträge pro Wohnung im Abrechnungszeitraum.
+
+    Args:
+        period_start: Start des Abrechnungszeitraums
+        period_end: Ende des Abrechnungszeitraums
+
+    Returns:
+        dict: {apartment_id: sum(amount)}
+    """
+    allocation = defaultdict(float)
+    # Hole alle Rechnungen mit direkter Zuordnung, deren Leistungszeitraum den Abrechnungszeitraum überschneidet
+    invoices = db.session.query(Invoice).filter(
+        Invoice.direct_allocation_contract_id.isnot(None),
+        Invoice.period_end >= period_start,
+        Invoice.period_start <= period_end,
+    ).all()
+
+    for inv in invoices:
+        # Ermittle zugehörige Wohnung über den Vertrag
+        contract = db.session.get(Contract, inv.direct_allocation_contract_id)
+        if not contract:
+            continue
+        apartment_id = contract.apartment_id
+        allocation[apartment_id] += float(inv.amount)
+
+    # Rundung vereinheitlichen
+    return {apt_id: round(amount, 2) for apt_id, amount in allocation.items()}
+
+
+def calculate_heating_allocation(
+    total_cost: float,
+    hot_water_percentage: float,
+    heating_consumption_cost_type_id: int,
+    hot_water_consumption_cost_type_id: int,
+    period_start: date,
+    period_end: date,
+) -> Dict[int, float]:
+    """
+    Heizkostenabrechnung mit vorhandenem Messwesen:
+    - warm water share: hot_water_percentage% -> verteilt nach Warmwasser-Verbrauch
+    - heating share: (100 - hot_water_percentage)% -> verteilt nach Heizenergie-Verbrauch
+    """
+    if hot_water_percentage < 0 or hot_water_percentage > 100:
+        return {}
+
+    hot_water_cost = round(total_cost * (hot_water_percentage / 100.0), 2)
+    heating_cost = round(total_cost - hot_water_cost, 2)
+
+    hot_alloc = calculate_consumption_allocation(
+        hot_water_consumption_cost_type_id, hot_water_cost, period_start, period_end
+    ) or {}
+    heat_alloc = calculate_consumption_allocation(
+        heating_consumption_cost_type_id, heating_cost, period_start, period_end
+    ) or {}
+
+    final = defaultdict(float)
+    for apt_id, amt in hot_alloc.items():
+        final[apt_id] += amt
+    for apt_id, amt in heat_alloc.items():
+        final[apt_id] += amt
+
+    # Runden und in normales Dict konvertieren
+    return {apt_id: round(amt, 2) for apt_id, amt in final.items()}

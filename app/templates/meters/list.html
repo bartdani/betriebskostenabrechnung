@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Zählerübersicht</h1>
+    <div class="btn-group">
+        <a href="{{ url_for('meters.create_meter') }}" class="btn btn-primary">Neuen Zähler anlegen</a>
+        <a href="{{ url_for('meters.create_meter_reading') }}" class="btn btn-outline-primary">Zählerstand erfassen</a>
+        <a href="{{ url_for('meters.create_meter_readings_bulk') }}" class="btn btn-outline-secondary">Bulk-Erfassung</a>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Seriennummer</th>
+            <th>Typ</th>
+            <th>Einheit</th>
+            <th>Wohnung</th>
+            <th>Aktionen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for meter in meters %}
+        <tr>
+            <td>{{ meter.serial_number }}</td>
+            <td>{{ meter.meter_type }}</td>
+            <td>{{ meter.unit }}</td>
+            <td>{{ meter.apartment.number if meter.apartment else '-' }}</td>
+            <td>
+                <a href="{{ url_for('meters.edit_meter', meter_id=meter.id) }}" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">Keine Zähler vorhanden</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+{% endblock %}
+
+

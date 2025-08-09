@@ -1,5 +1,190 @@
 # Completed Tasks
 
+## Task: Warnsystem für Abrechnungsprüfung (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Zentrale Validierungsfunktion `generate_warnings(period_start, period_end)` in `app/validation.py` implementiert.
+- Checks im Zeitraum:
+  - `invalid_consumption_values`: Verbrauchswerte <= 0.
+  - `missing_consumption`: fehlende positive Verbräuche je Wohnung/Kostenart.
+  - `consumption_spikes`: Ausreißererkennung (> 3x Median pro Kostenart im Zeitraum).
+- UI: Blueprint `warnings` mit Route `/warnings/` und Template `warnings/list.html` (drei Tabellen, klare Gruppierung).
+- Parameter `start`/`end` optional als Query-Parameter zur Zeitraumsteuerung.
+- Navigation: Link „Warnungen“ in `base.html`.
+
+### Completed Testing
+- `test/test_validation_warnings.py` deckt alle drei Warnkategorien ab:
+  - Ungültige Werte (<= 0)
+  - Fehlende Verbräuche
+  - Ausreißer/Spikes (Median-basierte Erkennung)
+- Alle Tests grün und in Gesamtsuite enthalten (127/127 zum Zeitpunkt des Abschlusses).
+
+### Lessons Learned
+- Median-basierte Ausreißererkennung ist robust gegenüber einzelnen Extremwerten.
+- Konsistente Datumshandhabung (Python `date`) verhindert Typfehler in SQLite.
+- Klare UI-Gruppierung der Warnungen unterstützt schnelle Plausibilitätsprüfung.
+- Optionale Zeitraumparameter vereinfachen fokussierte Analysen.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Warnsystem-Aufgabe und Unterpunkte als erledigt markiert.
+- `memory-bank/activeContext.md`: Recent Completions und Fokus aktualisiert.
+- `memory-bank/progress.md`: Eintrag unter Completed Tasks mit Archivlink ergänzt.
+
+## Task: UI für Verwaltung von Bewohnerzahl-Zeiträumen (OccupancyPeriod) (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Neue UI unter `Wohnungen` zur Verwaltung von Belegungszeiträumen pro Apartment.
+- Routen: `/apartments/<id>/occupancy/` (Liste), `/new` (erstellen), `/<period_id>/edit` (bearbeiten).
+- Formular `OccupancyPeriodForm` mit Feldern `start_date` (Pflicht), `end_date` (optional), `number_of_occupants` (>=1).
+- Templates: `apartments/occupancy_list.html`, `apartments/occupancy_form.html`.
+
+### Completed Testing
+- Neue Testdatei `test/test_ui_occupancy.py` mit Fällen:
+  - Leere Liste
+  - Formular anzeigen (Neu/Bearbeiten)
+  - Erfolgreiches Anlegen/Bearbeiten
+  - Validierungsfehler (fehlendes Startdatum, Bewohnerzahl <= 0)
+  - 404 für nicht vorhandenen Zeitraum
+- Gesamte Test-Suite erfolgreich: 102/102.
+
+### Lessons Learned
+- Für SQLite müssen `Date`-Spalten mit Python-`date` versorgt werden; in Formularen helfen `DateField` und im Test echte `date`-Objekte.
+- HTML-Escaping in Fehlermeldungen beachten (`>` → `&gt;`).
+- UI-Integration unter `Wohnungen` ist für occupancy naheliegend; Link aus anderen Views bei Bedarf ergänzen.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Aufgabe und Teilaufgaben als abgeschlossen markiert.
+- `memory-bank/activeContext.md`: Fokus und Next Steps aktualisiert.
+- `app/apartments/forms.py`, `app/apartments/routes.py`, Templates ergänzt.
+
+## Task: UI für Erfassung von Kostenbelegen/Rechnungen (Invoices) (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Neue Invoices-UI mit Liste, Erstellen und Bearbeiten.
+- Formular `InvoiceForm` inkl. Cross-Field-Validierung: Leistungszeitraum-Ende muss nach Start liegen.
+- Blueprint `invoices` mit Routen `/invoices/`, `/invoices/new`, `/invoices/<id>/edit`.
+- Auswahlfelder für Kostenart und optionale direkte Zuordnung zu einem Vertrag.
+- Navigationseintrag „Rechnungen“ ergänzt.
+
+### Completed Testing
+- `test/test_crud_invoices.py` deckt ab:
+  - Leere Liste und Formular-Anzeige
+  - Erfolgreiches Anlegen verteilter Rechnung (ohne direkte Zuordnung)
+  - Erfolgreiches Anlegen direkt zugeordneter Rechnung
+  - Validierungsfehler (fehlender Betrag, Zeitraumende vor -start)
+  - Erfolgreiches Bearbeiten und 404 für nicht vorhandene ID
+- Gesamtsuite erfolgreich (112/112 Tests).
+
+### Lessons Learned
+- Cross-Field-Validierungen gehören ins Formular, damit Fehlermeldungen nahe am Feld erscheinen.
+- DateField + echte `date`-Objekte in Tests vermeiden SQLite-TypeErrors.
+- Einheitliche UI-Patterns (Blueprint, Form, Templates) verkürzen Implementierungszeit.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Invoices-UI als erledigt markiert.
+- `memory-bank/activeContext.md`: Recent Completions aktualisiert.
+- `memory-bank/progress.md`: Abschluss mit Archivlink ergänzt.
+
+## Task: Erweiterte CRUD-UI für Verträge (Contracts) (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Verträge-CRUD mit Liste, Erstellen und Bearbeiten.
+- Formular `ContractForm` inkl. Datumsvalidierung (Ende > Start) und Mietzins-Pflichtfeld.
+- Blueprint `contracts` mit Routen `/contracts/`, `/contracts/new`, `/contracts/<id>/edit`.
+- Auswahlfelder für Mieter und Wohnung.
+- Navigationseintrag „Verträge“ ergänzt.
+
+### Completed Testing
+- `test/test_crud_contracts.py` deckt ab:
+  - Leere Liste und Formular-Anzeige
+  - Erfolgreiches Anlegen
+  - Validierungsfehler (fehlender Mietzins, Ende vor Start)
+  - Erfolgreiches Bearbeiten und 404 für nicht vorhandene ID
+- Gesamtsuite erfolgreich (119/119 nach Abschluss dieser Aufgabe).
+
+### Lessons Learned
+- Konsistente Validierungslogik (Cross-Field) direkt im Formular reduziert Fehler und verbessert UX.
+- Wiederverwendbare Muster (Blueprint, Form, Templates) beschleunigen neue CRUD-Module.
+- Navigation zeitnah ergänzen, um manuelle Tests zu erleichtern.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Contracts-CRUD als erledigt markiert.
+- `memory-bank/activeContext.md`: Recent Completions ergänzt.
+- `memory-bank/progress.md`: Abschluss mit Archivlink ergänzt.
+
+## Task: Logik für direkte Kostenzuordnung (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Funktion `calculate_direct_allocation(period_start, period_end)` in `app/calculations.py` implementiert.
+- Aggregiert Beträge direkt zugeordneter Rechnungen (`Invoice.direct_allocation_contract_id`) pro Wohnung.
+- Berücksichtigt nur Rechnungen mit Leistungszeitraum-Überschneidung zum Abrechnungszeitraum.
+
+### Completed Testing
+- `test/test_cost_alloc_direct.py` deckt ab:
+  - Basisfall mit zwei direkt zugeordneten Rechnungen
+  - Ausschluss von Rechnungen außerhalb des Abrechnungszeitraums
+- Gesamtsuite erfolgreich (121/121 nach Abschluss dieser Aufgabe).
+
+### Lessons Learned
+- App-Kontext in Tests sicherstellen (Nutzung der `client`-Fixture), sonst `Working outside of application context`.
+- Überschneidungslogik für Perioden konsequent wie bei Occupancy/Consumption anwenden.
+- Ergebnisse konsequent auf 2 Dezimalstellen runden.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Task als erledigt markiert.
+- `memory-bank/activeContext.md`: Ergänzt.
+- `memory-bank/progress.md`: Archiv-Link ergänzt.
+
+## Task: Heiz-/Warmwasser-Logik (verbrauchsbasiert) (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- Funktion `calculate_heating_allocation(...)` in `app/calculations.py` implementiert.
+- Splittet Gesamtkosten in Warmwasser- und Heizanteil gemäß `hot_water_percentage`.
+- Verteilt beide Anteile verbrauchsbasiert mithilfe `calculate_consumption_allocation` (für Warmwasser- und Heiz-CostTypes).
+- Ergebnisse werden pro Wohnung summiert und gerundet.
+
+### Completed Testing
+- `test/test_cost_alloc_heating.py` deckt ab:
+  - Grundfall mit Warmwasser (10:30) und Heizung (100:200), 30/70-Split
+  - Fall ohne Warmwasser-Verbrauch (nur Heizung verteilt)
+- Gesamtsuite erfolgreich (123/123 nach Abschluss dieser Aufgabe).
+
+### Lessons Learned
+- Vorhandene Zählerdaten erlauben eine saubere verbrauchsbasiere Aufteilung für beide Anteile.
+- Prozentuale Splits sind robust und einfach testbar; Runden konsistent halten.
+- Wiederverwendung der bestehenden Verbrauchslogik minimiert Fehler und Code-Duplizierung.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: Heizkosten-Task als erledigt markiert.
+- `memory-bank/activeContext.md`: Recent Completions ergänzt.
+- `memory-bank/progress.md`: Archiv-Link ergänzt.
+
+## Task: PDF-Generierung (Heizpaket-Split) (v1.0)
+Last Updated: 2025-08-08
+
+### Implementation Results
+- `generate_utility_statement_pdf` erweitert um Heizpaket-Items (`type: 'heating'`).
+- Nutzt `calculate_heating_allocation` zur Ermittlung des Wohnungsanteils bei Heiz-/Warmwasser-Split.
+- Tabellenzeile enthält sprechende Schlüsselbeschreibung (Split % verbrauchsbasiert).
+
+### Completed Testing
+- `test/test_pdf_generation_heating.py`: PDF-Erstellung mit Heizpaket; prüft Byte-Output und PDF-Signatur.
+- Gesamtsuite erfolgreich (124/124 nach Abschluss dieser Aufgabe).
+
+### Lessons Learned
+- Erweiterbare `cost_items`-Struktur erlaubt flexible Abrechnungspositionen (klassisch vs. Heizpaket).
+- PDF-Tests sollten minimal-invasiv sein (Signatur/Bytes prüfen) und inhaltliche Details über separate Logiktests absichern.
+
+### Documentation Updates
+- `memory-bank/tasks.md`: PDF-Heizpaket als erledigt markiert.
+- `memory-bank/activeContext.md`: Recent Completions ergänzt.
+- `memory-bank/progress.md`: Archiv-Link ergänzt.
 ## Task: Kostenverteilung (Personentage pro-rata) v1.0
 Last Updated: 2024-08-02
 

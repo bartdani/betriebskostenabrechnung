@@ -23,13 +23,43 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('apartments.list_apartments') }}">Wohnungen</a>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navData" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Stammdaten
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navData">
+                        <li><a class="dropdown-item" href="{{ url_for('apartments.list_apartments') }}">Wohnungen</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('tenants.list_tenants') }}">Mieter</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('cost_types.index') }}">Kostenarten</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('meters.list_meters') }}">Zähler</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('invoices.list_invoices') }}">Rechnungen</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('contracts.list_contracts') }}">Verträge</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navBilling" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Abrechnung
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navBilling">
+                        <li><a class="dropdown-item" href="{{ url_for('billing.index') }}">Neue Abrechnung</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('billing.wizard') }}">Wizard</a></li>
+                      </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('tenants.list_tenants') }}">Mieter</a>
+                        <a class="nav-link" href="{{ url_for('warnings.list_warnings') }}">Prüfen & Warnungen</a>
                     </li>
                 </ul>
+                <form class="d-flex" method="post" action="{{ url_for('ui_select_building') }}">
+                  <div class="input-group">
+                    <label class="input-group-text" for="navbarBuilding">Gebäude</label>
+                    <select class="form-select" id="navbarBuilding" name="building_id" onchange="this.form.submit()">
+                      <option value="" {% if not selected_building_id %}selected{% endif %}>Alle</option>
+                      {% for b in navbar_buildings %}
+                        <option value="{{ b.id }}" {% if selected_building_id==b.id %}selected{% endif %}>{{ b.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </form>
             </div>
         </div>
     </nav>
@@ -37,16 +67,16 @@
     {# --- Hauptinhalt --- #}
     <div class="container mt-4">
         {# Flash Nachrichten Anzeige #}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                  <div class="alert alert-{{ 'warning' if category=='message' else category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
                 {% endfor %}
-            {% endif %}
-        {% endwith %}
+              {% endif %}
+            {% endwith %}
 
         {# Hier wird der Inhalt der abgeleiteten Templates eingefügt #}
         {% block content %}{% endblock %}

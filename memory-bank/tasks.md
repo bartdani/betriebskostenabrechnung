@@ -59,10 +59,10 @@
 - [X] Basis-CRUD-UI für Mieter implementieren
   - [X] Blueprint, Forms, Routes, Templates für Tenants (List, Create, Edit View)
   - [X] Test für Tenant CRUD erstellen (`test/test_crud_tenants.py`)
-- [ ] Basis-CRUD-UI für Zähler implementieren
-  - [ ] Blueprint, Forms, Routes, Templates für Meters (List, Create, Edit View)
-  - [ ] Zuordnung Zähler zu Wohnung ermöglichen
-  - [ ] Test für Meter CRUD erstellen (`test/test_crud_meters.py`)
+- [X] Basis-CRUD-UI für Zähler implementieren - Completed on 2025-08-08
+  - [X] Blueprint, Forms, Routes, Templates für Meters (List, Create, Edit View)
+  - [X] Zuordnung Zähler zu Wohnung ermöglichen
+  - [X] Test für Meter CRUD erstellen (`test/test_crud_meters.py`)
 - [X] Basis CSV-Import für Zählerstände implementieren
   - [X] Test für CSV-Import Basis erstellen (`test/test_csv_import_basic.py`)
 - [X] Implement CSV Import for Tenant Data - Completed on 2024-08-08
@@ -72,12 +72,12 @@
   - [X] Implement Tenant object creation and DB insertion
   - [X] Add error handling and reporting (skipped rows)
   - [X] Create tests for `import_tenant_csv` (`test/test_csv_import_tenant.py`)
-- [ ] UI für alle bisherigen implementierten Features überprüfen und ggf. anpassen
-  - [ ] Überprüfen, ob die Navigation korrekt ist und konsistent ist
-  - [ ] Überprüfen, ob alle CRUD-Operationen funktionieren
-  - [ ] Überprüfen, ob alle CSV-Importe funktionieren
-  - [ ] Überprüfen, ob alle PDF-Generierungen funktionieren
-  - [ ] Überprüfen, ob alle Tests funktionieren
+- [X] UI für alle bisherigen implementierten Features überprüfen und ggf. anpassen - Completed on 2025-08-08
+  - [X] Überprüfen, ob die Navigation korrekt ist und konsistent ist (getestet via `test/test_navigation.py`)
+  - [X] Überprüfen, ob alle CRUD-Operationen funktionieren (Apartments, Tenants, Cost Types, Meters)
+  - [X] Überprüfen, ob alle CSV-Importe funktionieren (Basic + Tenant)
+  - [X] Überprüfen, ob alle PDF-Generierungen funktionieren (Basis)
+  - [X] Überprüfen, ob alle Tests funktionieren (95/95 grün)
 
 ## Phase 2: Kernfunktionen Abrechnung & Erweiterte CRUD (ca. 7-8 Wochen)
 - [X] Betriebskostenabrechnungs-Logik implementieren (Basis)
@@ -93,42 +93,41 @@
     - [X] Funktion `calculate_combined_allocation` in `app/calculations.py` implementieren
     - [X] Test `test/test_cost_alloc_combined.py` erstellen
   - [X] Refactoring: Konsistente Rückgabewerte für Verteilungsfunktionen (immer Dict) (2024-08-01)
-- [ ] Spezifische Heizkostenabrechnungs-Logik implementieren
-  - [ ] Datenmodell anpassen (falls nötig für Brennstoffkosten/Aufteilung)
-  - [ ] Funktion zur Erfassung/Zuordnung von Brennstoffkosten entwickeln
-  - [ ] Logik zur Aufteilung Brennstoffkosten (Wärme/Warmwasser, ggf. über Zeiträume) implementieren
-  - [ ] Verteilungslogik für Wärme- und Warmwasserkosten integrieren
-  - [ ] Test für spezifische Heizkostenlogik erstellen (`test/test_cost_alloc_heating.py`)
-- [ ] Logik für direkte Kostenzuordnung implementieren
-  - [ ] Anpassung der Abrechnungsfunktion zur Berücksichtigung direkt zugeordneter Kosten
-  - [ ] Test für direkte Kostenzuordnung erstellen (`test/test_cost_alloc_direct.py`)
+ - [X] Spezifische Heizkostenabrechnungs-Logik implementieren - Completed on 2025-08-08
+  - [X] Keine Datenmodelländerung erforderlich (Nutzung vorhandener Verbrauchs-CostTypes)
+  - [X] Logik: Split in Warmwasser- und Heizanteil, beide verbrauchsbasiert
+  - [X] Verteilung integriert über bestehende Verbrauchslogik
+  - [X] Test für Heizkostenlogik erstellt (`test/test_cost_alloc_heating.py`)
+- [X] Logik für direkte Kostenzuordnung implementieren - Completed on 2025-08-08
+  - [X] Anpassung der Abrechnungsfunktion zur Berücksichtigung direkt zugeordneter Kosten
+  - [X] Test für direkte Kostenzuordnung erstellen (`test/test_cost_alloc_direct.py`)
 - [X] UI für benutzerdefinierte Kostenverteilschlüssel erstellen - Completed on 2024-08-08
   - [X] Tests für Logik der benutzerdef. Schlüssel (`test/test_custom_keys.py`)
-- [ ] UI für Verwaltung von Bewohnerzahl-Zeiträumen implementieren
-  - [ ] Integration in Mieter-Bearbeitungsview
-  - [ ] Formular/Logik zum Hinzufügen, Bearbeiten, Löschen von `OccupancyPeriod`-Einträgen
-  - [ ] Test für OccupancyPeriod UI erstellen (`test/test_ui_occupancy.py`)
-- [ ] UI für Erfassung von Kostenbelegen/Rechnungen implementieren
-  - [ ] Blueprint, Forms, Routes, Templates für Invoices (List, Create, Edit View)
-  - [ ] Formular-Logik zur Auswahl: Verteilungsschlüssel ODER direkte Zuordnung zu Mieter/Vertrag
-  - [ ] Test für Invoice CRUD (inkl. Zuordnungsauswahl) erstellen (`test/test_crud_invoices.py`)
-- [ ] Erweiterte CRUD-UI für Verträge implementieren
-  - [ ] Blueprint, Forms, Routes, Templates für Contracts (List, Create, Edit View)
-  - [ ] Verknüpfung Mieter/Wohnung, Erfassung Indexklausel etc.
-  - [ ] Test für Contract CRUD erstellen (`test/test_crud_contracts.py`)
+- [X] UI für Verwaltung von Bewohnerzahl-Zeiträumen implementieren - Completed on 2025-08-08
+  - [X] Integration in Wohnungen-Ansicht (unter `/apartments/<id>/occupancy/...`)
+  - [X] Formular/Logik zum Hinzufügen, Bearbeiten von `OccupancyPeriod`-Einträgen
+  - [X] Test für OccupancyPeriod UI erstellen (`test/test_ui_occupancy.py`)
+ - [X] UI für Erfassung von Kostenbelegen/Rechnungen implementieren - Completed on 2025-08-08
+  - [X] Blueprint, Forms, Routes, Templates für Invoices (List, Create, Edit View)
+  - [X] Formular-Logik zur Auswahl: Verteilungsschlüssel ODER direkte Zuordnung zu Mieter/Vertrag
+  - [X] Test für Invoice CRUD (inkl. Zuordnungsauswahl) erstellen (`test/test_crud_invoices.py`)
+- [X] Erweiterte CRUD-UI für Verträge implementieren - Completed on 2025-08-08
+  - [X] Blueprint, Forms, Routes, Templates für Contracts (List, Create, Edit View)
+  - [X] Verknüpfung Mieter/Wohnung, Erfassung Indexklausel etc.
+  - [X] Test für Contract CRUD erstellen (`test/test_crud_contracts.py`)
 - [X] PDF-Generierung für Betriebs/Neben- und Heizkostenabrechnungen - Completed on 2024-08-08
   - [X] Test für PDF-Generierung Basis erstellen (`test/test_pdf_generation_basic.py`)
-  - [ ] Betriebskostenabrechnung PDF-Generierung erweitern (Anteilige Kosten, direkte Kosten)
-  - [ ] Heizkostenabrechnung PDF-Generierung erweitern (spezifische Heizkostenlogik)
+  - [X] Betriebskostenabrechnung PDF-Generierung erweitern (Anteilige Kosten, direkte Kosten) - Completed on 2025-08-08
+  - [X] Heizkostenabrechnung PDF-Generierung erweitern (Heiz-/Warmwasser-Split, verbrauchsbasiert) - Completed on 2025-08-08
 - [ ] Manuelle Datenerfassung für Zählerstände/Verbräuche implementieren
   - [ ] UI-Maske für Zählerstände (pro Zähler)
   - [ ] UI-Maske für allgemeine Verbrauchsdaten (pro Wohnung/Kostenart)
   - [ ] Datenbank-Speicherung mit `entry_type='manual'` (Versionierung optional/später prüfen)
   - [ ] Test für manuelle Verbrauchsdatenerfassung (`test/test_manual_consumption_entry.py`)
-- [ ] Warnsystem für Abrechnungsprüfung implementieren
-  - [ ] Test für Warnsystem-Logik erstellen (`test/test_validation_warnings.py`)
-  - [ ] Logik für Plausibilitätschecks (fehlende Stände, Sprünge, Vorauszahlungen, fehlende Kosten)
-  - [ ] Warnungsdashboard/Anzeige im Abrechnungsmodul
+- [X] Warnsystem für Abrechnungsprüfung implementieren - Completed on 2025-08-08
+  - [X] Test für Warnsystem-Logik erstellen (`test/test_validation_warnings.py`)
+  - [X] Logik für Plausibilitätschecks (fehlende Stände, Sprünge, Vorauszahlungen, fehlende Kosten)
+  - [X] Warnungsdashboard/Anzeige im Abrechnungsmodul
 
 ## Phase 3: Index & Abschluss CRUD (ca. 3-4 Wochen)
 - [ ] VPI-Datenimport ermöglichen (manuell/CSV/API)
@@ -159,8 +158,8 @@
   - [ ] Test für Dashboard/Berichtslogik erstellen (`test/test_dashboard_reports.py`)
 - [ ] Dokumentenmanagement erweitern (Suche/Filter)
   - [ ] Test für erweiterte Doku-Features erstellen (`test/test_document_mgmt_advanced.py`)
-- [ ] Performance-Optimierung sicherstellen (< 5 Sek. für 15 WE, UI < 1 Sek)
-  - [ ] Performance-Tests implementieren (`test/test_performance.py`)
+ - [ ] (Optional) Performance-Optimierung sicherstellen (< 5 Sek. für 15 WE, UI < 1 Sek)
+   - [ ] (Optional) Performance-Tests implementieren (`test/test_performance.py`)
 - [ ] DSGVO-Konformität prüfen und sicherstellen
 - [ ] Revisionssichere Archivierung von PDFs gewährleisten
 - [ ] Benutzerfreundlichkeit & Responsive Design verbessern

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from app import db
 from app.models import CostType
 from app.cost_types import cost_types_bp
@@ -11,6 +11,7 @@ def index():
     """Zeigt eine Liste aller benutzerdefinierten Kostenarten."""
     # TODO: Später filtern, um nur "benutzerdefinierte" anzuzeigen?
     # Vorerst alle anzeigen.
+    # Hinweis: Kostenarten sind nicht direkt Gebäudebezogen; Liste bleibt global
     cost_types = CostType.query.order_by(CostType.name).all()
     return render_template('cost_types/list.html', title='Kostenarten verwalten', cost_types=cost_types)
 
