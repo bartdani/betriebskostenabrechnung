@@ -65,3 +65,39 @@ Webbasierte Anwendung zur Verwaltung von Mietwohnungen in Österreich (bis zu 15
     # oder spezifische Tests
     # pytest test/test_db_models_basic.py
     ``` 
+
+## Docker (empfohlen für Endnutzer)
+
+### Build (Entwickler)
+
+```powershell
+docker build -t deinrepo/betriebskosten:1.0.0 .
+```
+
+### Start (Endnutzer)
+
+```powershell
+# Persistentes Datenverzeichnis (DB/Uploads)
+$inst = "$env:APPDATA\Betriebskosten\instance"
+mkdir $inst -Force | Out-Null
+
+docker run -d --name betriebskosten -p 8000:8000 -v "$inst:/app/instance" deinrepo/betriebskosten:1.0.0
+```
+
+Die Anwendung ist dann unter `http://localhost:8000` erreichbar. Beim Container-Start werden automatisch Datenbankmigrationen ausgeführt.
+
+### Update (Endnutzer)
+
+Nutze das bereitgestellte Skript `update.ps1`:
+
+```powershell
+./update.ps1 -Image deinrepo/betriebskosten:1.0.1 -Name betriebskosten -Port 8000
+```
+
+Das Skript erstellt ein Backup des `instance`-Ordners, zieht das neue Image, stoppt/entfernt den alten Container und startet den neuen Container mit persistenter Datenbank.
+
+### Hinweise
+
+- `instance/` wird als Volume gemountet (Daten bleiben bei Updates erhalten)
+- Bitte vor größeren Updates ein Backup des `instance`-Ordners aufbewahren
+- Für Internetzugriff kann ein Reverse-Proxy (z. B. IIS/ARR) vor den Container gesetzt werden

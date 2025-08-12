@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import func
 
 
 # Datenbank-Instanz erstellen
@@ -53,7 +54,15 @@ def create_app(test_config=None):
 
     # Modelle importieren, damit Migrate sie erkennt (nach db Initialisierung)
     from app import models
-    from app.models import Building
+    from app.models import (
+        Building,
+        Apartment,
+        Tenant,
+        Contract,
+        Invoice,
+        ConsumptionData,
+        CostType,
+    )
 
     # Blueprints registrieren
     from app.tenants import bp_tenants as tenants_bp
@@ -92,7 +101,55 @@ def create_app(test_config=None):
     @app.route('/')
     @app.route('/index')
     def index():
-        return render_template('index.html', title='Startseite')
+        # Aggregierte Kennzahlen
+        stats = {
+            'buildings': db.session.query(Building).count(),
+            'apartments': db.session.query(Apartment).count(),
+            'tenants': db.session.query(Tenant).count(),
+            'contracts': db.session.query(Contract).count(),
+            'invoices': db.session.query(Invoice).count(),
+        }
+
+        # Optional nach Gebäude filtern, falls gewählt (nur für Rechnungen sinnvoll, da Feld vorhanden)
+        selected_building_id = session.get('building_id')
+
+        invoice_ct_query = (
+            db.session.query(CostType.name.label('name'), func.sum(Invoice.amount).label('total'))
+            .select_from(Invoice)
+            .join(CostType, Invoice.cost_type_id == CostType.id)
+        )
+        if selected_building_id:
+            invoice_ct_query = invoice_ct_query.filter(Invoice.building_id == selected_building_id)
+        invoice_ct_query = invoice_ct_query.group_by(CostType.name).order_by(CostType.name)
+        invoices_by_cost_type = invoice_ct_query.all()
+
+        chart_invoices = {
+            'labels': [row.name for row in invoices_by_cost_type],
+            'data': [float(row.total or 0) for row in invoices_by_cost_type],
+        }
+
+        # Verbrauch nach Monat (SQLite: strftime). Gesamtsicht, da ConsumptionData kein building_id hat
+        consumption_query = (
+            db.session.query(
+                func.strftime('%Y-%m', ConsumptionData.date).label('month'),
+                func.sum(ConsumptionData.value).label('total'),
+            )
+            .group_by('month')
+            .order_by('month')
+        )
+        consumption_by_month = consumption_query.all()
+        chart_consumption = {
+            'labels': [row.month for row in consumption_by_month],
+            'data': [float(row.total or 0) for row in consumption_by_month],
+        }
+
+        return render_template(
+            'index.html',
+            title='Startseite',
+            stats=stats,
+            chart_invoices=chart_invoices,
+            chart_consumption=chart_consumption,
+        )
 
     # Navbar: Gebäude-Auswahl bereitstellen
     @app.context_processor

@@ -12,5 +12,127 @@
         <h4 class="alert-heading">Basis-Setup</h4>
         <p>Dies ist die Startseite. Zukünftige Dashboard-Elemente werden hier platziert.</p>
     </div>
+
+    {% if stats %}
+    <div class="row g-3 mt-2">
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <div class="small text-muted">Gebäude</div>
+                    <div class="h4 mb-0">{{ stats.buildings }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <div class="small text-muted">Wohnungen</div>
+                    <div class="h4 mb-0">{{ stats.apartments }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <div class="small text-muted">Mieter</div>
+                    <div class="h4 mb-0">{{ stats.tenants }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <div class="small text-muted">Verträge</div>
+                    <div class="h4 mb-0">{{ stats.contracts }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">Rechnungssummen je Kostenart</div>
+                <div class="card-body">
+                    <div class="ratio ratio-16x9">
+                        <canvas id="chartInvoices"></canvas>
+                    </div>
+                    <div class="text-muted small mt-2">Gefiltert nach Gebäudeauswahl (falls gesetzt).</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">Gesamtverbrauch je Monat</div>
+                <div class="card-body">
+                    <div class="ratio ratio-16x9">
+                        <canvas id="chartConsumption"></canvas>
+                    </div>
+                    <div class="text-muted small mt-2">Gesamt über alle Wohnungen/Kostenarten.</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %} 
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    (function() {
+      const invoices = {{ (chart_invoices or {labels: [], data: []}) | tojson }};
+      const consumption = {{ (chart_consumption or {labels: [], data: []}) | tojson }};
+
+      const palette = [
+        '#0d6efd','#6f42c1','#198754','#dc3545','#fd7e14',
+        '#20c997','#0dcaf0','#6c757d','#6610f2','#198754'
+      ];
+
+      const el1 = document.getElementById('chartInvoices');
+      if (el1 && typeof Chart !== 'undefined') {
+        new Chart(el1, {
+          type: 'bar',
+          data: {
+            labels: invoices.labels,
+            datasets: [{
+              label: 'Betrag (€)',
+              data: invoices.data,
+              backgroundColor: invoices.labels.map((_, i) => palette[i % palette.length])
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+
+      const el2 = document.getElementById('chartConsumption');
+      if (el2 && typeof Chart !== 'undefined') {
+        new Chart(el2, {
+          type: 'line',
+          data: {
+            labels: consumption.labels,
+            datasets: [{
+              label: 'Verbrauch (Summe)',
+              data: consumption.data,
+              borderColor: '#0d6efd',
+              backgroundColor: 'rgba(13,110,253,0.15)',
+              fill: true,
+              tension: 0.2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+    })();
+  </script>
+{% endblock %}
